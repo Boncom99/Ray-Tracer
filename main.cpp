@@ -10,15 +10,17 @@ int main()
 {
     //MyVector v(1, 2, 3);
     //Ray r(1, 2, 3,1,2,3);
-    MyVector initialPosition(0, 0, 0);
-    MyVector initialDirection(1, 1, 0);
+    MyVector eyeInitialPosition(3, 3, 3);
+    MyVector eyeInitialDirection(1, 1, 0);
     double distanceToMatrix = 10;
     Image image(400, 400);
-    Eye eye(initialPosition, initialDirection, distanceToMatrix);
+    Eye eye(eyeInitialPosition, eyeInitialDirection, distanceToMatrix);
     Sphere sphere({1, 1, 1}, 4);
-    MyVector plain = eye.direction * distanceToMatrix;
+    MyVector centerOfPlain = eye.postion + (eye.direction * distanceToMatrix);
     eye.direction.printVec();
-    plain.printVec();
+    eye.postion.printVec();
+    std::cout << eye.distanceToMatrix << endl;
+    centerOfPlain.printVec();
 
     image.printImage("prova2");
     return 0;
