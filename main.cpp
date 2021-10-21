@@ -1,12 +1,13 @@
 #include <iostream>
 #include "ray.h"
+#include "image.h"
 using namespace std;
 
 int main()
 {
-    Vector v(1, 2, 3);
-    cout << v.x << v.y << v.z;
-    Ray r(1, 2, 3);
-    r.direction.printVec();
+    //MyVector v(1, 2, 3);
+    //Ray r(1, 2, 3);
+    Image image(400, 400);
+    image.printImage("prova2");
     return 0;
 }

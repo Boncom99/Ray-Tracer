@@ -25,7 +25,8 @@
 *.la
 *.a
 *.lib
-
+#output
+Output/
 # Executables
 *.exe
 *.out

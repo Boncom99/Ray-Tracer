@@ -1,10 +1,10 @@
 #ifndef Ray_H
 #define Ray_H
-#include "vector.h"
+#include "myVector.h"
 class Ray
 {
 public:
-    Vector direction;
+    MyVector direction;
 
 public:
     Ray();
