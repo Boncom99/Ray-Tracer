@@ -5,31 +5,22 @@ class Ray
 public:
     MyVector position;
     MyVector direction;
+    double time;
 
 public:
-    Ray();
-    Ray(MyVector pos, MyVector dir);
-    Ray(int x, int y, int z, int x2, int y2, int z2);
+    Ray(MyVector pos, MyVector dir, double t);
+    double intersection(Ray r, Object o);
     ~Ray();
 };
 
-Ray::Ray()
-{
-}
-Ray::Ray(MyVector pos, MyVector dir) : position(pos), direction(dir)
+Ray::Ray(MyVector pos, MyVector dir, double t) : position(pos), direction(dir), time(t)
 {
 }
 
-Ray::Ray(int x, int y, int z, int x2, int y2, int z2)
+double Ray::intersection(Ray r, Object o)
 {
-    position.x = x;
-    position.y = y;
-    position.z = z;
-    direction.x = x2;
-    direction.y = y2;
-    direction.z = z2;
+    //TODO
 }
-
 Ray::~Ray()
 {
 }
