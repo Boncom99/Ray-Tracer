@@ -13,6 +13,7 @@ public:
     MyVector();
     MyVector(double x, double y, double z);
     void printVec();
+    friend MyVector operator*(MyVector &v, double d);
     ~MyVector();
 };
 
@@ -26,6 +27,10 @@ void MyVector::printVec()
 {
     std::cout << "\n"
               << x << ", " << y << ", " << z << "\n";
+}
+MyVector operator*(MyVector &v, double d)
+{
+    return MyVector(v.x * d, v.y * d, v.z * d);
 }
 MyVector::~MyVector()
 {

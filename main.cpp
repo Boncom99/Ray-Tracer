@@ -11,11 +11,14 @@ int main()
     //MyVector v(1, 2, 3);
     //Ray r(1, 2, 3,1,2,3);
     MyVector initialPosition(0, 0, 0);
-    MyVector initialDirection(0, 0, 0);
-    int distanceToMatrix = 10;
+    MyVector initialDirection(1, 1, 0);
+    double distanceToMatrix = 10;
     Image image(400, 400);
     Eye eye(initialPosition, initialDirection, distanceToMatrix);
     Sphere sphere({1, 1, 1}, 4);
+    MyVector plain = eye.direction * distanceToMatrix;
+    eye.direction.printVec();
+    plain.printVec();
 
     image.printImage("prova2");
     return 0;
