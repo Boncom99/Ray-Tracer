@@ -1,18 +1,17 @@
 #ifndef EYE_H
 #define EYE_H
-#include "myVector.h"
 class Eye
 {
 public:
     MyVector postion;
     MyVector direction;
-    distanceToMatrix;
+    double distanceToMatrix;
     MyVector TopLeft;
     double dimPixel;
 
 public:
     Eye();
-    Eye(MyVector pos, MyVector dir, int distance);
+    Eye(MyVector pos, MyVector dir, double distance);
     ~Eye();
 };
 
@@ -20,7 +19,7 @@ Eye::Eye()
 {
 }
 
-Eye::Eye(MyVector pos, MyVector dir, int distance) : postion(pos), direction(dir), distanceToMatrix(distance)
+Eye::Eye(MyVector pos, MyVector dir, double distance) : postion(pos), direction(dir), distanceToMatrix(distance)
 {
 }
 Eye::~Eye()

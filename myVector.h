@@ -11,7 +11,7 @@ public:
 
 public:
     MyVector();
-    MyVector(int x, int y, int z);
+    MyVector(double x, double y, double z);
     void printVec();
     ~MyVector();
 };
@@ -19,7 +19,7 @@ public:
 MyVector::MyVector() : x(0), y(0), z(0)
 {
 }
-MyVector::MyVector(int x, int y, int z) : x(x), y(y), z(z)
+MyVector::MyVector(double x, double y, double z) : x(x), y(y), z(z)
 {
 }
 void MyVector::printVec()

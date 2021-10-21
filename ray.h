@@ -1,6 +1,5 @@
 #ifndef Ray_H
 #define Ray_H
-#include "myVector.h"
 class Ray
 {
 public:

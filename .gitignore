@@ -1,6 +1,5 @@
 # Prerequisites
 *.d
-
 # Compiled Object files
 *.slo
 *.lo
@@ -31,3 +30,13 @@ Output/
 *.exe
 *.out
 *.app
+
+#latex
+*.tex
+*.pdf
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.synctex(busy)
