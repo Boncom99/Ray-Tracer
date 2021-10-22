@@ -17,6 +17,8 @@ public:
     friend MyVector operator+(const MyVector &v1, const MyVector &v2);
     double module();
     void normalize();
+    double dotProduct(MyVector v1, MyVector v2);
+    MyVector crossProduct(MyVector v1, MyVector v2);
     ~MyVector();
 };
 
@@ -50,6 +52,19 @@ void MyVector::normalize()
     x *= (1 / mod);
     y *= (1 / mod);
     z *= (1 / mod);
+}
+
+double dotProduct(MyVector v1, MyVector v2)
+{
+    double aux = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+    return aux;
+}
+MyVector crossProduct(MyVector v1, MyVector v2)
+{
+    double aux1 = v1.y * v2.z - v2.y * v1.z;
+    double aux2 = v1.z * v2.x - v2.z * v1.x;
+    double aux3 = v1.x * v2.y - v2.x * v1.y;
+    return MyVector(aux1, (-1) * aux2, aux3);
 }
 MyVector::~MyVector()
 {

@@ -67,9 +67,9 @@ void Image::initializeImage()
     {
         for (size_t j = 0; j < width; j++)
         {
-            matrix[i][j][0] = 0;
+            matrix[i][j][0] = 255;
             matrix[i][j][1] = 0;
-            matrix[i][j][1] = 0;
+            matrix[i][j][1] = 255;
         }
     }
 }

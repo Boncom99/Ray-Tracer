@@ -1,5 +1,7 @@
 #ifndef Ray_H
 #define Ray_H
+#include "object.h"
+#include "myVector.h"
 class Ray
 {
 public:
@@ -8,14 +10,14 @@ public:
     double time;
 
 public:
-    Ray(MyVector pos, MyVector dir, double t);
+    Ray(MyVector pos, MyVector dir);
     bool intersection(Ray r, Sphere sphere);
     MyVector getPosition(double t);
     double distance(double t, Sphere sphere);
     ~Ray();
 };
 
-Ray::Ray(MyVector pos, MyVector dir, double t) : position(pos), direction(dir), time(t)
+Ray::Ray(MyVector pos, MyVector dir) : position(pos), direction(dir), time(0)
 {
     direction.normalize();
 }
@@ -30,16 +32,20 @@ double Ray::distance(double t, Sphere sphere)
     MyVector aux = getPosition(t) + (sphere.center * (-1));
     return aux.module() - sphere.radius;
 }
-bool Ray::intersection(Ray r, Sphere sphere)
+bool intersection(Ray r, Sphere sphere)
 {
     double t = 0;
     double d = 1;
-    for (size_t i = 0; i < 100; i++)
+    for (int i = 0; i < 500; i++)
     {
         d = r.distance(t, sphere);
-        if (d == 0)
+        if (d <= 0.001)
         {
             return 1;
+        }
+        else if (d > 500)
+        {
+            break;
         }
         t += d;
     }
