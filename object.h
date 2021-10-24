@@ -1,39 +1,27 @@
 #ifndef OBJECT_H
 #define OBJECT_H
-class Object
-{
-public:
-    MyVector color;
+#include <vector>
+#include <iostream>
 
-public:
-    Object(/* args */);
-    ~Object();
-};
-
-Object::Object(/* args */)
-{
-}
-
-Object::~Object()
-{
-}
-class Sphere : public Object
+class Sphere
 {
 public:
     MyVector center;
     double radius;
+    std::vector<int> color;
 
 public:
     Sphere(/* args */);
-    Sphere(MyVector cent, double rad);
+    Sphere(MyVector cent, double rad, std::vector<int> col);
     ~Sphere();
 };
 
-Sphere::Sphere(/* args */) : radius(0)
+Sphere::Sphere(/* args */) : center({0, 0, 0}), radius(0), color({0, 0, 0})
+
 {
 }
 
-Sphere::Sphere(MyVector cent, double rad) : center(cent), radius(rad)
+Sphere::Sphere(MyVector cent, double rad, std::vector<int> col) : center(cent), radius(rad), color(col)
 {
 }
 Sphere::~Sphere()

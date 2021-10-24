@@ -16,7 +16,8 @@ int main()
     double distanceToMatrix = 10;
     Image image(WIDTH, HEIGHT);
     Eye eye(eyeInitialPosition, eyeInitialDirection, distanceToMatrix);
-    Sphere sphere({15, 0, 1}, 1);
+    std::vector<int> color = {127, 127, 50};
+    Sphere sphere({15, 0, 1}, 1, color);
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < HEIGHT; i++)
     {
@@ -27,7 +28,7 @@ int main()
             Ray r(eye.postion, dir);
             if (intersection(r, sphere))
             {
-                image.matrix[i][j][1] = 127;
+                image.matrix[i][j] = sphere.color;
             }
             pixel.y -= eye.dimPixel;
         }
