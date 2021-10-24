@@ -8,16 +8,8 @@
 #include "image.h"
 
 using namespace std;
-
-int main()
+void calculate(Sphere sphere, Eye eye, Image &image)
 {
-    MyVector eyeInitialPosition(0, 0, 1);
-    MyVector eyeInitialDirection(1, 0, 0);
-    double distanceToMatrix = 10;
-    Image image(WIDTH, HEIGHT);
-    Eye eye(eyeInitialPosition, eyeInitialDirection, distanceToMatrix);
-    std::vector<int> color = {127, 127, 50};
-    Sphere sphere({15, 0, 1}, 1, color);
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < HEIGHT; i++)
     {
@@ -34,6 +26,22 @@ int main()
         }
         pixel.y = eye.TopLeftPlain.y;
         pixel.z -= eye.dimPixel;
+    }
+}
+int main()
+{
+    MyVector eyeInitialPosition(0, 0, 1);
+    MyVector eyeInitialDirection(1, 0, 0);
+    double distanceToMatrix = 10;
+    Image image(WIDTH, HEIGHT);
+    Eye eye(eyeInitialPosition, eyeInitialDirection, distanceToMatrix);
+    std::vector<int> color = {127, 127, 50};
+    Sphere sphere1({15, -1, 1}, 1, color);
+    Sphere sphere2({15, 2, 1}, 0.5, {200, 100, 20});
+    Sphere s[2] = {sphere1, sphere2};
+    for (int i = 0; i < 2; i++)
+    {
+        calculate(s[i], eye, image);
     }
 
     image.printImage("prova3");
