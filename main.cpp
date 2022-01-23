@@ -10,7 +10,7 @@
 using namespace std;
 void PaintImage(Sphere sphere[2], Eye eye, Image &image)
 {
-    int maxBounces = 3;
+    int maxBounces = 5;
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < HEIGHT; i++)
     {
@@ -25,9 +25,16 @@ void PaintImage(Sphere sphere[2], Eye eye, Image &image)
                 goesToInfinity = true;
                 for (int s = 0; s < 2; s++)
                 {
-                    if (r.intersection(sphere[s]))
+                    double t = r.intersection(sphere[s]);
+                    if (t != -1) //intersecció!
                     {
                         goesToInfinity = false;
+                        r.position = r.getPosition(t);
+                        //r.direction.printVec();
+                        r.direction = sphere->Rebound(r.position, r.direction);
+                        //r.direction.printVec();
+                        //cout << "s= " << s << endl;
+                        //cout << "------" << endl;
                         image.matrix[i][j] = sphere[s].color;
                         r.bounces++;
                         break;

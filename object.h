@@ -43,7 +43,7 @@ MyVector Sphere::Rebound(MyVector impactPoint, MyVector ray)
     //u: Ray-v
     MyVector v = dotProduct(ray, normalVec) * normalVec;
     MyVector u = ray + (-1.0 * v);
-    MyVector aux = (-1.0 * v) + u;
+    MyVector aux = u - v;
     aux.normalize();
     return aux;
 }

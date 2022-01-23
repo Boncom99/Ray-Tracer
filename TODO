@@ -1,7 +1,9 @@
 - eye.h
     vector TopLeftPlain. check if it is correct (we are guessing that the plain is vertical)
--ray.h
-    rebound of rays.
+
+
+Que al canviar de la dimensio de la imatge reescali la matriu perque es veigi igual pero mes petit,
+en comptes de retallar la imatge.
 
 Fractal: 
 - canvi de resolució al centre.

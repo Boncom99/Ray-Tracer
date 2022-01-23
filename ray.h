@@ -11,7 +11,7 @@ public:
 
 public:
     Ray(MyVector pos, MyVector dir);
-    bool intersection(Sphere sphere);
+    double intersection(Sphere sphere);
     MyVector getPosition(double t);
     double distance(double t, Sphere sphere);
     ~Ray();
@@ -32,27 +32,31 @@ double Ray::distance(double t, Sphere sphere)
     MyVector aux = getPosition(t) + (sphere.center * (-1));
     return aux.module() - sphere.radius;
 }
-bool Ray::intersection(Sphere sphere)
+double Ray::intersection(Sphere sphere) //no retorna cap numero negatiu
 {
-    double t = 0;
-    double d = 1;
-    for (int i = 0; i < 500; i++)
+    double a = 1; //direction.moduleSq() //sempre valdrà 1
+    double b = 2 * (dotProduct((position - sphere.center), direction));
+    double c = (position - sphere.center).moduleSq() - sphere.radius * sphere.radius;
+    //Discriminant
+    double discrim = b * b - 4 * a * c;
+    if (discrim >= 0)
     {
-        d = this->distance(t, sphere);
-        if (d <= 0.0001)
-        { //impacten
-            direction = sphere.Rebound(this->getPosition(t), direction);
-            position = this->getPosition(t);
-            return 1;
-        }
-        else if (d > 500)
+        double t2 = (-1 * b - sqrt(discrim)) / (2 * a);
+        if (t2 > 0.1)
         {
-            break;
+            return t2;
         }
-        t += d;
+        else
+        {
+            double t1 = (-1 * b + sqrt(b * b - 4 * a * c)) / (2 * a);
+            if (t1 > 0.1)
+            {
+                return t1;
+            }
+        }
     }
 
-    return 0;
+    return -1;
 }
 Ray::~Ray()
 {
