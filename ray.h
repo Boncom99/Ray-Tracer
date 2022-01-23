@@ -7,6 +7,7 @@ class Ray
 public:
     MyVector position;
     MyVector direction;
+    int bounces;
 
 public:
     Ray(MyVector pos, MyVector dir);
@@ -16,7 +17,7 @@ public:
     ~Ray();
 };
 
-Ray::Ray(MyVector pos, MyVector dir) : position(pos), direction(dir)
+Ray::Ray(MyVector pos, MyVector dir) : position(pos), direction(dir), bounces(0)
 {
     direction.normalize();
 }

@@ -8,8 +8,9 @@
 #include "image.h"
 
 using namespace std;
-void PaintImage(Sphere sphere, Eye eye, Image &image)
+void PaintImage(Sphere sphere[2], Eye eye, Image &image)
 {
+    int maxBounces = 3;
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < HEIGHT; i++)
     {
@@ -18,9 +19,20 @@ void PaintImage(Sphere sphere, Eye eye, Image &image)
 
             MyVector dir = pixel + (eye.postion * (-1));
             Ray r(eye.postion, dir);
-            if (r.intersection(sphere))
+            bool goesToInfinity = false;
+            while (r.bounces < maxBounces && !goesToInfinity)
             {
-                image.matrix[i][j] = sphere.color;
+                goesToInfinity = true;
+                for (int s = 0; s < 2; s++)
+                {
+                    if (r.intersection(sphere[s]))
+                    {
+                        goesToInfinity = false;
+                        image.matrix[i][j] = sphere[s].color;
+                        r.bounces++;
+                        break;
+                    }
+                }
             }
             pixel.y -= eye.dimPixel;
         }
@@ -39,10 +51,7 @@ int main()
     Sphere sphere1({15, -1, 1}, 1, color);
     Sphere sphere2({15, 2, 1}, 0.5, {200, 100, 20});
     Sphere s[2] = {sphere1, sphere2};
-    for (int i = 0; i < 2; i++)
-    {
-        PaintImage(s[i], eye, image);
-    }
+    PaintImage(s, eye, image);
 
     image.printImage("prova3");
     return 0;
