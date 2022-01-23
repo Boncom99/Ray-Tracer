@@ -7,17 +7,16 @@ class Ray
 public:
     MyVector position;
     MyVector direction;
-    double time;
 
 public:
     Ray(MyVector pos, MyVector dir);
-    bool intersection(Ray r, Sphere sphere);
+    bool intersection(Sphere sphere);
     MyVector getPosition(double t);
     double distance(double t, Sphere sphere);
     ~Ray();
 };
 
-Ray::Ray(MyVector pos, MyVector dir) : position(pos), direction(dir), time(0)
+Ray::Ray(MyVector pos, MyVector dir) : position(pos), direction(dir)
 {
     direction.normalize();
 }
@@ -32,15 +31,17 @@ double Ray::distance(double t, Sphere sphere)
     MyVector aux = getPosition(t) + (sphere.center * (-1));
     return aux.module() - sphere.radius;
 }
-bool intersection(Ray r, Sphere sphere)
+bool Ray::intersection(Sphere sphere)
 {
     double t = 0;
     double d = 1;
     for (int i = 0; i < 500; i++)
     {
-        d = r.distance(t, sphere);
-        if (d <= 0.001)
-        {
+        d = this->distance(t, sphere);
+        if (d <= 0.0001)
+        { //impacten
+            direction = sphere.Rebound(this->getPosition(t), direction);
+            position = this->getPosition(t);
             return 1;
         }
         else if (d > 500)

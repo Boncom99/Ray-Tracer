@@ -1,4 +1,9 @@
 - eye.h
     vector TopLeftPlain. check if it is correct (we are guessing that the plain is vertical)
 -ray.h
-    intersection of ray with objects.
+    rebound of rays.
+
+Fractal: 
+- canvi de resolució al centre.
+- estudiar quaternions.
+- set julia.

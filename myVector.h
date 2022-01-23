@@ -11,8 +11,10 @@ public:
 
 public:
     MyVector();
+    // MyVector(const MyVector &p); //copy constructor
     MyVector(double x, double y, double z);
     void printVec();
+    friend MyVector operator*(double d, const MyVector &v);
     friend MyVector operator*(const MyVector &v, double d);
     friend MyVector operator+(const MyVector &v1, const MyVector &v2);
     double module();
@@ -25,6 +27,9 @@ public:
 MyVector::MyVector() : x(0), y(0), z(0)
 {
 }
+/*MyVector::MyVector(const MyVector &p) : x(p.x), y(p.y), z(p.z)
+{
+}*/
 MyVector::MyVector(double x, double y, double z) : x(x), y(y), z(z)
 {
 }
@@ -34,6 +39,10 @@ void MyVector::printVec()
               << x << ", " << y << ", " << z << "\n";
 }
 MyVector operator*(const MyVector &v, double d)
+{
+    return MyVector(v.x * d, v.y * d, v.z * d);
+}
+MyVector operator*(double d, const MyVector &v)
 {
     return MyVector(v.x * d, v.y * d, v.z * d);
 }

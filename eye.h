@@ -7,7 +7,7 @@ public:
     MyVector direction;
     double distanceToMatrix;
     MyVector centerOfPlain;
-    MyVector TopLeftPlain;
+    MyVector TopLeftPlain; //top left position of the matrix.
     double dimPixel;
 
 public:

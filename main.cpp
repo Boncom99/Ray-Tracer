@@ -8,7 +8,7 @@
 #include "image.h"
 
 using namespace std;
-void calculate(Sphere sphere, Eye eye, Image &image)
+void PaintImage(Sphere sphere, Eye eye, Image &image)
 {
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < HEIGHT; i++)
@@ -18,7 +18,7 @@ void calculate(Sphere sphere, Eye eye, Image &image)
 
             MyVector dir = pixel + (eye.postion * (-1));
             Ray r(eye.postion, dir);
-            if (intersection(r, sphere))
+            if (r.intersection(sphere))
             {
                 image.matrix[i][j] = sphere.color;
             }
@@ -41,7 +41,7 @@ int main()
     Sphere s[2] = {sphere1, sphere2};
     for (int i = 0; i < 2; i++)
     {
-        calculate(s[i], eye, image);
+        PaintImage(s[i], eye, image);
     }
 
     image.printImage("prova3");
