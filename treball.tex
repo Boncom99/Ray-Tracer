@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[catalan]{babel}
+\usepackage{amsthm}
+\usepackage{faktor}
+\newcommand{\veq}{\rotatebox{90}{=}}
+\newcommand{\eqto}[2]{\underset{\scriptstyle\overset{\mkern4mu\veq}{#2}}{#1}}
+\newcommand{\norm}{\trianglelefteq}
+\newcommand{\gal}[2]{Gal\left(\faktor{#1}{#2}\right)}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage[shortlabels]{enumitem}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{natbib}
+\usepackage{amsmath}
+\usepackage{graphicx} 
+
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{corollary}{Corolari}[theorem]
+\newtheorem{lemma}[theorem]{Lema}
+\newtheorem{definition}[theorem]{Definició}
+\newtheorem{proposition}[theorem]{Proposició}
+\newtheorem{observation}[theorem]{Observació}
+\newtheorem{example}[theorem]{Exemple}
+
+\title{Treball de fi de grau}
+\author{Josep Boncompte Moya}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Objectius}
+En aquest treball vull estudiar els algoritmes ray-tracer que creen imatges digitals amb un alt grau de realisme traçant raigs.
+Analitzarè l'algoritme amb les diferents variants que es poden derivar, veient les ventatges i inconvenients d'aquests. 
+També implementarè aquest algoritme aplicant-li optimitzacions.
+
+\section{Principis de l'algoritme}
+En aquesta secció explicarè els conceptes basics d'un Ray-tracer.
+
+Començem explicant com veiem imatges a la vida real. Primer de tot necesitem una font d'il·luminació, la llum és essencial per
+poder-hi veure. Aquesta font d'il·luminació desprén ratjos de llum que impacten contra objectes i reboten. Al rebotar canvien el
+seu color. El que nosaltres percevem, pertant, són els ratjos que van a parar al noste ull.
+
+%diagrama de bombeta, ratjos i ull.
+
+En un Ray-tracer s'intenta simular el mateix. creem una font d'iluminació, uns objectes i un ull. La única diferencia és que en
+aquest cas, els ratjos van en sentit contrari. Surten de l'ull i reboten contre els objectes.
+
+
+%diagrama de bombeta, ratjos i ull.
+
+
+Per cada raig que llencem, ens guardem el color dels objectes amb els que impacte, i formem un pixel amb aquest color.
+
+\section{Reflexe raig amb superficie de la esfera}
+%diagrama raig, normal i pla tangent
+volem trobar els vectors $u$ i  $v$ tals que DIBUIX A MA
+\section{interseccio de raig amb esfera}
+
+
+
+
+\end{document}
+
+

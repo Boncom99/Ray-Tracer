@@ -29,12 +29,9 @@ void PaintImage(Sphere sphere[2], Eye eye, Image &image)
                     if (t != -1) //intersecció!
                     {
                         goesToInfinity = false;
-                        r.position = r.getPosition(t);
-                        //r.direction.printVec();
+                        MyVector auxPos = r.getPosition(t);
                         r.direction = sphere->Rebound(r.position, r.direction);
-                        //r.direction.printVec();
-                        //cout << "s= " << s << endl;
-                        //cout << "------" << endl;
+                        r.position = auxPos;
                         image.matrix[i][j] = sphere[s].color;
                         r.bounces++;
                         break;
@@ -56,7 +53,7 @@ int main()
     Eye eye(eyeInitialPosition, eyeInitialDirection, distanceToMatrix);
     std::vector<int> color = {127, 127, 50};
     Sphere sphere1({15, -1, 1}, 1, color);
-    Sphere sphere2({15, 2, 1}, 0.5, {200, 100, 20});
+    Sphere sphere2({15, 0.5, 1}, 0.5, {200, 100, 20});
     Sphere s[2] = {sphere1, sphere2};
     PaintImage(s, eye, image);
 

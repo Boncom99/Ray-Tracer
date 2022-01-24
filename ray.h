@@ -34,22 +34,22 @@ double Ray::distance(double t, Sphere sphere)
 }
 double Ray::intersection(Sphere sphere) //no retorna cap numero negatiu
 {
-    double a = 1; //direction.moduleSq() //sempre valdrà 1
+    //double a = 1; //direction.moduleSq() //sempre valdrà 1
     double b = 2 * (dotProduct((position - sphere.center), direction));
     double c = (position - sphere.center).moduleSq() - sphere.radius * sphere.radius;
     //Discriminant
-    double discrim = b * b - 4 * a * c;
-    if (discrim >= 0)
+    double discriminant = b * b - 4 * c;
+    if (discriminant >= 0)
     {
-        double t2 = (-1 * b - sqrt(discrim)) / (2 * a);
-        if (t2 > 0.1)
+        double t2 = (-1 * b - sqrt(discriminant)) / 2.0;
+        if (t2 > 0.001)
         {
             return t2;
         }
         else
         {
-            double t1 = (-1 * b + sqrt(b * b - 4 * a * c)) / (2 * a);
-            if (t1 > 0.1)
+            double t1 = (-1 * b + sqrt(discriminant)) / (2.0);
+            if (t1 > 0.001)
             {
                 return t1;
             }

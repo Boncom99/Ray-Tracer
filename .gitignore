@@ -30,13 +30,15 @@ Output/
 *.exe
 *.out
 *.app
+main
 
 #latex
-*.tex
-*.pdf
+.tex
+.pdf
 *.aux
 *.fdb_latexmk
 *.fls
 *.log
 *.synctex.gz
 *.synctex(busy)
+.DS_Store
