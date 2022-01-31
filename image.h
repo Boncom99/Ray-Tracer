@@ -14,6 +14,7 @@ public:
 public:
     Image();
     Image(int w, int h);
+    void addColor(int w, int h, std::vector<int> color);
     int printImage(std::string name);
     void initializeImage();
     ~Image();

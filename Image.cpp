@@ -17,6 +17,13 @@ Image::Image(int w, int h) : width(w), height(h)
 
     initializeImage();
 }
+
+void Image::addColor(int w, int h, std::vector<int> color)
+{
+    matrix[w][h][0] = (matrix[w][h][0] + color[0]) / 2;
+    matrix[w][h][1] = (matrix[w][h][1] + color[1]) / 2;
+    matrix[w][h][2] = (matrix[w][h][2] + color[2]) / 2;
+}
 int Image::printImage(std::string name)
 {
     std::ofstream output;

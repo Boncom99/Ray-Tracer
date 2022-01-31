@@ -12,9 +12,9 @@ public:
     double dimPixel;
 
 public:
-    Eye(MyVector pos, MyVector dir, double distance);
+    Eye(MyVector pos, MyVector dir, double distance, double dimPixel);
 };
-Eye::Eye(MyVector pos, MyVector dir, double distance) : postion(pos), direction(dir), distanceToMatrix(distance), dimPixel(0.005)
+Eye::Eye(MyVector pos, MyVector dir, double distance, double dimPixel) : postion(pos), direction(dir), distanceToMatrix(distance), dimPixel(dimPixel)
 {
     direction.normalize();
     MyVector z(0, 0, 1);
