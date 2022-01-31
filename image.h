@@ -9,15 +9,15 @@ class Image
 public:
     int width;
     int height;
+    int SamplesPerPixel;
     std::vector<std::vector<std::vector<int>>> matrix;
 
 public:
     Image();
-    Image(int w, int h);
-    void addColor(int w, int h, std::vector<int> color);
+    Image(int w, int h, int samples);
     int printImage(std::string name);
     void initializeImage();
-    ~Image();
+    void MitjanaColors(int i, int j, std::vector<std::vector<int>> c);
 };
 
 #endif

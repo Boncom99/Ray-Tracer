@@ -3,7 +3,7 @@ Image::Image() : width(0), height(0), matrix()
 {
 }
 
-Image::Image(int w, int h) : width(w), height(h)
+Image::Image(int w, int h, int samples) : width(w), height(h), SamplesPerPixel(samples)
 {
     matrix.resize(height);
     for (size_t i = 0; i < height; ++i)
@@ -18,12 +18,6 @@ Image::Image(int w, int h) : width(w), height(h)
     initializeImage();
 }
 
-void Image::addColor(int w, int h, std::vector<int> color)
-{
-    matrix[w][h][0] = (matrix[w][h][0] + color[0]) / 2;
-    matrix[w][h][1] = (matrix[w][h][1] + color[1]) / 2;
-    matrix[w][h][2] = (matrix[w][h][2] + color[2]) / 2;
-}
 int Image::printImage(std::string name)
 {
     std::ofstream output;
@@ -61,6 +55,20 @@ void Image::initializeImage()
         }
     }
 }
-Image::~Image()
+void Image::MitjanaColors(int i, int j, std::vector<std::vector<int>> c)
 {
+    std::vector<int> Color;
+    int R = 0;
+    int G = 0;
+    int B = 0;
+    for (int i = 0; i < SamplesPerPixel; i++)
+    {
+        R += c[i][0];
+        G += c[i][1];
+        B += c[i][2];
+    }
+    Color[0] = R / SamplesPerPixel;
+    Color[1] = G / SamplesPerPixel;
+    Color[2] = B / SamplesPerPixel;
+    matrix[i][j] = Color;
 }
