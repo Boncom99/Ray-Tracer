@@ -22,7 +22,7 @@ void PaintImage(Sphere sphere[3], Eye eye, Image &image)
             while (ray.bounces < maxBounces && !goesToInfinity)
             {
                 goesToInfinity = true;
-                for (int s = 0; s < 3; s++)
+                for (int s = 0; s < 3; s++) //per cada sphere
                 {
                     double t = sphere[s].hit(ray);
                     if (t != -1) //intersecció!
@@ -41,6 +41,43 @@ void PaintImage(Sphere sphere[3], Eye eye, Image &image)
         pixel.z -= eye.dimPixel;
     }
 }
+void Prova(Sphere sphere[3], Eye eye, Image &image)
+{
+    int maxBounces = 10;
+    MyVector pixel(1, 0, 1);
+    MyVector dir = pixel + (eye.postion * (-1));
+    Ray ray(eye.postion, dir);
+    cout << "ray direction:";
+    ray.direction.printVec();
+    cout << "\n";
+    bool goesToInfinity = false;
+    while (ray.bounces < maxBounces && !goesToInfinity)
+    {
+        goesToInfinity = true;
+
+        cout << "start again \n";
+        cout << "bounces:" << ray.bounces << "\n";
+        for (int s = 0; s < 3; s++)
+        {
+            cout << "sphere : " << s << "\n";
+            double t = sphere[s].hit(ray);
+            cout << "t= " << t << " \n";
+
+            if (t != -1) //intersecció!
+            {
+                cout << "impact\n";
+                goesToInfinity = false;
+                MyVector auxPos = ray.getPosition(t);
+                ray.Rebound(sphere[s].NormalVector(auxPos), auxPos);
+                cout << "ray direction:";
+                ray.direction.printVec();
+                cout << "ray position:";
+                ray.position.printVec();
+                break;
+            }
+        }
+    }
+}
 int main()
 {
     MyVector eyeInitialPosition(0, 0, 1);
@@ -49,11 +86,12 @@ int main()
     Image image(WIDTH, HEIGHT);
     Eye eye(eyeInitialPosition, eyeInitialDirection, distanceToMatrix);
     std::vector<int> color = {127, 127, 50};
-    Sphere sphere1({15, -1, 1}, 1, color);
-    Sphere sphere2({15, 0, 1}, 0.5, {200, 100, 20});
-    Sphere sphere3({15, 01, 1}, 0.5, {255, 1, 2});
+    Sphere sphere2({13, 0, 1}, 0.5, {200, 100, 20});
+    Sphere sphere3({15, 1, 1}, 0.5, {255, 1, 2});
+    Sphere sphere1({11, 1.2, 1}, 0.5, color);
     Sphere s[3] = {sphere1, sphere2, sphere3};
     PaintImage(s, eye, image);
+    //Prova(s, eye, image);
 
     image.printImage("prova3");
     return 0;
