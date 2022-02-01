@@ -12,6 +12,7 @@ void PaintImage(Sphere sphere[3], Eye eye, Image &image)
 {
     int maxBounces = 5;
     MyVector pixel = eye.TopLeftPlain;
+
     for (int i = 0; i < HEIGHT; i++)
     {
         for (int j = 0; j < WIDTH; j++)
@@ -44,6 +45,7 @@ void PaintImage(Sphere sphere[3], Eye eye, Image &image)
                 }
                 color[sample] = pixelSampleColor;
             }
+
             image.MitjanaColors(i, j, color);
             pixel.y -= eye.dimPixel;
         }
@@ -65,7 +67,6 @@ int main()
     Sphere sphere1({11, 1.2, 1}, 0.5, color);
     Sphere s[3] = {sphere1, sphere2, sphere3};
     PaintImage(s, eye, image);
-
     image.printImage("prova3");
     return 0;
 }
