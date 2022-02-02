@@ -10,7 +10,7 @@ using namespace std;
 
 void PaintImage(Sphere sphere[3], Eye eye, Image &image)
 {
-    int maxBounces = 5;
+    int maxBounces = 10;
     MyVector pixel = eye.TopLeftPlain;
 
     for (int i = 0; i < HEIGHT; i++)
@@ -23,8 +23,8 @@ void PaintImage(Sphere sphere[3], Eye eye, Image &image)
                 double r2 = (double)rand() / RAND_MAX;
                 double r3 = (double)rand() / RAND_MAX;
                 MyVector randomPixel(pixel.x, pixel.y + r2 * eye.dimPixel, pixel.z + r3 * eye.dimPixel);
-                MyVector dir = randomPixel + (eye.postion * (-1));
-                Ray ray(eye.postion, dir);
+                MyVector dir = randomPixel + (eye.position * (-1));
+                Ray ray(eye.position, dir);
                 bool goesToInfinity = false;
                 vector<int> pixelSampleColor(3, 0); //vector on guardem el color de cada pixel de cada sample
                 while (ray.bounces < maxBounces && !goesToInfinity)
@@ -47,26 +47,27 @@ void PaintImage(Sphere sphere[3], Eye eye, Image &image)
             }
 
             image.MitjanaColors(i, j, color);
-            pixel.y -= eye.dimPixel;
+            pixel = pixel + (eye.dimPixel * eye.horizontalVector);
         }
-        pixel.y = eye.TopLeftPlain.y;
-        pixel.z -= eye.dimPixel;
+        pixel = eye.TopLeftPlain - (1 * (i + 1) * eye.dimPixel * eye.verticalVector);
     }
 }
 
 int main()
 {
-    MyVector eyeInitialPosition(0, 0, 1);
-    MyVector eyeInitialDirection(1, 0, 0);
+    MyVector eyeInitialPosition(13, 15, 1);
+    MyVector LookAt(0, 15, 1);
     double distanceToMatrix = 10;
-    Image image(WIDTH, HEIGHT, 100);
-    Eye eye(eyeInitialPosition, eyeInitialDirection, distanceToMatrix, 0.005);
-    std::vector<int> color = {127, 127, 50};
-    Sphere sphere2({13, 0, 1}, 0.5, {200, 100, 20});
-    Sphere sphere3({15, 1, 1}, 0.5, {255, 1, 2});
-    Sphere sphere1({11, 1.2, 1}, 0.5, color);
+    MyVector verticalVector(0, 0, 1);
+    int samplePerPixel = 10;
+    Image image(WIDTH, HEIGHT, samplePerPixel);
+    Eye eye(eyeInitialPosition, LookAt, distanceToMatrix, verticalVector, 0.005);
+    Sphere sphere2({-0.7, 15, 1}, 0.5, {0, 140, 0});
+    Sphere sphere3({0, 15, 1}, 0.5, {0, 130, 0});
+    Sphere sphere1({0.7, 15.5, 1}, 0.5, {127, 0, 0});
     Sphere s[3] = {sphere1, sphere2, sphere3};
     PaintImage(s, eye, image);
     image.printImage("prova3");
+
     return 0;
 }

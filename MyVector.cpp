@@ -57,6 +57,9 @@ MyVector crossProduct(MyVector v1, MyVector v2)
     double aux3 = v1.x * v2.y - v2.x * v1.y;
     return MyVector(aux1, (-1) * aux2, aux3);
 }
-MyVector::~MyVector()
+void MyVector::absoluteValue()
 {
+    x = abs(x);
+    y = abs(y);
+    z = abs(z);
 }

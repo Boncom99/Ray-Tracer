@@ -1,6 +1,7 @@
 #ifndef MYVECTOR_H
 #define MYVECTOR_H
 #include <math.h>
+#include <stdlib.h>
 #include <iostream>
 
 class MyVector
@@ -22,9 +23,9 @@ public:
     double module();
     double moduleSq();
     void normalize();
+    void absoluteValue();
     //double dotProduct(MyVector v1, MyVector v2);
     //MyVector crossProduct(MyVector v1, MyVector v2);
-    ~MyVector();
 };
 double dotProduct(MyVector v1, MyVector v2);
 MyVector crossProduct(MyVector v1, MyVector v2);
