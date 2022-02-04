@@ -9,7 +9,7 @@ public:
     MyVector direction;
     double distanceToMatrix;
     MyVector centerOfPlain;
-    MyVector TopLeftPlain; //top left position of the matrix.
+    MyVector TopLeftPlain; // top left position of the matrix.
     MyVector horizontalVector;
     MyVector verticalVector;
     double dimPixel;
@@ -26,8 +26,8 @@ Eye::Eye(MyVector pos, MyVector LookAt, double distance, MyVector verticalVector
     horizontalVector = MyVector(crossProduct(direction, verticalVector));
     horizontalVector.absoluteValue();
     TopLeftPlain = centerOfPlain + ((-1 * horizontalVector) * (dimPixel * WIDTH / 2) + verticalVector * (dimPixel * HEIGHT / 2));
-    TopLeftPlain.printVec();
-    centerOfPlain.printVec();
+    // TopLeftPlain.printVec();
+    // centerOfPlain.printVec();
 }
 
 #endif

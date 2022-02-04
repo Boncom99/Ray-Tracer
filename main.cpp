@@ -58,14 +58,14 @@ void PaintImage(Sphere sphere[3], Eye eye, Image &image)
 
 int main()
 {
-    MyVector eyeInitialPosition(13, 15, 1);
+    MyVector eyeInitialPosition(4, 15, 10);
     MyVector LookAt(0, 15, 1);
     double distanceToMatrix = 10;
-    MyVector verticalVector(0, 0, 1);
+    MyVector verticalVector(1, 0, 0);
     int samplePerPixel = 10;
     Image image(WIDTH, HEIGHT, samplePerPixel);
     Eye eye(eyeInitialPosition, LookAt, distanceToMatrix, verticalVector, 0.005);
-    Sphere sphere2({-0.7, 15, 1}, 0.5, {0, 140, 0});
+    Sphere sphere2({-0.7, 15, 1}, 0.5, {0, 0, 140});
     Sphere sphere3({0, 15, 1}, 0.5, {0, 130, 0});
     Sphere sphere1({0.7, 15.5, 1}, 0.5, {127, 0, 0});
     Sphere s[3] = {sphere1, sphere2, sphere3};
