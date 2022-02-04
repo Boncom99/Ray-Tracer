@@ -9,10 +9,6 @@ Image::Image(int w, int h, int samples) : width(w), height(h), SamplesPerPixel(s
     for (size_t i = 0; i < height; ++i)
     {
         matrix[i].resize(width);
-        for (size_t j = 0; j < width; j++)
-        {
-            matrix[i][j].resize(3);
-        }
     }
 
     initializeImage();
@@ -28,14 +24,14 @@ int Image::printImage(std::string name)
         std::cout << "couldn't find the file " << name << "in the Output folder" << std::endl;
         return 0;
     }
-    //header
+    // header
     output << "P3 \n"
            << width << " " << height << "\n255 \n";
     for (size_t i = 0; i < height; i++)
     {
         for (size_t j = 0; j < width; j++)
         {
-            output << matrix[i][j][0] << " " << matrix[i][j][1] << " " << matrix[i][j][2] << " ";
+            output << matrix[i][j].red << " " << matrix[i][j].green << " " << matrix[i][j].blue << " ";
         }
         output << "\n";
     }
@@ -49,15 +45,11 @@ void Image::initializeImage()
     {
         for (size_t j = 0; j < width; j++)
         {
-            matrix[i][j][0] = 0;
-            matrix[i][j][1] = 0;
-            matrix[i][j][1] = 0;
+            matrix[i][j] = Color(0, 0, 0);
         }
     }
 }
 void Image::MitjanaColors(int i, int j, std::vector<Color> c)
 {
-    Color FinalColor = MitjanaColors2(c, SamplesPerPixel);
-    std::vector<int> fC = {FinalColor.red, FinalColor.green, FinalColor.blue};
-    matrix[i][j] = fC;
+    matrix[i][j] = MitjanaColors2(c, SamplesPerPixel);
 }

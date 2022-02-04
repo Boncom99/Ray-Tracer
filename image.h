@@ -11,7 +11,7 @@ public:
     int width;
     int height;
     int SamplesPerPixel;
-    std::vector<std::vector<std::vector<int>>> matrix;
+    std::vector<std::vector<Color>> matrix;
 
 public:
     Image();
