@@ -1,5 +1,3 @@
-#define HEIGHT 600
-#define WIDTH 600
 #include "MyVector.h"
 #include "Sphere.h"
 #include "Color.h"
@@ -9,6 +7,7 @@
 #include "SphereSmooth.h"
 #include "SphereRough.h"
 #include "Light.h"
+#include <map>
 
 using namespace std;
 
@@ -17,18 +16,15 @@ void PaintImage(Sphere *sphere[4], Eye eye, Image &image, Light light)
     int maxBounces = 15;
     MyVector pixel = eye.TopLeftPlain;
 
-    for (int i = 0; i < HEIGHT; i++)
+    for (int i = 0; i < image.height; i++)
     {
-        for (int j = 0; j < WIDTH; j++)
+        for (int j = 0; j < image.width; j++)
         {
             vector<Color> vecColor(image.SamplesPerPixel); // guardem tots els colors de cada iteracio
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {
-                double randV = (double)rand() / RAND_MAX;
-                double randH = (double)rand() / RAND_MAX;
-                MyVector randomPixel = pixel + eye.dimPixel * (randH * eye.horizontalVector + randV * eye.verticalVector);
-                MyVector dir = randomPixel + (eye.position * (-1));
-                Ray ray(eye.position, dir);
+                // map<double, Object> listObjects;
+                Ray ray(&eye, pixel);
                 bool goesToInfinity = false;
                 vector<Color> pixelSampleColor(maxBounces); // vector on guardem el color de cada pixel de cada sample
                 for (int bounce = 0; ray.bounces < maxBounces && !goesToInfinity; bounce++)
@@ -58,13 +54,15 @@ void PaintImage(Sphere *sphere[4], Eye eye, Image &image, Light light)
 
 int main()
 {
+    int HEIGHT = 600;
+    int WIDTH = 600;
     MyVector eyeInitialPosition(0, 0, 1);
     MyVector LookAt(0, 15, 1);
     double distanceToMatrix = 10;
     MyVector verticalVector(1, 0, 0);
     int samplePerPixel = 20;
     Image image(WIDTH, HEIGHT, samplePerPixel);
-    Eye eye(eyeInitialPosition, LookAt, distanceToMatrix, verticalVector, 0.004);
+    Eye eye(eyeInitialPosition, LookAt, distanceToMatrix, verticalVector, 0.004, WIDTH, HEIGHT);
     SphereRough sphere4({0, 14.5, 0}, 0.5, Color(0, 200, 200), 0.4);
     SphereSmooth sphere3({0, 15, 1}, 0.5, Color(0, 130, 0));
     SphereSmooth sphere2({-0.7, 15, 1}, 0.5, Color(0, 0, 140));

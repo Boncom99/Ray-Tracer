@@ -13,21 +13,11 @@ public:
     MyVector horizontalVector;
     MyVector verticalVector;
     double dimPixel;
+    int width;
+    int height;
 
 public:
-    Eye(MyVector pos, MyVector LookAt, double distance, MyVector verticalVector, double dimPixel);
+    Eye(MyVector pos, MyVector LookAt, double distance, MyVector verticalVector, double dimPixel, int width, int height);
 };
-Eye::Eye(MyVector pos, MyVector LookAt, double distance, MyVector verticalVector, double dimPixel) : position(pos), LookAt(LookAt), distanceToMatrix(distance), verticalVector(verticalVector), dimPixel(dimPixel)
-{
-    direction = LookAt - position;
-    direction.normalize();
-    verticalVector.normalize();
-    centerOfPlain = position + (direction * distanceToMatrix);
-    horizontalVector = MyVector(crossProduct(direction, verticalVector));
-    horizontalVector.absoluteValue();
-    TopLeftPlain = centerOfPlain + ((-1 * horizontalVector) * (dimPixel * WIDTH / 2) + verticalVector * (dimPixel * HEIGHT / 2));
-    // TopLeftPlain.printVec();
-    // centerOfPlain.printVec();
-}
 
 #endif

@@ -1,6 +1,7 @@
 #ifndef Ray_H
 #define Ray_H
 #include "MyVector.h"
+#include "Eye.h"
 class Ray
 {
 public:
@@ -10,6 +11,7 @@ public:
 
 public:
     Ray(MyVector pos, MyVector dir);
+    Ray(Eye *eye, MyVector currentPixel);
     MyVector getPosition(double t);
     void Rebound(MyVector normalVector, MyVector hitPosition);
 };
