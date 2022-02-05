@@ -23,7 +23,7 @@ void PaintImage(Sphere **sphere, int size, Eye *eye, Image *image, Light *light)
             vector<Color> vecColor(image->SamplesPerPixel); // guardem tots els colors de cada iteracio
             for (int sample = 0; sample < image->SamplesPerPixel; sample++)
             {
-                map<double, Object *> listObjects;
+                map<Object *, double> listObjects;
                 Ray ray(eye, pixel);
                 bool goesToInfinity = false;
                 vector<Color> pixelSampleColor(maxBounces); // vector on guardem el color de cada pixel de cada sample
@@ -36,11 +36,17 @@ void PaintImage(Sphere **sphere, int size, Eye *eye, Image *image, Light *light)
                         if (t != -1) // intersecció!
                         {
                             goesToInfinity = false;
-                            MyVector auxPos = ray.getPosition(t);
-                            ray.Rebound(sphere[s]->NormalVector(auxPos), auxPos);
-                            pixelSampleColor[bounce] = sphere[s]->color;
-                            break;
+                            listObjects[sphere[s]] = t;
                         }
+                    }
+                    if (!goesToInfinity)
+                    {
+                        auto object = min_element(listObjects.begin(), listObjects.end(), // escollim l'objecte amb que primer intersecciona amb el raig
+                                                  [](const auto &l, const auto &r)
+                                                  { return l.second < r.second; });
+                        MyVector auxPos = ray.getPosition(object->second);
+                        ray.Rebound(object->first->NormalVector(auxPos), auxPos);
+                        pixelSampleColor[bounce] = object->first->color;
                     }
                 }
                 vecColor[sample] = MitjanaColors2(pixelSampleColor, ray.bounces);
