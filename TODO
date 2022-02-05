@@ -5,8 +5,8 @@
 Que al canviar de la dimensio de la imatge reescali la matriu perque es veigi igual pero mes petit,
 en comptes de retallar la imatge.
 
+Add list of objects hitted.
 
-El raig quan rebota contra una esfera no s'allunya, es queda alla.
 
 mirar que, si el raig impacta amb dos esferes a l'hora aleshores escollir la que estigui davant.
 

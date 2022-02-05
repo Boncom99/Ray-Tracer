@@ -4,19 +4,20 @@
 #include "Object.h"
 #include "Ray.h"
 #include "MyVector.h"
+#include "Color.h"
 #include <iostream>
 class Sphere : public Object
 {
 public:
     MyVector center;
     double radius;
-    std::vector<int> color;
 
 public:
     Sphere();
+    Sphere(MyVector cent, double rad, Color col);
     double distance(Ray ray, double t);
-    Sphere(MyVector cent, double rad, std::vector<int> col);
-    MyVector NormalVector(MyVector position);
+    virtual MyVector NormalVector(MyVector position) = 0;
+    // MyVector NormalVector(MyVector position);
     double hit(Ray ray);
 };
 
