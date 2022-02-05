@@ -1,5 +1,5 @@
-#define HEIGHT 500
-#define WIDTH 500
+#define HEIGHT 600
+#define WIDTH 600
 #include "MyVector.h"
 #include "Sphere.h"
 #include "Color.h"
@@ -8,12 +8,13 @@
 #include "Image.h"
 #include "SphereSmooth.h"
 #include "SphereRough.h"
+#include "Light.h"
 
 using namespace std;
 
-void PaintImage(Sphere *sphere[4], Eye eye, Image &image)
+void PaintImage(Sphere *sphere[4], Eye eye, Image &image, Light light)
 {
-    int maxBounces = 10;
+    int maxBounces = 15;
     MyVector pixel = eye.TopLeftPlain;
 
     for (int i = 0; i < HEIGHT; i++)
@@ -26,13 +27,11 @@ void PaintImage(Sphere *sphere[4], Eye eye, Image &image)
                 double randV = (double)rand() / RAND_MAX;
                 double randH = (double)rand() / RAND_MAX;
                 MyVector randomPixel = pixel + eye.dimPixel * (randH * eye.horizontalVector + randV * eye.verticalVector);
-                // MyVector randomPixel(pixel.x, pixel.y + r2 * eye.dimPixel, pixel.z + r3 * eye.dimPixel);
                 MyVector dir = randomPixel + (eye.position * (-1));
                 Ray ray(eye.position, dir);
                 bool goesToInfinity = false;
                 vector<Color> pixelSampleColor(maxBounces); // vector on guardem el color de cada pixel de cada sample
                 for (int bounce = 0; ray.bounces < maxBounces && !goesToInfinity; bounce++)
-                // while (ray.bounces < maxBounces && !goesToInfinity)
                 {
                     goesToInfinity = true;
                     for (int s = 0; s < 4; s++) // per cada sphere
@@ -43,8 +42,6 @@ void PaintImage(Sphere *sphere[4], Eye eye, Image &image)
                             goesToInfinity = false;
                             MyVector auxPos = ray.getPosition(t);
                             ray.Rebound(sphere[s]->NormalVector(auxPos), auxPos);
-                            // Color c(sphere[s].color[0], sphere[s].color[1], sphere[s].color[2]);
-                            //  pixelSampleColor[bounce] = sphere[s].color; //TODO estem agafant el color del ultim objecte amb el que rebota, quan hauriem de fer una barreja de tots
                             pixelSampleColor[bounce] = sphere[s]->color;
                             break;
                         }
@@ -65,15 +62,16 @@ int main()
     MyVector LookAt(0, 15, 1);
     double distanceToMatrix = 10;
     MyVector verticalVector(1, 0, 0);
-    int samplePerPixel = 10;
+    int samplePerPixel = 20;
     Image image(WIDTH, HEIGHT, samplePerPixel);
-    Eye eye(eyeInitialPosition, LookAt, distanceToMatrix, verticalVector, 0.005);
-    SphereRough sphere4({0, 14.5, 0}, 0.5, Color(0, 200, 200), 0.5);
+    Eye eye(eyeInitialPosition, LookAt, distanceToMatrix, verticalVector, 0.004);
+    SphereRough sphere4({0, 14.5, 0}, 0.5, Color(0, 200, 200), 0.4);
     SphereSmooth sphere3({0, 15, 1}, 0.5, Color(0, 130, 0));
     SphereSmooth sphere2({-0.7, 15, 1}, 0.5, Color(0, 0, 140));
     SphereSmooth sphere1({0.7, 15.5, 1}, 0.5, Color(127, 0, 0));
     Sphere *s[4] = {&sphere1, &sphere2, &sphere3, &sphere4};
-    PaintImage(s, eye, image);
+    Light light({-4, -1, 5}, 4, Color(255, 255, 255));
+    PaintImage(s, eye, image, light);
     image.printImage("prova3");
 
     return 0;
