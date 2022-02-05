@@ -11,26 +11,26 @@
 
 using namespace std;
 
-void PaintImage(Sphere *sphere[4], Eye eye, Image &image, Light light)
+void PaintImage(Sphere **sphere, int size, Eye *eye, Image *image, Light *light)
 {
     int maxBounces = 15;
-    MyVector pixel = eye.TopLeftPlain;
+    MyVector pixel = eye->TopLeftPlain;
 
-    for (int i = 0; i < image.height; i++)
+    for (int i = 0; i < image->height; i++)
     {
-        for (int j = 0; j < image.width; j++)
+        for (int j = 0; j < image->width; j++)
         {
-            vector<Color> vecColor(image.SamplesPerPixel); // guardem tots els colors de cada iteracio
-            for (int sample = 0; sample < image.SamplesPerPixel; sample++)
+            vector<Color> vecColor(image->SamplesPerPixel); // guardem tots els colors de cada iteracio
+            for (int sample = 0; sample < image->SamplesPerPixel; sample++)
             {
-                // map<double, Object> listObjects;
-                Ray ray(&eye, pixel);
+                map<double, Object *> listObjects;
+                Ray ray(eye, pixel);
                 bool goesToInfinity = false;
                 vector<Color> pixelSampleColor(maxBounces); // vector on guardem el color de cada pixel de cada sample
                 for (int bounce = 0; ray.bounces < maxBounces && !goesToInfinity; bounce++)
                 {
                     goesToInfinity = true;
-                    for (int s = 0; s < 4; s++) // per cada sphere
+                    for (int s = 0; s < size; s++) // per cada sphere
                     {
                         double t = sphere[s]->hit(ray);
                         if (t != -1) // intersecció!
@@ -45,10 +45,10 @@ void PaintImage(Sphere *sphere[4], Eye eye, Image &image, Light light)
                 }
                 vecColor[sample] = MitjanaColors2(pixelSampleColor, ray.bounces);
             }
-            image.MitjanaColors(i, j, vecColor);
-            pixel = pixel + (eye.dimPixel * eye.horizontalVector);
+            image->MitjanaColors(i, j, vecColor);
+            pixel = pixel + (eye->dimPixel * eye->horizontalVector);
         }
-        pixel = eye.TopLeftPlain - (1 * (i + 1) * eye.dimPixel * eye.verticalVector);
+        pixel = eye->TopLeftPlain - (1 * (i + 1) * eye->dimPixel * eye->verticalVector);
     }
 }
 
@@ -69,8 +69,8 @@ int main()
     SphereSmooth sphere1({0.7, 15.5, 1}, 0.5, Color(127, 0, 0));
     Sphere *s[4] = {&sphere1, &sphere2, &sphere3, &sphere4};
     Light light({-4, -1, 5}, 4, Color(255, 255, 255));
-    PaintImage(s, eye, image, light);
-    image.printImage("prova3");
+    PaintImage(s, 4, &eye, &image, &light);
+    image.printImage("prova");
 
     return 0;
 }
