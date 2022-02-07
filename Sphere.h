@@ -15,7 +15,7 @@ public:
 public:
     Sphere();
     Sphere(MyVector cent, double rad, Color col);
-    double distance(Ray ray, double t);
+    double distance(Ray ray, double t); // not using it
     virtual MyVector NormalVector(MyVector position) = 0;
     // MyVector NormalVector(MyVector position);
     double hit(Ray ray);

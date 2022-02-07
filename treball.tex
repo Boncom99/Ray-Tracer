@@ -27,7 +27,7 @@
 \newtheorem{observation}[theorem]{Observació}
 \newtheorem{example}[theorem]{Exemple}
 
-\title{Treball de fi de grau}
+\title{Introducció als algoritmes de Ray casting}
 \author{Josep Boncompte Moya}
 \date{\today}
 
@@ -35,32 +35,304 @@
 \maketitle
 
 \section{Objectius}
-En aquest treball vull estudiar els algoritmes ray-tracer que creen imatges digitals amb un alt grau de realisme traçant raigs.
+En aquest treball vull estudiar els algoritmes ray casting que creen imatges digitals amb un alt grau de realisme traçant raigs.
 Analitzarè l'algoritme amb les diferents variants que es poden derivar, veient les ventatges i inconvenients d'aquests. 
 També implementarè aquest algoritme aplicant-li optimitzacions.
 
 \section{Principis de l'algoritme}
 En aquesta secció explicarè els conceptes basics d'un Ray-tracer.
 
-Començem explicant com veiem imatges a la vida real. Primer de tot necesitem una font d'il·luminació, la llum és essencial per
+Començem explicant com veiem imatges a la vida real. 
+
+Primer de tot necesitem una font d'il·luminació, la llum és essencial per
 poder-hi veure. Aquesta font d'il·luminació desprén ratjos de llum que impacten contra objectes i reboten. Al rebotar canvien el
 seu color. El que nosaltres percevem, pertant, són els ratjos que van a parar al noste ull.
 
-%diagrama de bombeta, ratjos i ull.
-
-En un Ray-tracer s'intenta simular el mateix. creem una font d'iluminació, uns objectes i un ull. La única diferencia és que en
+En un Ray-tracer s'intenta simular el mateix. Creem una font d'il·luminació, uns objectes, una quadricula i un ull. 
+La quadricula representarà el conjunt de pixels de la imatge resultant.
+La única diferencia és que en
 aquest cas, els ratjos van en sentit contrari. Surten de l'ull i reboten contre els objectes.
 
+\begin{figure}
+\centering
+\label{fig:reflex}
+
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-0.7,xscale=0.7]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Shape: Grid [id:dp2874209353417645] 
+\draw  [draw opacity=0] (130.29,110.8) -- (105.57,205.4) -- (213.66,177.24) -- (238.37,82.64) -- cycle ; \draw  [color={rgb, 255:red, 155; green, 155; blue, 155 }  ,draw opacity=1 ] (130.03,111.76) -- (238.12,83.61)(127,123.37) -- (235.09,95.22)(123.97,134.99) -- (232.05,106.83)(120.93,146.6) -- (229.02,118.44)(117.9,158.21) -- (225.99,130.05)(114.87,169.82) -- (222.95,141.66)(111.84,181.43) -- (219.92,153.27)(108.8,193.04) -- (216.89,164.88)(105.77,204.65) -- (213.85,176.49) ; \draw  [color={rgb, 255:red, 155; green, 155; blue, 155 }  ,draw opacity=1 ] (131.39,110.51) -- (106.68,205.11)(144.7,107.04) -- (119.99,201.64)(158.01,103.58) -- (133.3,198.17)(171.32,100.11) -- (146.61,194.71)(184.63,96.64) -- (159.92,191.24)(197.94,93.18) -- (173.22,187.77)(211.24,89.71) -- (186.53,184.31)(224.55,86.24) -- (199.84,180.84)(237.86,82.78) -- (213.15,177.37) ; \draw  [color={rgb, 255:red, 155; green, 155; blue, 155 }  ,draw opacity=1 ]  ;
+%Flowchart: Summing Junction [id:dp1397553415106878] 
+\draw  [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ][line width=1.5]  (45,142.5) .. controls (45,136.15) and (50.15,131) .. (56.5,131) .. controls (62.85,131) and (68,136.15) .. (68,142.5) .. controls (68,148.85) and (62.85,154) .. (56.5,154) .. controls (50.15,154) and (45,148.85) .. (45,142.5) -- cycle ; \draw  [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ][line width=1.5]  (48.37,134.37) -- (64.63,150.63) ; \draw  [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ][line width=1.5]  (64.63,134.37) -- (48.37,150.63) ;
+%Shape: Circle [id:dp5662574699750227] 
+\draw  [fill={rgb, 255:red, 189; green, 16; blue, 224 }  ,fill opacity=1 ] (321,30) .. controls (321,16.19) and (332.19,5) .. (346,5) .. controls (359.81,5) and (371,16.19) .. (371,30) .. controls (371,43.81) and (359.81,55) .. (346,55) .. controls (332.19,55) and (321,43.81) .. (321,30) -- cycle ;
+%Shape: Circle [id:dp1275608568426868] 
+\draw  [fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=1 ] (412,135) .. controls (412,112.91) and (429.91,95) .. (452,95) .. controls (474.09,95) and (492,112.91) .. (492,135) .. controls (492,157.09) and (474.09,175) .. (452,175) .. controls (429.91,175) and (412,157.09) .. (412,135) -- cycle ;
+%Straight Lines [id:da3390406793374766] 
+\draw    (56.5,142.5) -- (414.35,123.52) ;
+\draw [shift={(416.35,123.41)}, rotate = 176.96] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da9475530524890181] 
+\draw    (416.35,123.41) -- (371.92,37.78) ;
+\draw [shift={(371,36)}, rotate = 62.58] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (328,21) node [anchor=north west][inner sep=0.75pt]   [align=left] {Llum};
+% Text Node
+\draw (425,125) node [anchor=north west][inner sep=0.75pt]   [align=left] {Objecte};
+% Text Node
+\draw (45,109) node [anchor=north west][inner sep=0.75pt]   [align=left] {Ull};
+% Text Node
+\draw (133,59) node [anchor=north west][inner sep=0.75pt]   [align=left] {matriu d'imatge};
+% Text Node
+\draw (275,108) node [anchor=north west][inner sep=0.75pt]   [align=left] {Raig};
+
+
+\end{tikzpicture}
+   
+\caption{Representació del funcionament basic de l'algoritme de Ray casting}
+\end{figure}
 
 %diagrama de bombeta, ratjos i ull.
 
 
-Per cada raig que llencem, ens guardem el color dels objectes amb els que impacte, i formem un pixel amb aquest color.
+Per cada pixel de la quadricula llencem un raig a traves, ens guardem el color dels objectes amb els que impacte.
+Per poder efectuar aquest algoritme ens caldrà calcular:
+  \begin{enumerate}[a)]
+     \item La intersecció d'un raig amb un obejecte.
+     \item rebot d'un raig amb una superficie.
+     \item  repetir a) i b) amb un nou raig.
+  \end{enumerate} 
+\subsection{intersecció del raig amb objectes}
+Per saber si un raig intersecta amb un objecte ho podem fer de dues formés diferents:
+\subsubsection{Ray tracing}
+Ray tracing és una variant dels algoritmes de ray casting que resol un sistema d'equacions per trobar la intersecció del raig amb
+l'objecte. Aquesta variant és molt eficient però esta limitada a superficies que podem parametritzar o que tinguin una formula
+sensilla.
+\begin{enumerate}[a)]
+   \item Començarem dibuixant esferes, ja que és el objecte més simple.
+  Podem definir un raig amb l'equació d'una recta $f(t)=dt+p$ on $d=(d_1,d_2,d_3)$ és el vector director normalitzat, i $p=(p_1,p_2,p_3)$ és
+  el punt de la recta quan $t=0$. Més endavant utilitzarem rajos no rectes per simular la curvatura de l'espai.
+  Podem expresar la recta de la forma següent:
+\begin{align*}
+x=p_1+td_1 \\
+y=p_2+td_2 \\
+z=p_3+td_3 \\
+\end{align*}
+Per una esfera de radi $r$ i centre  $c=(c_1,c_2,c_3)$ podem definir-la com:
+\begin{align*}
+   (x-c_1)^2+(y-c_2)^2 +(z-c_3)^2 =r^2
+\end{align*}
+Per trobar els punts d'intersecció només cal substituir $x,y,z$ obtenint:
+ \begin{align*}
+   ((p_1-c_1)+td_1)^2 + ((p_2-c_2)+td_2)^2+((p_3-c_3)+td_3)^2= r^2  \iff \\
+   (td_1)^2+(td_2)^2+(td_3)^2+ (p_1-c_1)^2+(p_2-c_2)^2+(p_3-c_3)^2+\\ 2(p_1-c_1)td_1+2(p_2-c_2)td_2+2(p_3-c_3)td_3 -r^2=0  \iff\\
+   \|d\|^2t^2 + \|p-c\|^2+2t(<p-c,d>) -r^2=0
+\end{align*}
+Obtenint una equació de segon grau $at^2+bt+c=0$ on $a= \|d\|^2 =1$ per definició, $b=2(<p-c,d>)$ i  $c=\|p-c\|^2-r^2$. 
 
-\section{Reflexe raig amb superficie de la esfera}
-%diagrama raig, normal i pla tangent
-volem trobar els vectors $u$ i  $v$ tals que DIBUIX A MA
-\section{interseccio de raig amb esfera}
+Aquesta formula ens donarà 0, 1 o 2 solucións, que representen el temps $t$ en el que la recta talla la esfera.
+
+Per que el algoritme tingui sentit hem d'escollir la solució positiva més petita.
+% diagrama 
+\item Per calcular la intersecció d'un raig amb un cub tindrem els següent conceptes presents:
+
+
+   ...
+\end{enumerate}
+
+\subsubsection{Ray marching}
+Ray marching és una altre variant dels algoritmes de ray casting que calcula la intersecció d'un raig de forma recursiva a partir
+de la distancia del raig al objecte.
+El metode és el següent:
+\begin{enumerate}[a)]
+   \item Creem un raig $f(t)= dt+p$. amb  $d$ la direcció i  $p $ la posició.
+    \item  calculem la distancia $D$ minima entre p i el objecte.
+       \item abançem en la direcció $d$ aquesta distancia i definim  la nova posició com
+          \begin{equation*}
+              p'=D\cdot d+p
+          \end{equation*}
+       \item repetim aquest procés fins que la $D=0$ o fins que  $D= \infty$ ( en el cas que no intersectin ).
+\end{enumerate}
+
+
+\begin{figure}
+   \centering
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-0.7,xscale=0.7]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da5172579435437765] 
+\draw [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][line width=1.5]    (49,129) -- (295.64,167.34) ;
+\draw [shift={(298.6,167.8)}, rotate = 188.84] [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][line width=1.5]    (14.21,-4.28) .. controls (9.04,-1.82) and (4.3,-0.39) .. (0,0) .. controls (4.3,0.39) and (9.04,1.82) .. (14.21,4.28)   ;
+%Shape: Circle [id:dp8891369335784802] 
+\draw  [fill={rgb, 255:red, 184; green, 233; blue, 134 }  ,fill opacity=1 ] (151.5,92.5) .. controls (151.5,72.07) and (168.07,55.5) .. (188.5,55.5) .. controls (208.93,55.5) and (225.5,72.07) .. (225.5,92.5) .. controls (225.5,112.93) and (208.93,129.5) .. (188.5,129.5) .. controls (168.07,129.5) and (151.5,112.93) .. (151.5,92.5) -- cycle ;
+%Shape: Circle [id:dp28054031526846746] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (44.5,129) .. controls (44.5,126.51) and (46.51,124.5) .. (49,124.5) .. controls (51.49,124.5) and (53.5,126.51) .. (53.5,129) .. controls (53.5,131.49) and (51.49,133.5) .. (49,133.5) .. controls (46.51,133.5) and (44.5,131.49) .. (44.5,129) -- cycle ;
+%Shape: Circle [id:dp1171865334383273] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (149,145) .. controls (149,142.51) and (151.01,140.5) .. (153.5,140.5) .. controls (155.99,140.5) and (158,142.51) .. (158,145) .. controls (158,147.49) and (155.99,149.5) .. (153.5,149.5) .. controls (151.01,149.5) and (149,147.49) .. (149,145) -- cycle ;
+%Shape: Circle [id:dp6095132253359951] 
+\draw  [line width=0.75]  (127.44,145) .. controls (127.44,130.61) and (139.11,118.94) .. (153.5,118.94) .. controls (167.89,118.94) and (179.56,130.61) .. (179.56,145) .. controls (179.56,159.39) and (167.89,171.06) .. (153.5,171.06) .. controls (139.11,171.06) and (127.44,159.39) .. (127.44,145) -- cycle ;
+%Shape: Circle [id:dp8256341875574109] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (175.06,149.5) .. controls (175.06,147.01) and (177.08,145) .. (179.56,145) .. controls (182.05,145) and (184.06,147.01) .. (184.06,149.5) .. controls (184.06,151.99) and (182.05,154) .. (179.56,154) .. controls (177.08,154) and (175.06,151.99) .. (175.06,149.5) -- cycle ;
+%Shape: Circle [id:dp4615529528953036] 
+\draw  [line width=0.75]  (158.77,149.5) .. controls (158.77,138.02) and (168.08,128.71) .. (179.56,128.71) .. controls (191.04,128.71) and (200.35,138.02) .. (200.35,149.5) .. controls (200.35,160.98) and (191.04,170.29) .. (179.56,170.29) .. controls (168.08,170.29) and (158.77,160.98) .. (158.77,149.5) -- cycle ;
+%Shape: Circle [id:dp8488546667039918] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (195.85,152.5) .. controls (195.85,150.01) and (197.87,148) .. (200.35,148) .. controls (202.84,148) and (204.85,150.01) .. (204.85,152.5) .. controls (204.85,154.99) and (202.84,157) .. (200.35,157) .. controls (197.87,157) and (195.85,154.99) .. (195.85,152.5) -- cycle ;
+%Shape: Circle [id:dp8827999503916382] 
+\draw  [line width=0.75]  (176.77,152.5) .. controls (176.77,139.48) and (187.33,128.92) .. (200.35,128.92) .. controls (213.38,128.92) and (223.94,139.48) .. (223.94,152.5) .. controls (223.94,165.52) and (213.38,176.08) .. (200.35,176.08) .. controls (187.33,176.08) and (176.77,165.52) .. (176.77,152.5) -- cycle ;
+%Shape: Circle [id:dp28365635266662215] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (219.44,157) .. controls (219.44,154.51) and (221.45,152.5) .. (223.94,152.5) .. controls (226.42,152.5) and (228.44,154.51) .. (228.44,157) .. controls (228.44,159.49) and (226.42,161.5) .. (223.94,161.5) .. controls (221.45,161.5) and (219.44,159.49) .. (219.44,157) -- cycle ;
+%Shape: Circle [id:dp15779047756636633] 
+\draw  [line width=0.75]  (187.13,157) .. controls (187.13,136.67) and (203.61,120.19) .. (223.94,120.19) .. controls (244.26,120.19) and (260.74,136.67) .. (260.74,157) .. controls (260.74,177.33) and (244.26,193.81) .. (223.94,193.81) .. controls (203.61,193.81) and (187.13,177.33) .. (187.13,157) -- cycle ;
+%Shape: Arc [id:dp1856201303120597] 
+\draw  [draw opacity=0] (19.57,30.27) .. controls (30.83,26.14) and (42.98,24.01) .. (55.62,24.26) .. controls (111.89,25.4) and (156.55,73.51) .. (155.37,131.73) .. controls (154.19,189.94) and (107.62,236.2) .. (51.35,235.06) .. controls (46.71,234.97) and (42.14,234.56) .. (37.68,233.84) -- (53.49,129.66) -- cycle ; \draw   (19.57,30.27) .. controls (30.83,26.14) and (42.98,24.01) .. (55.62,24.26) .. controls (111.89,25.4) and (156.55,73.51) .. (155.37,131.73) .. controls (154.19,189.94) and (107.62,236.2) .. (51.35,235.06) .. controls (46.71,234.97) and (42.14,234.56) .. (37.68,233.84) ;
+%Shape: Circle [id:dp9597561829051393] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (256.24,161.5) .. controls (256.24,159.01) and (258.26,157) .. (260.74,157) .. controls (263.23,157) and (265.24,159.01) .. (265.24,161.5) .. controls (265.24,163.99) and (263.23,166) .. (260.74,166) .. controls (258.26,166) and (256.24,163.99) .. (256.24,161.5) -- cycle ;
+%Straight Lines [id:da42016882542000444] 
+\draw    (49,129) -- (149.57,102.26) ;
+\draw [shift={(151.5,101.75)}, rotate = 165.11] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da8453217545764917] 
+\draw [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][line width=1.5]    (385.26,149) -- (514.67,149.65) ;
+\draw [shift={(517.67,149.67)}, rotate = 180.29] [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][line width=1.5]    (14.21,-4.28) .. controls (9.04,-1.82) and (4.3,-0.39) .. (0,0) .. controls (4.3,0.39) and (9.04,1.82) .. (14.21,4.28)   ;
+%Shape: Circle [id:dp41846170941239447] 
+\draw  [fill={rgb, 255:red, 184; green, 233; blue, 134 }  ,fill opacity=1 ] (487.76,112.5) .. controls (487.76,92.07) and (504.33,75.5) .. (524.76,75.5) .. controls (545.2,75.5) and (561.76,92.07) .. (561.76,112.5) .. controls (561.76,132.93) and (545.2,149.5) .. (524.76,149.5) .. controls (504.33,149.5) and (487.76,132.93) .. (487.76,112.5) -- cycle ;
+%Shape: Circle [id:dp36730335072294995] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (380.76,149) .. controls (380.76,146.51) and (382.78,144.5) .. (385.26,144.5) .. controls (387.75,144.5) and (389.76,146.51) .. (389.76,149) .. controls (389.76,151.49) and (387.75,153.5) .. (385.26,153.5) .. controls (382.78,153.5) and (380.76,151.49) .. (380.76,149) -- cycle ;
+%Shape: Circle [id:dp20206991311889755] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (487.76,149.4) .. controls (487.76,148.07) and (488.84,147) .. (490.16,147) .. controls (491.49,147) and (492.56,148.07) .. (492.56,149.4) .. controls (492.56,150.73) and (491.49,151.8) .. (490.16,151.8) .. controls (488.84,151.8) and (487.76,150.73) .. (487.76,149.4) -- cycle ;
+%Shape: Circle [id:dp09693741355799557] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (501.35,149.4) .. controls (501.35,148.04) and (502.45,146.94) .. (503.81,146.94) .. controls (505.17,146.94) and (506.27,148.04) .. (506.27,149.4) .. controls (506.27,150.76) and (505.17,151.86) .. (503.81,151.86) .. controls (502.45,151.86) and (501.35,150.76) .. (501.35,149.4) -- cycle ;
+%Shape: Arc [id:dp6926610813158203] 
+\draw  [draw opacity=0] (354.8,43.21) .. controls (366.06,39.08) and (378.21,36.94) .. (390.85,37.2) .. controls (447.12,38.34) and (491.77,86.45) .. (490.6,144.66) .. controls (489.42,202.87) and (442.85,249.14) .. (386.58,248) .. controls (381.93,247.91) and (377.37,247.49) .. (372.9,246.78) -- (388.71,142.6) -- cycle ; \draw   (354.8,43.21) .. controls (366.06,39.08) and (378.21,36.94) .. (390.85,37.2) .. controls (447.12,38.34) and (491.77,86.45) .. (490.6,144.66) .. controls (489.42,202.87) and (442.85,249.14) .. (386.58,248) .. controls (381.93,247.91) and (377.37,247.49) .. (372.9,246.78) ;
+%Straight Lines [id:da7255127358487097] 
+\draw    (385.26,149) -- (485.83,122.26) ;
+\draw [shift={(487.76,121.75)}, rotate = 165.11] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Shape: Circle [id:dp4307172386151815] 
+\draw   (476.51,149.4) .. controls (476.51,141.86) and (482.62,135.75) .. (490.16,135.75) .. controls (497.7,135.75) and (503.81,141.86) .. (503.81,149.4) .. controls (503.81,156.94) and (497.7,163.05) .. (490.16,163.05) .. controls (482.62,163.05) and (476.51,156.94) .. (476.51,149.4) -- cycle ;
+%Shape: Circle [id:dp21822413838175214] 
+\draw   (499.22,149.4) .. controls (499.22,146.87) and (501.28,144.81) .. (503.81,144.81) .. controls (506.35,144.81) and (508.4,146.87) .. (508.4,149.4) .. controls (508.4,151.93) and (506.35,153.99) .. (503.81,153.99) .. controls (501.28,153.99) and (499.22,151.93) .. (499.22,149.4) -- cycle ;
+
+% Text Node
+\draw (98.5,118) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle \textcolor[rgb]{0.74,0.06,0.88}{\vec{r}}$};
+% Text Node
+\draw (37.07,129.57) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle \textcolor[rgb]{0.74,0.06,0.88}{p}$};
+% Text Node
+\draw (95.5,95) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle D$};
+% Text Node
+\draw (435.43,152) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle \textcolor[rgb]{0.74,0.06,0.88}{\vec{r}}$};
+% Text Node
+\draw (373.33,149.57) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle \textcolor[rgb]{0.74,0.06,0.88}{p}$};
+% Text Node
+\draw (431.76,115) node [anchor=north west][inner sep=0.75pt]   [align=left] {$\displaystyle D$};
+
+
+\end{tikzpicture}
+\caption{Calcul d'intersecció utilitzant la variant Ray marching}   
+\label{fig:3}
+\end{figure}
+Aquesta variant de Ray casting és costosa computacionalment, pero ens permet utilitzar objectes més complexos dels quals no podem
+trobar algebraicament la intersecció amb el raig. 
+
+\subsection{Reflexió d'un raig amb una superficie}
+Donat un raig i una superficie que intersecten, volem trobar el vector director resultat de la reflexió.
+
+Ens caldrà, pertant trobar el plà tangent de la superficie en el punt d'intersecció.
+
+
+
+Sabem que troar el plà tangent és equivalent a trobar el vector normal de la superficie en aquell punt.
+
+
+En el cas de l'esfera, el vector normal és el mateix que el vector posició.
+\begin{figure}
+\centering
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1.1,xscale=1.1]
+%uncomment if require: \path (0,288); %set diagram left start at 0, and has height of 288
+
+%Shape: Arc [id:dp13742492516777927] 
+\draw  [draw opacity=0][fill={rgb, 255:red, 126; green, 211; blue, 33 }  ,fill opacity=0.3 ] (231.09,201.57) .. controls (244.37,176.19) and (273.57,158.41) .. (307.62,158.08) .. controls (336.6,157.8) and (362.31,170.22) .. (377.82,189.4) -- (308.34,232.13) -- cycle ; \draw   (231.09,201.57) .. controls (244.37,176.19) and (273.57,158.41) .. (307.62,158.08) .. controls (336.6,157.8) and (362.31,170.22) .. (377.82,189.4) ;
+%Shape: Parallelogram [id:dp8175608544803742] 
+\draw  [fill={rgb, 255:red, 74; green, 144; blue, 226 }  ,fill opacity=0.69 ] (281.23,146.71) -- (353.28,146.56) -- (314.77,173.29) -- (242.72,173.44) -- cycle ;
+%Straight Lines [id:da29942039095263373] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (298,160) -- (291.26,117.46) -- (290.31,111.48) ;
+\draw [shift={(290,109.5)}, rotate = 81] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da9353866239685801] 
+\draw [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ]   (255,131.75) -- (296.33,158.9) ;
+\draw [shift={(298,160)}, rotate = 213.3] [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da4494224552982866] 
+\draw [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ] [dash pattern={on 4.5pt off 4.5pt}]  (298,160) -- (326.84,119.38) ;
+\draw [shift={(328,117.75)}, rotate = 125.38] [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da3404688386636361] 
+\draw [line width=0.75]  [dash pattern={on 0.84pt off 2.51pt}]  (264.5,165.25) -- (292.71,160.71) -- (296.02,160.27) ;
+\draw [shift={(298,160)}, rotate = 172.3] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da821390721067782] 
+\draw [line width=0.75]  [dash pattern={on 0.84pt off 2.51pt}]  (255,131.75) -- (262.26,157.33) -- (263.95,163.33) ;
+\draw [shift={(264.5,165.25)}, rotate = 254.17] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da7295682968328961] 
+\draw [line width=0.75]  [dash pattern={on 0.84pt off 2.51pt}]  (334.5,153) -- (328.36,119.72) ;
+\draw [shift={(328,117.75)}, rotate = 79.55] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da6660555012051472] 
+\draw [line width=0.75]  [dash pattern={on 0.84pt off 2.51pt}]  (298,160) -- (332.54,153.38) ;
+\draw [shift={(334.5,153)}, rotate = 169.14] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (245.5,113) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,opacity=1 ] [align=left] {$\displaystyle \vec{r}$};
+% Text Node
+\draw (329,93.5) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,opacity=1 ] [align=left] {$\displaystyle \overrightarrow{r'}$};
+% Text Node
+\draw (282.26,87.26) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,opacity=1 ,rotate=-352.23] [align=left] {$\displaystyle \textcolor[rgb]{0.49,0.83,0.13}{\vec{\textcolor[rgb]{0.49,0.83,0.13}{n}}}$};
+% Text Node
+\draw (272.93,159.11) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,opacity=1 ,rotate=-348.54] [align=left] {$\displaystyle \textcolor[rgb]{0.29,0.29,0.29}{\vec{u}}$};
+% Text Node
+\draw (247.26,139.37) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,opacity=1 ,rotate=-1.53] [align=left] {$\displaystyle \textcolor[rgb]{0.29,0.29,0.29}{\vec{v}}$};
+% Text Node
+\draw (334.11,123.08) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,opacity=1 ,rotate=-1.53] [align=left] {\textcolor[rgb]{0.29,0.29,0.29}{-}$\displaystyle \textcolor[rgb]{0.29,0.29,0.29}{\vec{v}}$};
+% Text Node
+\draw (305.78,151.54) node [anchor=north west][inner sep=0.75pt]  [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,opacity=1 ,rotate=-348.54] [align=left] {$\displaystyle \textcolor[rgb]{0.29,0.29,0.29}{\vec{u}}$};
+
+
+\end{tikzpicture}
+\label{fig:reflex}
+\caption{Reflexe d'un raig amb una esfera}
+\end{figure}
+
+
+
+Seguint la terminologia del la figura ref %referencia% 
+volem trobar  el vector $r'$ que descompon en $u - v$ tals que v sigui la projecció de $r$ sobre  $N$ i  $u= r-v$.
+%diagrama
+El reflexe de r sobre la superficie només canvia la component $v$ (de sentit). La component  $u$ es manté igual.
+
+
+Anem doncs a calcular $v$.
+\begin{align} 
+   v=\|r\| \cos(\theta)  n \\
+   \cos(\theta) = <r , n> \\
+   u= r-v
+\end{align}
+on $\theta$ és l'angle que forman el vector  $r$ i  $n$ (producte escalar).
+Per tant el vector resultant és
+\begin{equation*}
+   r'= r-2v 
+\end{equation*}
+El problema que tindrém més endavant serà trobar el vector normal de superficies no parametriques (conjunt de Julia).
+
+\subsection{Repetir 2.1 i 2.2 per un nou raig}
+un com hem calculat la intersecció del raig amb l'objecte i tenim el vector de la reflexió, repetirem el proces amb el nou raig
+$f(t)=dt+p$ on  $d$ és el vector resultat de la reflexió i  $p$ és el punt d'interseció. Depen de l'escena que estiguem
+representant és possible que el raig reboti infinitament, pertant, haurem de posar-li un limit, el qual si s'assoleix, el color
+d'aquest pixel serà negre.
+
+\subsection{Suavitzat d'imatge}
+\textbf{  Explicar Millor} \\
+
+Amb el algoritme descrit anteriorment, només tenim un raig per cada pixel. aixó ens dona un resultat d'aquest estil:
+%diagrama
+Si volem suavitzar una mica els limits dels objectes per donar-li un toc més de realisme haurem de repetir el procés i assignar a
+cada pixel la mitjana dels colors obtinguts cada cop.
+%diagrama
+
 
 
 
