@@ -15,10 +15,10 @@ public:
 public:
     Sphere();
     Sphere(MyVector cent, double rad, Color col);
-    double distance(Ray ray, double t); // not using it
-    virtual MyVector NormalVector(MyVector position) = 0;
-    // MyVector NormalVector(MyVector position);
+    // double distance(Ray ray, double t); // not using it
+    MyVector NormalVector(MyVector position);
     double hit(Ray ray);
+    // virtual void Rebound(Ray *ray, MyVector hitPosition) = 0:
 };
 
 #endif

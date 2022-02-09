@@ -45,7 +45,8 @@ void PaintImage(Sphere **sphere, int size, Eye *eye, Image *image, Light *light)
                                                   [](const auto &l, const auto &r)
                                                   { return l.second < r.second; });
                         MyVector auxPos = ray.getPosition(object->second);
-                        ray.Rebound(object->first->NormalVector(auxPos), auxPos);
+
+                        object->first->Rebound(&ray, auxPos);
                         pixelSampleColor[bounce] = object->first->color;
                     }
                 }

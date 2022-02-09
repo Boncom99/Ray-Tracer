@@ -16,7 +16,7 @@ public:
     SphereRough();
     SphereRough(MyVector cent, double rad, Color col);
     SphereRough(MyVector cent, double rad, Color col, double roughness);
-    MyVector NormalVector(MyVector position);
+    void Rebound(Ray *ray, MyVector hitPosition);
 };
 
 SphereRough::SphereRough() : Sphere(), roughness(0) {}
@@ -24,18 +24,22 @@ SphereRough::SphereRough(MyVector cent, double rad, Color color) : Sphere(cent, 
 SphereRough::SphereRough(MyVector cent, double rad, Color color, double roughness) : Sphere(cent, rad, color), roughness(roughness)
 {
 }
-MyVector SphereRough::NormalVector(MyVector position)
+
+void SphereRough::Rebound(Ray *ray, MyVector hitPosition)
 {
-    MyVector aux(position - center);
-    aux.normalize();
+    MyVector normalVector = this->NormalVector(hitPosition);
+    MyVector v = dotProduct(-1 * (ray->direction), normalVector) * normalVector;
+    MyVector u = ray->direction + (-1.0 * v);
+    MyVector refrection = (u - v);
+    refrection.normalize();
     double randX = (double)rand() / RAND_MAX;
     double randY = (double)rand() / RAND_MAX;
     double randZ = (double)rand() / RAND_MAX;
     MyVector randomVector(randX, randY, randZ);
     randomVector.normalize();
-    MyVector returnVector = aux + roughness * randomVector;
-    returnVector.normalize();
-    return returnVector;
+    ray->direction = refrection + roughness * randomVector;
+    ray->position = hitPosition;
+    ray->bounces++;
 }
 
 #endif

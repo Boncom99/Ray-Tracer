@@ -14,6 +14,7 @@ public:
     Color color;
     virtual double hit(Ray ray) = 0;
     virtual MyVector NormalVector(MyVector position) = 0;
+    virtual void Rebound(Ray *ray, MyVector hitPosition) = 0;
 };
 
 #endif

@@ -12,18 +12,23 @@ class SphereSmooth : public Sphere
 public:
     SphereSmooth();
     SphereSmooth(MyVector cent, double rad, Color col);
-    MyVector NormalVector(MyVector position);
+    void Rebound(Ray *ray, MyVector hitPosition);
 };
 
 SphereSmooth::SphereSmooth() : Sphere() {}
 SphereSmooth::SphereSmooth(MyVector cent, double rad, Color color) : Sphere(cent, rad, color)
 {
 }
-MyVector SphereSmooth::NormalVector(MyVector position)
+
+void SphereSmooth::Rebound(Ray *ray, MyVector hitPosition)
 {
-    MyVector aux(position - center);
-    aux.normalize();
-    return aux;
+    MyVector normalVector = this->NormalVector(hitPosition);
+    MyVector v = dotProduct(-1 * (ray->direction), normalVector) * normalVector;
+    MyVector u = ray->direction + (-1.0 * v);
+    ray->direction = (u - v);
+    ray->direction.normalize();
+    ray->position = hitPosition;
+    ray->bounces++;
 }
 
 #endif

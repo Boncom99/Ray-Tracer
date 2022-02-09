@@ -28,6 +28,7 @@ MyVector NormalVector(MyVector position)
 }
 double JuliaSet::hit(Ray ray)
 {
+
     // fer primer una esfera que envolti a tot el conjunt, aixi els punts de fora ens els estalviem
     // raymarcher
     return -1;
