@@ -58,11 +58,11 @@ int main()
     int samplePerPixel = 20;
     Image image(WIDTH, HEIGHT, samplePerPixel);
     Eye eye(eyeInitialPosition, LookAt, distanceToMatrix, verticalVector, 0.004, WIDTH, HEIGHT);
-    SphereGlass sphere5({-0.7, 13, 0.5}, 0.5, Color(255, 255, 255), 1.52);
+    SphereGlass sphere5({-0.7, 15.5, 0.5}, 0.5, Color(255, 255, 255), 1.52);
     SphereRough sphere4({0, 14.5, 0}, 0.5, Color(0, 200, 200), 0.4);
-    SphereSmooth sphere3({0, 15, 1}, 0.5, Color(0, 130, 0));
-    SphereSmooth sphere2({-0.7, 15, 1}, 0.5, Color(0, 0, 140));
-    SphereSmooth sphere1({0.7, 15.5, 1}, 0.5, Color(127, 0, 0));
+    SphereSmooth sphere3({0, 15, 1}, 0.5, Color(127, 250, 120));
+    SphereSmooth sphere2({-0.7, 15, 1}, 0.5, Color(60, 60, 250));
+    SphereSmooth sphere1({0.7, 15.5, 1}, 0.5, Color(250, 60, 60));
     Sphere *s[5] = {&sphere1, &sphere2, &sphere3, &sphere4, &sphere5};
     Light light({-4, -1, 5}, 4, Color(255, 255, 255));
     // PaintImage(s, 5, &eye, &image, &light);

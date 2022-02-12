@@ -29,8 +29,7 @@ void SphereRough::Rebound(Ray *ray, MyVector hitPosition)
 {
     MyVector normalVector = this->NormalVector(hitPosition);
     MyVector v = dotProduct(/*-1 * */ (ray->direction), normalVector) * normalVector;
-    MyVector u = ray->direction + (-1.0 * v);
-    MyVector refrection = (u - v);
+    MyVector refrection = ray->direction - 2 * v;
     refrection.normalize();
     double randX = (double)rand() / RAND_MAX;
     double randY = (double)rand() / RAND_MAX;

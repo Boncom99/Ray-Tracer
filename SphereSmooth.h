@@ -23,9 +23,8 @@ SphereSmooth::SphereSmooth(MyVector cent, double rad, Color color) : Sphere(cent
 void SphereSmooth::Rebound(Ray *ray, MyVector hitPosition)
 {
     MyVector normalVector = this->NormalVector(hitPosition);
-    MyVector v = dotProduct(/*-1 * */ (ray->direction), normalVector) * normalVector;
-    MyVector u = ray->direction + (-1.0 * v);
-    ray->direction = (u - v);
+    MyVector v = dotProduct(/*-1* */ (ray->direction), normalVector) * normalVector;
+    ray->direction = ray->direction - 2 * v;
     ray->direction.normalize();
     ray->position = hitPosition;
 }

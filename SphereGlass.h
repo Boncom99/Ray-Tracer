@@ -35,8 +35,7 @@ void SphereGlass::Rebound(Ray *ray, MyVector hitPosition)
     if (refractionRatio * sinTheta > 1.0) // reflection
     {
         MyVector v = dotProduct(-1 * (ray->direction), normalVector) * normalVector;
-        MyVector u = ray->direction + (-1.0 * v);
-        outPut = (u - v);
+        outPut = ray->direction - 2 * v;
     }
     else // refraction
     {
