@@ -14,11 +14,11 @@ MyVector Sphere::NormalVector(MyVector position)
     aux.normalize();
     return aux;
 }
-double Sphere::hit(Ray ray)
+double Sphere::hit(Ray *ray)
 {
     // double a = 1; //direction.moduleSq() //sempre valdrà 1
-    double b = 2 * (dotProduct((ray.position - center), ray.direction));
-    double c = (ray.position - center).moduleSq() - radius * radius;
+    double b = 2 * (dotProduct((ray->position - center), ray->direction));
+    double c = (ray->position - center).moduleSq() - radius * radius;
     // Discriminant
     double discriminant = b * b - 4 * c;
     if (discriminant >= 0)

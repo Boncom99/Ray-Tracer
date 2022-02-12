@@ -20,7 +20,7 @@
 \usepackage{natbib}
 \usepackage{amsmath}
 \usepackage{graphicx} 
-
+\usepackage{imakeidx}
 \newtheorem{theorem}{Teorema}[section]
 \newtheorem{corollary}{Corolari}[theorem]
 \newtheorem{lemma}[theorem]{Lema}
@@ -32,28 +32,26 @@
 \title{Introducció als algoritmes de Ray casting}
 \author{Josep Boncompte Moya}
 \date{\today}
-
+\makeindex
 \begin{document}
 \maketitle
-
+\printindex
 \section{Objectius}
 En aquest treball vull estudiar els algoritmes ray casting que creen imatges digitals amb un alt grau de realisme traçant raigs.
-Analitzarè l'algoritme amb les diferents variants que es poden derivar, veient les ventatges i inconvenients d'aquests. 
+Analitzarè l'algoritme amb les diferents variants que es poden derivar, veient les avantatges i inconvenients d'aquests. 
 També implementarè aquest algoritme aplicant-li optimitzacions.
-
+\clearpage
 \section{Principis de l'algoritme}
-En aquesta secció explicarè els conceptes basics d'un Ray-tracer.
-
-Començem explicant com veiem imatges a la vida real. 
+En aquesta secció explicarè els conceptes bàsics d'un Ray casting. Comencem explicant com veiem imatges a la vida real. 
 
 Primer de tot necesitem una font d'il·luminació, la llum és essencial per
-poder-hi veure. Aquesta font d'il·luminació desprén ratjos de llum que impacten contra objectes i reboten. Al rebotar canvien el
-seu color. El que nosaltres percevem, pertant, són els ratjos que van a parar al noste ull.
+poder-hi veure. Aquesta font d'il·luminació desprén raigs de llum que impacten contra objectes i reboten. Al rebotar canvien el
+seu color. El que nosaltres percebem, per tant, són els raigs que van a parar al noste ull.
 
-En un Ray-tracer s'intenta simular el mateix. Creem una font d'il·luminació, uns objectes, una quadricula i un ull. 
-En comptes de calcular tots els rajos que surten de la font d'il·luminació i quedar-nos amb els
-que arriben al ull, calculem el Rajos en sentit contrari. D'aquesta manera el process és molt més eficient.
-Pertant, els rajos surten de l'ull i reboten contre els objectes i només tindràn color aquells que arribin a la font
+En un Ray caster s'intenta simular el mateix. Creem una font d'il·luminació, uns objectes, una quadrícula i un ull. 
+En comptes de calcular tots els raigs que surten de la font d'il·luminació i quedar-nos amb els
+que arriben a l'ull, calculem els raigs en sentit contrari. D'aquesta manera el process és molt més eficient.
+Per tant, els raigs surten de l'ull i reboten contra els objectes i només tindràn color aquells que arribin a la font
 d'il·luminació.
 
 \begin{figure}
@@ -93,29 +91,30 @@ d'il·luminació.
 
 \end{tikzpicture}
    
-\caption{Representació del funcionament basic de l'algoritme de Ray casting}
+\caption{Representació del funcionament bàsic de l'algoritme de Ray casting}
 \end{figure}
 
-La quadricula representarà el conjunt de pixels de la imatge resultant.
+La quadrícula representarà el conjunt de píxels de la imatge resultant.
 
-Per cada pixel de la quadricula llencem un raig a traves, ens guardem el color dels objectes amb els que impacte.
+Per cada píxel de la quadrícula llencem un raig a través, ens guardem el color dels objectes amb els quals impacti.
 Per poder efectuar aquest algoritme ens caldrà calcular:
   \begin{enumerate}[a)]
-     \item La intersecció d'un raig amb un obejecte.
-     \item rebot d'un raig amb una superficie.
+     \item La intersecció d'un raig amb un objecte.
+     \item rebot d'un raig amb una superfície.
      \item  repetir a) i b) amb un nou raig.
   \end{enumerate} 
 \subsection{intersecció del raig amb objectes}
-Per saber si un raig intersecta amb un objecte ho podem fer de dues formés diferents:
+Per saber si un raig intersecta amb un objecte ho podem fer de dues formes diferents:
 \subsubsection{Ray tracing}
 Ray tracing és una variant dels algoritmes de ray casting que resol un sistema d'equacions per trobar la intersecció del raig amb
-l'objecte. Aquesta variant és molt eficient però esta limitada a superficies que podem parametritzar o que tinguin una formula
-sensilla.
+l'objecte. Aquesta variant és molt eficient però està limitada a superfícies que podem parametritzar o que tinguin una fórmula
+senzilla.
 \begin{enumerate}[a)]
-   \item Començarem dibuixant esferes, ja que és el objecte més simple.
+   \item Començarem dibuixant esferes, ja que és l'objecte més simple.
   Podem definir un raig amb l'equació d'una recta $f(t)=dt+p$ on $d=(d_1,d_2,d_3)$ és el vector director normalitzat, i $p=(p_1,p_2,p_3)$ és
-  el punt de la recta quan $t=0$. Més endavant utilitzarem rajos no rectes per simular la curvatura de l'espai.
-  Podem expresar la recta de la forma següent:
+  el punt de la recta quan $t=0$. 
+  Més endavant utilitzarem raigs no rectes per simular la curvatura de l'espai.
+  Podem expressar la recta de la forma següent:
 \begin{align*}
 x=p_1+td_1 \\
 y=p_2+td_2 \\
@@ -133,24 +132,24 @@ Per trobar els punts d'intersecció només cal substituir $x,y,z$ obtenint:
 \end{align*}
 Obtenint una equació de segon grau $at^2+bt+c=0$ on $a= \|d\|^2 =1$ per definició, $b=2(<p-c,d>)$ i  $c=\|p-c\|^2-r^2$. 
 
-Aquesta formula ens donarà 0, 1 o 2 solucións, que representen el temps $t$ en el que la recta talla la esfera.
+Aquesta fórmula ens donarà 0, 1 o 2 solucions, que representen el temps $t$ en el qual la recta talla l'esfera.
 
-Per que el algoritme tingui sentit hem d'escollir la solució positiva més petita.
+Perque l'algoritme tingui sentit hem d'escollir la solució positiva més petita.
 % diagrama 
-\item Per calcular la intersecció d'un raig amb un cub tindrem els següent conceptes presents:
+\item Per calcular la intersecció d'un raig amb un cub tindrem els següents conceptes presents:
 
 
    ...
 \end{enumerate}
 
 \subsubsection{Ray marching}
-Ray marching és una altre variant dels algoritmes de ray casting que calcula la intersecció d'un raig de forma recursiva a partir
-de la distancia del raig al objecte.
+Ray marching és un altre variant dels algoritmes de ray casting que calcula la intersecció d'un raig de forma recursiva a partir
+de la distància del raig al objecte.
 El metode és el següent:
 \begin{enumerate}[a)]
-   \item Creem un raig $f(t)= dt+p$. amb  $d$ la direcció i  $p $ la posició.
-    \item  calculem la distancia $D$ minima entre p i el objecte.
-       \item abançem en la direcció $d$ aquesta distancia i definim  la nova posició com
+   \item Creem un raig $f(t)= dt+p$. amb  $d$ la direcció i  $p $ la posició inicial.
+    \item  Calculem la distància $D$ minima entre p i el objecte.
+       \item abançem en la direcció $d$ aquesta distància i definim  la nova posició com
           \begin{equation*}
               p'=D\cdot d+p
           \end{equation*}
@@ -233,20 +232,20 @@ El metode és el següent:
 \caption{Calcul d'intersecció utilitzant la variant Ray marching}   
 \label{fig:3}
 \end{figure}
-Aquesta variant de Ray casting és costosa computacionalment, pero ens permet utilitzar objectes més complexos dels quals no podem
+Aquesta variant de Ray casting és costosa computacionalment, però ens permet utilitzar objectes més complexos dels quals no podem
 trobar algebraicament la intersecció amb el raig. 
 
-\subsection{Reflexió d'un raig amb una superficie}
-Donat un raig i una superficie que intersecten, volem trobar el vector director resultat de la reflexió.
+\subsection{Reflexió d'un raig amb una superfície}
+Donat un raig i una superfície que intersequen, volem trobar el vector director resultant de la reflexió.
 
-Ens caldrà, pertant trobar el plà tangent de la superficie en el punt d'intersecció.
-
-
-Sabem que troar el plà tangent és equivalent a trobar el vector normal de la superficie en aquell punt.
+Ens caldrà, per tant trobar el plà tangent de la superfície en el punt d'intersecció.
 
 
-En el cas de l'esfera, el vector normal és el mateix que el vector posició. 
-En el cas de superficies parapetritzades $X(u,v)$ el vector normal és:
+Sabem que trobar el pla tangent és equivalent a trobar el vector normal de la superfície en aquell punt.
+
+
+En el cas de l'esfera, el vector normal és el mateix que el vector posició (si l'esfera està centada en l'origen). 
+En el cas de superfícies parapetritzades $X(u,v)$ el vector normal és:
  \begin{equation*}
     N= \frac{\partial X}{\partial u} \times \frac{\partial X}{\partial v}
 \end{equation*}
@@ -302,7 +301,7 @@ on $\hat{T}$ és el vector tangent unitari i $\hat{B}$ és el vector binormal un
 
 \end{tikzpicture}
 \label{fig:reflex}
-\caption{Reflexe d'un raig amb una esfera}
+\caption{Reflex d'un raig amb una esfera}
 \end{figure}
 
 
@@ -316,7 +315,7 @@ tals que $R_{\parallel}$ sigui la projecció de $R$ sobre  $N$ i  $R_{\bot}$ la 
 
 
 
-El reflexe de R sobre la superficie només canvia la component $R_{\parallel}$ (de sentit). La component  $R_{\bot}$ es manté igual.
+El reflexe d' $R$ sobre la superfície només canvia la component $R_{\parallel}$ (de sentit). La component  $R_{\bot}$ es manté igual.
 
 
 Anem doncs a calcular $R_{\parallel}$.
@@ -332,16 +331,16 @@ Per tant el vector resultant és
 \end{equation*}
 
 \subsection{Repetir 2.1 i 2.2 per un nou raig}
-un com hem calculat la intersecció del raig amb l'objecte i tenim el vector de la reflexió, repetirem el proces amb el nou raig
+un cop hem calculat la intersecció del raig amb l'objecte i tenim el vector de la reflexió, repetirem el procés amb el nou raig
 $f(t)=dt+p$ on  $d$ és el vector resultat de la reflexió i  $p$ és el punt d'interseció. Depen de l'escena que estiguem
-representant és possible que el raig reboti infinitament, pertant, haurem de posar-li un limit, el qual si s'assoleix, el color
-d'aquest pixel serà negre.
+representant és possible que el raig reboti infinitament, per tant, haurem de posar-li un limit, el qual si s'assoleix, el color
+d'aquest píxel serà negre.
 \section{Component de la camara}
 Explicar obertura focal.
 \section{Suavitzat d'imatge, Metode de Monte Carlo}
 Donada una escena amb un conjunt d'objectes, és difícil simular la il·luminació 
-indirecta. Ja que cada punt $P$ d'una superficie
-rep llum inidrecta de tots els altres objectes. 
+indirecta. Ja que cada punt $P$ d'una superfície
+rep llum indirecta de tots els altres objectes. 
 \begin{figure}[h]
    \centering
    
@@ -445,8 +444,8 @@ Llum\\\\
 
 
 El metode de Monte Carlo ens ajuda per solucionar aquest problema. Aquest metode 
-consisteix en crear $N$ vectors aleatoris $D_i$ continguts en la semiesfera de centre $P$ i radi 1 orientada amb el vector vector normal
-de la superficie, i agafar la llum procedent del raig $raig(P,D_i)$. La quantitat de llum que rebi serà la mitjana dels $N$ rajos. 
+consisteix en crear $N$ vectors aleatoris $D_i$ continguts en la semiesfera de centre $P$ i radi 1 orientada amb el vector normal
+de la superfície, i agafar la llum procedent del raig $raig(P,D_i)$. La quantitat de llum que rebi serà la mitjana dels $N$ raigs. 
 \begin{figure}[h]
   \centering 
   
@@ -506,18 +505,18 @@ de la superficie, i agafar la llum procedent del raig $raig(P,D_i)$. La quantita
 
 
 
-Podem aplicar el Metode de MonteCarlo també al'hora de generar el raig que surt de la camera i que passa pel pixel. Si només
-escollim el raig que passa pel centre del pixel per pintar tot el pixel és possible que no sigui el millor color per representar
-l'escena, i obtiguem els bordes de la imatge seguents: 
+Podem aplicar el Metode de MonteCarlo també a l'hora de generar el raig que surt de la camera i que passa pel píxel. Si només
+escollim el raig que passa pel centre del píxel per pintar tot el píxel és possible que no sigui el millor color per representar
+l'escena, i obtinguem les vores de objectes següents: 
 %diagrama.
 
 
-\textbf{IMATGE BORDES PIXELATS} 
+\textbf{IMATGE vores PIXELAdes} 
 
 
 
-Per evitar aixó podem generar $N$ rajos que surtin de la camera i que passin per punts diferents del pixel de la quadricula. El
-color d'aquest pixel serà
+Per evitar aixó podem generar $N$ raigs que surtin de la camera i que passin per punts diferents del píxel de la quadrícula. El
+color d'aquest píxel serà
 \begin{equation}
    ColorPixel_{ij}= \sum_{s=0}^N colorRaig(Camera,r^s_{ij})
 \end{equation}
@@ -557,7 +556,7 @@ Camera
 \end{minipage}};
 % Text Node
 \draw (330.75,57.63) node   [align=left] {\begin{minipage}[lt]{37.06pt}\setlength\topsep{0pt}
-Pixel
+Píxel
 \end{minipage}};
 % Text Node
 \draw (245.75,115.63) node   [align=left] {\begin{minipage}[lt]{15.3pt}\setlength\topsep{0pt}
@@ -567,7 +566,7 @@ r\_i
 
 \end{tikzpicture}
   \label{fig:montecarloCamera}
-  \caption{Metode de Monte Carlo aplicat al generador de rajos}
+  \caption{Metode de Monte Carlo aplicat al generador de raigs}
 \end{figure}
 
 
@@ -577,11 +576,11 @@ r\_i
 \subsection{Reflecció i refracció}
 la refracció és el canvi en la direcció d'una ona que passa d'un medi a un altre. Aquest fenomen segueix la llei de Snell.
 \begin{theorem}(Llei d'Snell)
-   La llei d'Snell estipula que la raó de l'angle d'incidencia amb l'angle de refracció és igual a la rao de les velocitats de
+   La llei d'Snell estipula que la raó de l'angle d'incidència amb l'angle de refracció és igual a la raó de les velocitats de
    l'ona pels diferents  medis 
 (o la raó dels index de refracció).
 \end{theorem}
-el Index de refracció està definit com
+L'index de refracció està definit com
 \begin{equation*}
    n=\frac{c}{v}
 \end{equation*}
@@ -592,13 +591,13 @@ on $c$ és la constant de la velocitat de la llum al buit i $v$ és la velocitat
 
 
 \begin{proof}
-   Considerem dos rajos paral·lels $A$ i $B$ que passen del medi 1 al medi 2. Al arribar a la frontera segueixen el seu curs
-   paral· lels amb direccions $U$ i  $V$ respectivament. La velocitat al medi 1 és $v_1=\frac{c}{n_1}$ i al medi 2 $v_2=\frac{c}{n_2}$.
-   Suposem que a temps  $=0$ el raig  $A$ intersecta amb la frontera al punt  $C$, i en aquest mateix instant, el raig  $B$ es
+   Considerem dos raigs paral·lels $A$ i $B$ que passen del medi 1 al medi 2. Al arribar a la frontera segueixen el seu curs
+   paral·lels amb direccions $U$ i  $V$ respectivament. La velocitat al medi 1 és $v_1=\frac{c}{n_1}$ i al medi 2 $v_2=\frac{c}{n_2}$.
+   Suposem que a temps  $T=0$ el raig  $A$ intersecta amb la frontera al punt  $C$, i en aquest mateix instant, el raig  $B$ es
    troba al punt  $P$.
 
-   $B$ viatge a velocitat  $v_1$ i arriba al punt $D$ en  $t$ segons. Durant aquest interval de temps, el raig $A$ ha viarjat a
-   velocitat  $v_2$ i en temps $=t$ es troba al punt  $Q$.
+   $B$ viatge a velocitat  $v_1$ i arriba al punt $D$ en  $t$ segons. Durant aquest interval de temps, el raig $A$ ha viatjat a
+   velocitat  $v_2$ i en temps $T=t$ es troba al punt  $Q$.
    Veiem la figura: XXXXXX per veure la situació.
    \begin{figure}[h]
       \centering
@@ -707,7 +706,7 @@ $\displaystyle Q$
       
    \end{figure}
 
-Ara només cal aplicar simple trigonometria. Sigui $x$ la distancia entre  $C$ i  $D$,
+Ara només cal aplicar simple trigonometria. Sigui $x$ la distància entre  $C$ i  $D$,
  \begin{align*}
     x \sin(\theta_1) = \|PD\| = v_1t= \frac{c}{n_1} t  \\
     x \sin(\theta_2) = \|CQ\| = v_2t= \frac{c}{n_2} t  \\
@@ -725,24 +724,13 @@ D'on podem deduir la Llei d'Snell
 
 
 En el nostre cas, tenim que el medi 1 és l'aire i el medi 2 podrà ser aigua, vidre, o el que decidim.
-Ara, utilitzant la llei d'Snell haurem de trobar el vector director del raig un cop atravesat el segon medi. Veiguem el diagrama
-següent per fer els calculs necesaris.
-
-
-
-
-
-
-
-
+Ara, utilitzant la llei d'Snell haurem de trobar el vector director del raig un cop atravessat el segon medi. Vegem el diagrama
+següent per fer els càlculs necessaris.
 
 
 
 \begin{figure}[h]
    \centering
-
-
-
 
 \tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
 
@@ -822,7 +810,7 @@ com $sin(\theta_2)= \| R'_{ \bot}\|$, es compleix per la llei de Snell
 \end{align*}
 i en particular
 \begin{align*}
-   R'_{ \bot}=-\frac{n_1}{n_2} R_{ \bot}
+   R'_{ \bot}=\frac{n_1}{n_2} R_{ \bot} %aqui estava multiplicat per -1
 \end{align*}
 
 també sabem que 
@@ -832,9 +820,9 @@ també sabem que
 %aquest "-" davant de r_1 és perque el vector esta girat
 per tant 
 \begin{equation*}
-   R'_{ \bot} = \frac{n_1}{n_2} (R+\cos(\theta_1)N)
+   R'_{ \bot} = -\frac{n_1}{n_2} (R+\cos(\theta_1)N)
 \end{equation*}
-Com ja hem vist al apartat de Reflexió podem expresar el cossinus del angles entre dos vectors com $\cos(\theta_1)= <-R, N>$.
+Com ja hem vist a l'apartat de Reflexió podem expressar el cossinus de l'angles entre dos vectors com $\cos(\theta_1)= <-R, N>$.
 
 Per trobar l'expresió de $R'_{\parallel}$ tenim que 
 \begin{align*}
@@ -845,11 +833,11 @@ Per trobar l'expresió de $R'_{\parallel}$ tenim que
 Ja tenim els dos components d'$R'$ en funció d' $R$ i  $N$.
 
 
-els index de refracció més abituals i que posarem en practica són
+els index de refracció més abituals i que posarem en pràctica són
 \begin{itemize}
-   \item aire: $1$
-   \item aigua:$4 / 3$
-   \item vidre : $1.52$
+   \item aire $ \approx 1$
+   \item aigua $=4 / 3$
+   \item vidre  $=1.52$
 \end{itemize}
 
 

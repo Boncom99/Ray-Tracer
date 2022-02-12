@@ -51,5 +51,15 @@ void Image::initializeImage()
 }
 void Image::MitjanaColors(int i, int j, std::vector<Color> c)
 {
-    matrix[i][j] = MitjanaColors2(c, SamplesPerPixel);
+    int red = 0;
+    int green = 0;
+    int blue = 0;
+    for (int i = 0; i < SamplesPerPixel; i++)
+    {
+        red += c[i].red;
+        green += c[i].green;
+        blue += c[i].blue;
+    }
+
+    matrix[i][j] = Color(red / SamplesPerPixel, green / SamplesPerPixel, blue / SamplesPerPixel);
 }

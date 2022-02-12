@@ -1,5 +1,5 @@
-#ifndef SPHERESMOOTH_H
-#define SPHERESMOOTH_H
+#ifndef SPHEREGLASS_H
+#define SPHEREGLASS_H
 #include <vector>
 #include "Object.h"
 #include "Ray.h"
@@ -13,7 +13,6 @@ public:
     float refractionIndex;
     SphereGlass();
     SphereGlass(MyVector cent, double rad, Color col, float refractionIndex);
-    // MyVector RefractionDirection(Ray ray);
     void Rebound(Ray *ray, MyVector hitPosition);
 };
 
@@ -24,14 +23,30 @@ SphereGlass::SphereGlass(MyVector cent, double rad, Color color, float refractio
 void SphereGlass::Rebound(Ray *ray, MyVector hitPosition)
 {
     MyVector normalVector = this->NormalVector(hitPosition);
-    double cosTheta = dotProduct(ray->direction, normalVector);
-    MyVector v = cosTheta * normalVector;
-    MyVector u = ray->direction + (-1.0 * v);
-    MyVector reflexion = (u - v).normalize();
-    MyVector refraction();
+    float refractionRatio = 1.0 / refractionIndex;
+    if (dotProduct(ray->direction, normalVector) > 0) // ray inside the sphere
+    {
+        normalVector = -1 * normalVector;
+        refractionRatio = refractionIndex;
+    }
+    double cosTheta = dotProduct(/*-1 * */ ray->direction, normalVector);
+    double sinTheta = sqrt(1.0 - cosTheta * cosTheta);
+    MyVector outPut;
+    if (refractionRatio * sinTheta > 1.0) // reflection
+    {
+        MyVector v = dotProduct(/*-1 * */ (ray->direction), normalVector) * normalVector;
+        MyVector u = ray->direction + (-1.0 * v);
+        outPut = (u - v);
+    }
+    else // refraction
+    {
+        MyVector v = (-1.0 / refractionRatio) * (ray->direction + cosTheta * normalVector);
+        MyVector u = (-1 * sqrt(1 - v.moduleSq())) * normalVector;
+        outPut = (u + v);
+    }
 
-    // ray->direction = (u - v);
-    ray->direction.normalize();
+    outPut.normalize();
+    ray->direction = outPut;
     ray->position = hitPosition;
     ray->bounces++;
 }

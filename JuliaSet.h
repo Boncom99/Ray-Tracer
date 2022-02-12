@@ -10,7 +10,7 @@ public:
     JuliaSet();
     JuliaSet(double threshold);
     MyVector NormalVector(MyVector position); // null
-    double hit(Ray ray);                      // RayMarching
+    double hit(Ray *ray);                     // RayMarching
 };
 
 JuliaSet::JuliaSet() : threshold(1)
@@ -26,7 +26,7 @@ MyVector NormalVector(MyVector position)
 
     return MyVector();
 }
-double JuliaSet::hit(Ray ray)
+double JuliaSet::hit(Ray *ray)
 {
 
     // fer primer una esfera que envolti a tot el conjunt, aixi els punts de fora ens els estalviem

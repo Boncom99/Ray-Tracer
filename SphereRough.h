@@ -28,7 +28,7 @@ SphereRough::SphereRough(MyVector cent, double rad, Color color, double roughnes
 void SphereRough::Rebound(Ray *ray, MyVector hitPosition)
 {
     MyVector normalVector = this->NormalVector(hitPosition);
-    MyVector v = dotProduct(-1 * (ray->direction), normalVector) * normalVector;
+    MyVector v = dotProduct(/*-1 * */ (ray->direction), normalVector) * normalVector;
     MyVector u = ray->direction + (-1.0 * v);
     MyVector refrection = (u - v);
     refrection.normalize();
