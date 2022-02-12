@@ -48,7 +48,6 @@ void SphereGlass::Rebound(Ray *ray, MyVector hitPosition)
     outPut.normalize();
     ray->direction = outPut;
     ray->position = hitPosition;
-    ray->bounces++;
 }
 
 #endif

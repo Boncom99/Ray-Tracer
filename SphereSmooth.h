@@ -28,7 +28,6 @@ void SphereSmooth::Rebound(Ray *ray, MyVector hitPosition)
     ray->direction = (u - v);
     ray->direction.normalize();
     ray->position = hitPosition;
-    ray->bounces++;
 }
 
 #endif

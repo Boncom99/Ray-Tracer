@@ -39,7 +39,6 @@ void SphereRough::Rebound(Ray *ray, MyVector hitPosition)
     randomVector.normalize();
     ray->direction = refrection + roughness * randomVector;
     ray->position = hitPosition;
-    ray->bounces++;
 }
 
 #endif

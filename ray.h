@@ -7,7 +7,6 @@ class Ray
 public:
     MyVector position;
     MyVector direction;
-    int bounces;
 
 public:
     Ray(MyVector pos, MyVector dir);
