@@ -17,25 +17,18 @@ MyVector Sphere::NormalVector(MyVector position)
 double Sphere::hit(Ray *ray)
 {
     // double a = 1; //direction.moduleSq() //sempre valdrà 1
-    double b = 2 * (dotProduct((ray->position - center), ray->direction));
+    double b = (dotProduct((ray->position - center), ray->direction));
     double c = (ray->position - center).moduleSq() - radius * radius;
     // Discriminant
-    double discriminant = b * b - 4 * c;
+    double discriminant = b * b - c;
     if (discriminant >= 0)
     {
-        double t2 = (-1 * b - sqrt(discriminant)) / 2.0;
+        double t = (-1 * b - sqrt(discriminant)); // ens quedem amb la primera solució ja que no volem entrar a l'esfera
+        if (t > 0.00001)
+            return t;
+        double t2 = (-1 * b + sqrt(discriminant)); // estem dins l'esfera
         if (t2 > 0.00001)
-        {
             return t2;
-        }
-        else
-        {
-            double t1 = (-1 * b + sqrt(discriminant)) / (2.0);
-            if (t1 > 0.00001)
-            {
-                return t1;
-            }
-        }
     }
 
     return -1;

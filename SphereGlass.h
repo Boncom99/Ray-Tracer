@@ -29,12 +29,12 @@ void SphereGlass::Rebound(Ray *ray, MyVector hitPosition)
         normalVector = -1 * normalVector;
         refractionRatio = refractionIndex;
     }
-    double cosTheta = dotProduct(/*-1 * */ ray->direction, normalVector);
+    double cosTheta = dotProduct(-1 * ray->direction, normalVector);
     double sinTheta = sqrt(1.0 - cosTheta * cosTheta);
     MyVector outPut;
     if (refractionRatio * sinTheta > 1.0) // reflection
     {
-        MyVector v = dotProduct(/*-1 * */ (ray->direction), normalVector) * normalVector;
+        MyVector v = dotProduct(-1 * (ray->direction), normalVector) * normalVector;
         MyVector u = ray->direction + (-1.0 * v);
         outPut = (u - v);
     }

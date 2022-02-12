@@ -41,9 +41,9 @@ Color2 PaintPixel(Sphere **spheres, int size, Ray *ray, int Bounces)
         object->first->Rebound(ray, auxPos);
         Color2 c(0, 0, 0);
         c.convertToColor2(object->first->color);
-        return (0.5 * c) * PaintPixel(spheres, size, ray, Bounces - 1);
+        return (0.9 * c) * PaintPixel(spheres, size, ray, Bounces - 1);
     }
-    return Color2(0.4, 0.4, 0.7); // in case it goes to infinity BACKGROUND
+    return Color2(0.4, 0.6, 1.0); // in case it goes to infinity BACKGROUND
 }
 
 int main()
