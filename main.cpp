@@ -66,26 +66,28 @@ int main()
     SphereSmooth sphere1({0.7, 15.5, 1}, 0.5, Color(250, 60, 60));
     Sphere *s[5] = {&sphere1, &sphere2, &sphere3, &sphere4, &sphere5};
     Light light({-4, -1, 5}, 4, Color(255, 255, 255));
-    // PaintImage(s, 5, &eye, &image, &light);
-    MyVector pixel = eye.TopLeftPlain;
-    for (int i = 0; i < image.height; i++)
-    {
-        for (int j = 0; j < image.width; j++)
-        {
-            Color2 pixelColor(0, 0, 0);
-            for (int sample = 0; sample < image.SamplesPerPixel; sample++)
-            {
-                Ray ray(&eye, pixel);
-                pixelColor += PaintPixel(s, 5, &ray, maxBouncesOfRay);
-            }
-            pixelColor = ((double)1 / image.SamplesPerPixel) * pixelColor;
+    Torus t(MyVector(0, 0, 0), 3, 1, Color(122, 122, 122));
+    Ray r(MyVector(0, 0, 0), MyVector(1, 1, 1));
+    t.hit(&r);
+    /* MyVector pixel = eye.TopLeftPlain;
+     for (int i = 0; i < image.height; i++)
+     {
+         for (int j = 0; j < image.width; j++)
+         {
+             Color2 pixelColor(0, 0, 0);
+             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
+             {
+                 Ray ray(&eye, pixel);
+                 pixelColor += PaintPixel(s, 5, &ray, maxBouncesOfRay);
+             }
+             pixelColor = ((double)1 / image.SamplesPerPixel) * pixelColor;
 
-            image.matrix[i][j] = pixelColor.convertToColor();
-            pixel = pixel + (eye.dimPixel * eye.horizontalVector);
-        }
-        pixel = eye.TopLeftPlain - (1 * (i + 1) * eye.dimPixel * eye.verticalVector);
-    }
-    image.printImage("prova");
+             image.matrix[i][j] = pixelColor.convertToColor();
+             pixel = pixel + (eye.dimPixel * eye.horizontalVector);
+         }
+         pixel = eye.TopLeftPlain - (1 * (i + 1) * eye.dimPixel * eye.verticalVector);
+     }
+     image.printImage("prova");*/
 
     return 0;
 }
