@@ -1,5 +1,6 @@
 #include "MyVector.h"
 #include "Sphere.h"
+#include "Torus.h"
 #include "Color.h"
 #include "Color2.h"
 #include "Eye.h"

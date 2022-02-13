@@ -9,6 +9,7 @@ class Object
 {
 protected:
     Object(Color color) : color(color) {}
+    Object() : color(Color()) {}
 
 public:
     Color color;
