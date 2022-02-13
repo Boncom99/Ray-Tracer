@@ -56,6 +56,19 @@ inline Complex operator+(const Complex &c, const double &d)
 {
     return Complex(c.r + d, c.i);
 }
+inline Complex operator-(const Complex &c1, const Complex &c2)
+{
+    return Complex(c1.r - c2.r, c1.i - c2.i);
+}
+inline Complex operator-(const double &d, const Complex &c)
+{
+    return Complex(c.r - d, c.i);
+}
+inline Complex operator-(const Complex &c, const double &d)
+{
+    return Complex(c.r - d, c.i);
+}
+
 inline Complex operator*(double d, const Complex &c)
 {
     return Complex(c.r * d, c.i * d);
