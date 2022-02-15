@@ -14,8 +14,8 @@ public:
     double r;
     Torus();
     Torus(MyVector center, double R, double r, Color c);
-    MyVector NormalVector(MyVector position) { return MyVector(); };
-    void Rebound(Ray *ray, MyVector hitPosition){};
+    MyVector NormalVector(MyVector position);
+    void Rebound(Ray *ray, MyVector hitPosition);
     double hit(Ray *ray);
 };
 
@@ -23,7 +23,37 @@ Torus::Torus() : Object(), center(MyVector()), R(0), r(0)
 {
 }
 Torus::Torus(MyVector center, double R, double r, Color c) : Object(c), center(center), R(R), r(r) {}
-
+MyVector Torus::NormalVector(MyVector position)
+{
+    double a = R / (sqrt(position.x * position.x + position.y * position.y));
+    MyVector N = position - MyVector(a * position.x, a * position.y, 0);
+    N.normalize();
+    return N;
+}
+void Torus::Rebound(Ray *ray, MyVector hitPosition)
+{
+    MyVector normalVector = this->NormalVector(hitPosition);
+    MyVector v = dotProduct(/*-1* */ (ray->direction), normalVector) * normalVector;
+    ray->direction = ray->direction - 2 * v;
+    ray->direction.normalize();
+    ray->position = hitPosition;
+}
+double minPositive(double s[4])
+{
+    double aux = 10000;
+    for (int i = 0; i < 4; i++)
+    {
+        if (s[i] > 0.00001 && s[i] < aux)
+        {
+            aux = s[i];
+        }
+    }
+    if (aux < 10000)
+    {
+        return aux;
+    }
+    return -1;
+}
 double Torus::hit(Ray *ray)
 {
     // double a = ray->direction.moduleSq() * ray->direction.moduleSq();
@@ -35,9 +65,10 @@ double Torus::hit(Ray *ray)
     double coefs[5] = {e, d, c, b, a};
     double s[4] = {0, 0, 0, 0};
     SolveQuartic(coefs, s);
-    std::cout << s[0] << ", " << s[1] << ", " << s[2] << ", " << s[3] << "\n";
-
-    return 3.0;
+    std::cout << s[0] << ", " << s[1] << ", " << s[2] << ", " << s[3] << "-->";
+    double m = minPositive(s);
+    std::cout << m << "\n";
+    return m;
 }
 
 #endif

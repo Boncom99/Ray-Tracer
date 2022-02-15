@@ -14,7 +14,7 @@
 
 using namespace std;
 
-Color2 PaintPixel(Sphere **spheres, int size, Ray *ray, int Bounces)
+Color2 PaintPixel(Object **objects, int size, Ray *ray, int Bounces)
 {
     if (Bounces <= 0)
     {
@@ -25,11 +25,11 @@ Color2 PaintPixel(Sphere **spheres, int size, Ray *ray, int Bounces)
     map<Object *, double> listObjects; // list where we keep all objects that intersects with ray
     for (int s = 0; s < size; s++)     // per cada spheres
     {
-        double t = spheres[s]->hit(ray);
+        double t = objects[s]->hit(ray);
         if (t != -1) // intersecció!
         {
             goesToInfinity = false;
-            listObjects[spheres[s]] = t;
+            listObjects[objects[s]] = t;
         }
     }
     if (!goesToInfinity)
@@ -42,7 +42,7 @@ Color2 PaintPixel(Sphere **spheres, int size, Ray *ray, int Bounces)
         object->first->Rebound(ray, auxPos);
         Color2 c(0, 0, 0);
         c.convertToColor2(object->first->color);
-        return (0.9 * c) * PaintPixel(spheres, size, ray, Bounces - 1);
+        return (0.9 * c) * PaintPixel(objects, size, ray, Bounces - 1);
     }
     return Color2(0.4, 0.6, 1.0); // in case it goes to infinity BACKGROUND
 }
@@ -52,42 +52,41 @@ int main()
     int HEIGHT = 600;
     int WIDTH = 600;
     int maxBouncesOfRay = 15;
-    MyVector eyeInitialPosition(0, 0, 1);
-    MyVector LookAt(0, 15, 1);
-    double distanceToMatrix = 10;
+    MyVector eyeInitialPosition(0, -30, 15);
+    MyVector LookAt(0, 0, 0);
+    double distanceToMatrix = 5;
     MyVector verticalVector(1, 0, 0);
     int samplePerPixel = 20;
     Image image(WIDTH, HEIGHT, samplePerPixel);
     Eye eye(eyeInitialPosition, LookAt, distanceToMatrix, verticalVector, 0.004, WIDTH, HEIGHT);
-    SphereGlass sphere5({-0.7, 15.5, 0.5}, 0.5, Color(255, 255, 255), 1.52);
-    SphereRough sphere4({0, 14.5, 0}, 0.5, Color(0, 200, 200), 0.4);
-    SphereSmooth sphere3({0, 15, 1}, 0.5, Color(127, 250, 120));
-    SphereSmooth sphere2({-0.7, 15, 1}, 0.5, Color(60, 60, 250));
-    SphereSmooth sphere1({0.7, 15.5, 1}, 0.5, Color(250, 60, 60));
-    Sphere *s[5] = {&sphere1, &sphere2, &sphere3, &sphere4, &sphere5};
+    SphereGlass sphere5({-1, 0, 0.5}, 0.5, Color(255, 255, 255), 1.52);
+    SphereRough sphere4({0, -1, 1}, 0.5, Color(0, 200, 200), 0.4);
+    SphereSmooth sphere3({0, 0, -1}, 0.5, Color(127, 250, 120));
+    // SphereSmooth sphere2({-0.7, 15, 1}, 0.5, Color(60, 60, 250));
+    SphereSmooth sphere1({1, 0, 1}, 0.5, Color(250, 60, 60));
+    Torus torus1(MyVector(0, 0, 0), 3, 1, Color(220, 10, 10));
+    Object *s[5] = {&sphere1, &sphere3, &sphere4, &sphere5, &torus1};
+    Object *t[1] = {&torus1};
     Light light({-4, -1, 5}, 4, Color(255, 255, 255));
-    Torus t(MyVector(0, 0, 0), 3, 1, Color(122, 122, 122));
-    Ray r(MyVector(0, 0, 0), MyVector(1, 1, 1));
-    t.hit(&r);
-    /* MyVector pixel = eye.TopLeftPlain;
-     for (int i = 0; i < image.height; i++)
-     {
-         for (int j = 0; j < image.width; j++)
-         {
-             Color2 pixelColor(0, 0, 0);
-             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
-             {
-                 Ray ray(&eye, pixel);
-                 pixelColor += PaintPixel(s, 5, &ray, maxBouncesOfRay);
-             }
-             pixelColor = ((double)1 / image.SamplesPerPixel) * pixelColor;
+    MyVector pixel = eye.TopLeftPlain;
+    for (int i = 0; i < image.height; i++)
+    {
+        for (int j = 0; j < image.width; j++)
+        {
+            Color2 pixelColor(0, 0, 0);
+            for (int sample = 0; sample < image.SamplesPerPixel; sample++)
+            {
+                Ray ray(&eye, pixel);
+                pixelColor += PaintPixel(t, 1, &ray, maxBouncesOfRay);
+            }
+            pixelColor = ((double)1 / image.SamplesPerPixel) * pixelColor;
 
-             image.matrix[i][j] = pixelColor.convertToColor();
-             pixel = pixel + (eye.dimPixel * eye.horizontalVector);
-         }
-         pixel = eye.TopLeftPlain - (1 * (i + 1) * eye.dimPixel * eye.verticalVector);
-     }
-     image.printImage("prova");*/
+            image.matrix[i][j] = pixelColor.convertToColor();
+            pixel = pixel + (eye.dimPixel * eye.horizontalVector);
+        }
+        pixel = eye.TopLeftPlain - (1 * (i + 1) * eye.dimPixel * eye.verticalVector);
+    }
+    image.printImage("prova");
 
     return 0;
 }
