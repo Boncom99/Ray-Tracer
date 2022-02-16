@@ -42,7 +42,7 @@ Color2 PaintPixel(Object **objects, int size, Ray *ray, int Bounces)
         object->first->Rebound(ray, auxPos);
         Color2 c(0, 0, 0);
         c.convertToColor2(object->first->color);
-        return (0.9 * c) * PaintPixel(objects, size, ray, Bounces - 1);
+        return (0.95 * c) * PaintPixel(objects, size, ray, Bounces - 1);
     }
     return Color2(0.4, 0.6, 1.0); // in case it goes to infinity BACKGROUND
 }
@@ -52,7 +52,8 @@ int main()
     int HEIGHT = 600;
     int WIDTH = 600;
     int maxBouncesOfRay = 15;
-    MyVector eyeInitialPosition(0, -30, 15);
+    // MyVector eyeInitialPosition(0, -30, 15);
+    MyVector eyeInitialPosition(0, -15, 0);
     MyVector LookAt(0, 0, 0);
     double distanceToMatrix = 5;
     MyVector verticalVector(1, 0, 0);
@@ -64,9 +65,10 @@ int main()
     SphereSmooth sphere3({0, 0, -1}, 0.5, Color(127, 250, 120));
     // SphereSmooth sphere2({-0.7, 15, 1}, 0.5, Color(60, 60, 250));
     SphereSmooth sphere1({1, 0, 1}, 0.5, Color(250, 60, 60));
-    Torus torus1(MyVector(0, 0, 0), 3, 1, Color(220, 10, 10));
+    Torus torus1(MyVector(0, 0, 0), 2, 1, Color(220, 10, 10));
+    SphereSmooth x({3.5, 0, 0}, 0.5, Color(127, 250, 120));
     Object *s[5] = {&sphere1, &sphere3, &sphere4, &sphere5, &torus1};
-    Object *t[1] = {&torus1};
+    Object *t[2] = {&torus1, &x};
     Light light({-4, -1, 5}, 4, Color(255, 255, 255));
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < image.height; i++)
@@ -77,7 +79,7 @@ int main()
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {
                 Ray ray(&eye, pixel);
-                pixelColor += PaintPixel(t, 1, &ray, maxBouncesOfRay);
+                pixelColor += PaintPixel(t, 2, &ray, maxBouncesOfRay);
             }
             pixelColor = ((double)1 / image.SamplesPerPixel) * pixelColor;
 
