@@ -4,6 +4,8 @@ en comptes de retallar la imatge.
 
 Add light source
 image is rotated
+rotate torus
+add cube arround objects, to avoid calcuate intersection if ray doesnt hit the cube
 
 Fractal: 
 - canvi de resolució al centre.

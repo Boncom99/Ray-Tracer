@@ -3,26 +3,28 @@
 #include "Object.h"
 #include "MyVector.h"
 #include "Ray.h"
+#include "SphereSmooth.h"
 #include "Color.h"
 #include "Complex.h"
 #include "SolveEquation.h"
+#include "Surround.h"
 class Torus : public Object
 {
 public:
     MyVector center;
     double R;
     double r;
-    Torus();
+    MyVector direction;
+    Surround surround;
     Torus(MyVector center, double R, double r, Color c);
     MyVector NormalVector(MyVector position);
     void Rebound(Ray *ray, MyVector hitPosition);
     double hit(Ray *ray);
 };
 
-Torus::Torus() : Object(), center(MyVector()), R(0), r(0)
+Torus::Torus(MyVector center, double R, double r, Color c) : Object(c), center(center), R(R), r(r), direction(MyVector(0, 1, 0)), surround(Surround(center, R + r))
 {
 }
-Torus::Torus(MyVector center, double R, double r, Color c) : Object(c), center(center), R(R), r(r) {}
 MyVector Torus::NormalVector(MyVector position)
 {
     double a = R / (sqrt(position.x * position.x + position.y * position.y));
@@ -56,6 +58,10 @@ double minPositive(double s[4])
 }
 double Torus::hit(Ray *ray)
 {
+    if (!surround.hit(ray))
+    {
+        return -1;
+    }
     // double a = ray->direction.moduleSq() * ray->direction.moduleSq();
     double a = 1.0;
     double b = 4 * (dotProduct(ray->position, ray->direction));
