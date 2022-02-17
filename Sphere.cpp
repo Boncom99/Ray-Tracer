@@ -33,8 +33,3 @@ double Sphere::hit(Ray *ray)
 
     return -1;
 }
-/*double Sphere::distance(Ray ray, double t)
-{
-    MyVector aux = ray.getPosition(t) + (center * (-1));
-    return aux.module() - radius;
-}*/

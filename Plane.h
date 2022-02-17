@@ -1,31 +1,30 @@
-#ifndef SQUARE_H
-#define SQUARE_H
+#ifndef PLANE_H
+#define PLANE_H
 #include "MyVector.h"
 #include "Object.h"
 #include "Ray.h"
-// Like plane, we need to limit the plane somehow
-class Square : public Object
+class Plane : public Object
 {
 public:
     MyVector base;
     MyVector height;
     MyVector point;
     MyVector normal;
-    Square(MyVector base, MyVector height, MyVector point, Color c);
+    Plane(MyVector base, MyVector height, MyVector point, Color c);
     MyVector NormalVector(MyVector position);
     double hit(Ray *ray);
     void Rebound(Ray *ray, MyVector hitPosition);
 };
 
-Square::Square(MyVector base, MyVector height, MyVector point, Color c) : Object(c), base(base), height(height), point(point), normal(crossProduct(base, height))
+Plane::Plane(MyVector base, MyVector height, MyVector point, Color c) : Object(c), base(base), height(height), point(point), normal(crossProduct(base, height))
 {
     normal.normalize();
 }
-MyVector Square::NormalVector(MyVector position) // TODO orientar el vector normal
+MyVector Plane::NormalVector(MyVector position) // TODO orientar el vector normal
 {
     return normal;
 }
-double Square::hit(Ray *ray)
+double Plane::hit(Ray *ray)
 {
     double prodEscalarND = dotProduct(normal, ray->direction);
     if (abs(prodEscalarND) < 0.001)
@@ -40,10 +39,10 @@ double Square::hit(Ray *ray)
     }
     return -1;
 }
-void Square::Rebound(Ray *ray, MyVector hitPosition)
+void Plane::Rebound(Ray *ray, MyVector hitPosition)
 {
 
-    MyVector v = dotProduct(/*-1* */ (ray->direction), normal) * normal;
+    MyVector v = -1 * (dotProduct(ray->direction, normal) * normal);
     ray->direction = ray->direction - 2 * v;
     ray->direction.normalize();
     ray->position = hitPosition;
