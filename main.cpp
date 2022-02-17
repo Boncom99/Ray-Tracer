@@ -1,6 +1,7 @@
 #include "MyVector.h"
 #include "Sphere.h"
 #include "Plane.h"
+#include "Square.h"
 #include "Torus.h"
 #include "Color.h"
 #include "Color2.h"
@@ -56,7 +57,7 @@ int main()
     // MyVector eyeInitialPosition(0, -30, 15);
     MyVector eyeInitialPosition(0, -20, 1);
     MyVector LookAt(0, 0, 0);
-    double distanceToMatrix = 2;
+    double distanceToMatrix = 5;
     MyVector verticalVector(1, 0, 0);
     int samplePerPixel = 20;
     Image image(WIDTH, HEIGHT, samplePerPixel);
@@ -68,11 +69,13 @@ int main()
     SphereSmooth sphere1({1, 0, 1}, 0.5, Color(250, 60, 60));
     Torus torus1(MyVector(0, 0, 0), 2, 1, Color(220, 10, 10));
     SphereSmooth x({3.5, 0, 0}, 0.5, Color(127, 250, 120));
-    Plane plane(MyVector(0, 0, 1), MyVector(0, 0, 0), Color(127, 30, 140));
+    // Plane plane(MyVector(0, 0, 1), MyVector(0, 0, 0), Color(127, 30, 140));
+    Square square(MyVector(1, 1, 1), MyVector(-1, -1, 1), MyVector(0, 0, 0), Color(127, 30, 140));
+    Square square2(MyVector(1, 0, 0), MyVector(0, 2, 0), MyVector(0, 0, -1), Color(20, 230, 140));
     // Object *s[5] = {&sphere1, &sphere3, &sphere4, &sphere5, &torus1};
     // Object *t[3] = {&torus1, &x, &square};
-    SphereSmooth planeSphere({0, 0, 0}, 4, Color(127, 250, 120));
-    Object *planes[2] = {&plane, &planeSphere};
+    SphereSmooth planeSphere({0, 0, 0}, 0.5, Color(127, 250, 120));
+    Object *planes[3] = {&square, &square2, &planeSphere};
     Light light({-4, -1, 5}, 4, Color(255, 255, 255));
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < image.height; i++)
@@ -83,7 +86,7 @@ int main()
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {
                 Ray ray(&eye, pixel);
-                pixelColor += PaintPixel(planes, 2, &ray, maxBouncesOfRay);
+                pixelColor += PaintPixel(planes, 3, &ray, maxBouncesOfRay);
             }
             pixelColor = ((double)1 / image.SamplesPerPixel) * pixelColor;
 

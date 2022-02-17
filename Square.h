@@ -3,49 +3,58 @@
 #include "MyVector.h"
 #include "Plane.h"
 #include "Ray.h"
-// Like plane, we need to limit the plane somehow
-// maybe make it a child of plane
 class Square : public Plane
 {
 public:
-    MyVector base;
-    MyVector height;
-    Square(MyVector base, MyVector height, MyVector point, Color c);
-    MyVector NormalVector(MyVector position);
+    MyVector u;
+    MyVector v;
+    Square(MyVector u, MyVector v, MyVector point, Color c);
     double hit(Ray *ray);
-    void Rebound(Ray *ray, MyVector hitPosition);
 };
 
-Square::Square(MyVector base, MyVector height, MyVector point, Color c) : Object(c), base(base), height(height), point(point), normal(crossProduct(base, height))
+Square::Square(MyVector u, MyVector v, MyVector point, Color c) : Plane(crossProduct(u, v), point, c), u(u), v(v)
 {
-    normal.normalize();
 }
-MyVector Square::NormalVector(MyVector position) // TODO orientar el vector normal
-{
-    return normal;
-}
+
 double Square::hit(Ray *ray)
 {
-    double prodEscalarND = dotProduct(normal, ray->direction);
-    if (abs(prodEscalarND) < 0.001)
+    double t = Plane(normal, point, color).hit(ray);
+    if (t == -1)
     {
         return -1;
     }
-    // punt en el que el ray talla el pla. cal veure si està dins del rectangle.
-    double t = (dotProduct(normal, point) - dotProduct(normal, ray->position)) / prodEscalarND;
-    if (t > 0.0001)
+    MyVector p = ray->getPosition(t) - point;
+    for (int i = 0; i < 2; i++)
     {
-        return t;
+        int j = (i + 1);
+
+        double denominator = v[j] * u[i] - v[i] * u[j];
+        if (denominator != 0)
+        {
+            double b = (u[i] * p[j] - u[j] * p[i]) / denominator;
+            if (b >= 0 && b <= 1)
+            {
+                double a = (p[i] - b * v[i]) / u[i];
+                if (a >= 0 && a <= 1)
+                    return t;
+            }
+        }
     }
+    int i = 3;
+    int j = 0;
+
+    double denominator = v[j] * u[i] - v[i] * u[j];
+    if (denominator != 0)
+    {
+        double b = (u[i] * p[j] - u[j] * p[i]) / denominator;
+        if (b >= 0 && b <= 1)
+        {
+            double a = (p[i] - b * v[i]) / u[i];
+            if (a >= 0 && a <= 1)
+                return t;
+        }
+    }
+
     return -1;
 }
-void Square::Rebound(Ray *ray, MyVector hitPosition)
-{
-
-    MyVector v = dotProduct(/*-1* */ (ray->direction), normal) * normal;
-    ray->direction = ray->direction - 2 * v;
-    ray->direction.normalize();
-    ray->position = hitPosition;
-}
-
 #endif
