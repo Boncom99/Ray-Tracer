@@ -6,16 +6,16 @@
 class Cube : public Object
 {
 public:
-    Square base;
+    Parallelogram base;
     double height;
     Cube();
-    Cube(Square base, double height);
+    Cube(Parallelogram base, double height);
     MyVector NormalVector(MyVector position);
     double hit(Ray ray);
 };
 
-Cube::Cube() : base(Square()), height(0)
+Cube::Cube() : base(Parallelogram()), height(0)
 {
 }
-Cube::Cube(Square base, double height) : base(base), height(height)
+Cube::Cube(Parallelogram base, double height) : base(base), height(height)
 #endif

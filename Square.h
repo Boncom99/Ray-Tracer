@@ -3,20 +3,20 @@
 #include "MyVector.h"
 #include "Plane.h"
 #include "Ray.h"
-class Square : public Plane
+class Parallelogram : public Plane
 {
 public:
     MyVector u;
     MyVector v;
-    Square(MyVector u, MyVector v, MyVector point, Color c);
+    Parallelogram(MyVector u, MyVector v, MyVector point, Color c);
     double hit(Ray *ray);
 };
 
-Square::Square(MyVector u, MyVector v, MyVector point, Color c) : Plane(crossProduct(u, v), point, c), u(u), v(v)
+Parallelogram::Parallelogram(MyVector u, MyVector v, MyVector point, Color c) : Plane(crossProduct(u, v), point, c), u(u), v(v)
 {
 }
 
-double Square::hit(Ray *ray)
+double Parallelogram::hit(Ray *ray)
 {
     double t = Plane(normal, point, color).hit(ray);
     if (t == -1)

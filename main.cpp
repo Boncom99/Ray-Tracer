@@ -70,8 +70,8 @@ int main()
     Torus torus1(MyVector(0, 0, 0), 2, 1, Color(220, 10, 10));
     SphereSmooth x({3.5, 0, 0}, 0.5, Color(127, 250, 120));
     // Plane plane(MyVector(0, 0, 1), MyVector(0, 0, 0), Color(127, 30, 140));
-    Square square(MyVector(1, 1, 1), MyVector(-1, -1, 1), MyVector(0, 0, 0), Color(127, 30, 140));
-    Square square2(MyVector(1, 0, 0), MyVector(0, 2, 0), MyVector(0, 0, -1), Color(20, 230, 140));
+    Parallelogram square(MyVector(1, 1, 1), MyVector(-1, -1, 1), MyVector(0, 0, 0), Color(127, 30, 140));
+    Parallelogram square2(MyVector(1, 0, 0), MyVector(0, 2, 0), MyVector(0, 0, -1), Color(20, 230, 140));
     // Object *s[5] = {&sphere1, &sphere3, &sphere4, &sphere5, &torus1};
     // Object *t[3] = {&torus1, &x, &square};
     SphereSmooth planeSphere({0, 0, 0}, 0.5, Color(127, 250, 120));
