@@ -6,21 +6,19 @@
 class Plane : public Object
 {
 public:
-    MyVector base;
-    MyVector height;
-    MyVector point;
     MyVector normal;
-    Plane(MyVector base, MyVector height, MyVector point, Color c);
+    MyVector point;
+    Plane(MyVector normal, MyVector point, Color c);
     MyVector NormalVector(MyVector position);
     double hit(Ray *ray);
     void Rebound(Ray *ray, MyVector hitPosition);
 };
 
-Plane::Plane(MyVector base, MyVector height, MyVector point, Color c) : Object(c), base(base), height(height), point(point), normal(crossProduct(base, height))
+Plane::Plane(MyVector normal, MyVector point, Color c) : Object(c), normal(normal), point(point)
 {
     normal.normalize();
 }
-MyVector Plane::NormalVector(MyVector position) // TODO orientar el vector normal
+MyVector Plane::NormalVector(MyVector position)
 {
     return normal;
 }
@@ -31,7 +29,6 @@ double Plane::hit(Ray *ray)
     {
         return -1;
     }
-    // punt en el que el ray talla el pla. cal veure si està dins del rectangle.
     double t = (dotProduct(normal, point) - dotProduct(normal, ray->position)) / prodEscalarND;
     if (t > 0.0001)
     {
@@ -41,8 +38,13 @@ double Plane::hit(Ray *ray)
 }
 void Plane::Rebound(Ray *ray, MyVector hitPosition)
 {
-
-    MyVector v = -1 * (dotProduct(ray->direction, normal) * normal);
+    MyVector NormalVec = normal;
+    // caldria reorientar el vector normal. per si el raig ve per sota el pla
+    if (dotProduct(ray->direction, normal) > 0)
+    {
+        NormalVec = -1 * normal;
+    }
+    MyVector v = -1 * (dotProduct(ray->direction, NormalVec) * NormalVec);
     ray->direction = ray->direction - 2 * v;
     ray->direction.normalize();
     ray->position = hitPosition;

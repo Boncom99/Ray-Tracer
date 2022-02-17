@@ -1,16 +1,15 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 #include "MyVector.h"
-#include "Object.h"
+#include "Plane.h"
 #include "Ray.h"
 // Like plane, we need to limit the plane somehow
-class Square : public Object
+// maybe make it a child of plane
+class Square : public Plane
 {
 public:
     MyVector base;
     MyVector height;
-    MyVector point;
-    MyVector normal;
     Square(MyVector base, MyVector height, MyVector point, Color c);
     MyVector NormalVector(MyVector position);
     double hit(Ray *ray);
