@@ -32,13 +32,11 @@ Output/
 *.app
 main
 
-#latex
-.tex
-.pdf
+
 *.aux
 *.fdb_latexmk
 *.fls
 *.log
 *.synctex.gz
 *.synctex(busy)
-.DS_Store
+*.DS_Store

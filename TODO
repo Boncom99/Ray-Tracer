@@ -7,6 +7,7 @@ image is rotated
 rotate torus
 add cube arround objects, to avoid calcuate intersection if ray doesnt hit the cube
 oriented normal vectors (square and maybe in all objects)
+put all objects of the scene in a header file as a class
 
 Fractal: 
 - canvi de resolució al centre.

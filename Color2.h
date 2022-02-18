@@ -47,11 +47,12 @@ Color Color2::convertToColor()
     return Color((int)(red * 255), (int)(green * 255), (int)(blue * 255));
 }
 
-void Color2::convertToColor2(Color c)
+Color2 convertToColor2(Color c)
 {
-    red = (double)c.red / 255.0;
-    green = (double)c.green / 255.0;
-    blue = (double)c.blue / 255.0;
+    float red = (double)c.red / 255.0;
+    float green = (double)c.green / 255.0;
+    float blue = (double)c.blue / 255.0;
+    return Color2(red, green, blue);
 }
 void Color2::printColor2()
 {

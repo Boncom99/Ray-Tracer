@@ -40,13 +40,18 @@ Color2 PaintPixel(Object **objects, int size, Ray *ray, int Bounces)
                                   [](const auto &l, const auto &r)
                                   { return l.second < r.second; });
         MyVector auxPos = ray->getPosition(object->second);
-
-        object->first->Rebound(ray, auxPos);
-        Color2 c(0, 0, 0);
-        c.convertToColor2(object->first->color);
-        return (0.95 * c) * PaintPixel(objects, size, ray, Bounces - 1);
+        if (dynamic_cast<Light *>(object->first) == nullptr) // en cas que impacti amb la font d'iluminació
+        {
+            object->first->Rebound(ray, auxPos);
+            return (0.7 * convertToColor2(object->first->color)) * PaintPixel(objects, size, ray, Bounces - 1);
+        }
+        else
+        {
+            return convertToColor2(object->first->color);
+        }
     }
-    return Color2(0.4, 0.6, 1.0); // in case it goes to infinity BACKGROUND
+    return Color2(0.0, 0.0, 0.0); // in case it goes to infinity BACKGROUND
+    // return Color2(0, 0, 0); // in case it goes to infinity BACKGROUND
 }
 
 int main()
@@ -55,28 +60,21 @@ int main()
     int WIDTH = 600;
     int maxBouncesOfRay = 15;
     // MyVector eyeInitialPosition(0, -30, 15);
-    MyVector eyeInitialPosition(0, -20, 1);
+    MyVector eyeInitialPosition(0, -10, 1);
     MyVector LookAt(0, 0, 0);
-    double distanceToMatrix = 5;
+    double distanceToMatrix = 2.5;
     MyVector verticalVector(1, 0, 0);
-    int samplePerPixel = 20;
+    int samplePerPixel = 40;
     Image image(WIDTH, HEIGHT, samplePerPixel);
     Eye eye(eyeInitialPosition, LookAt, distanceToMatrix, verticalVector, 0.004, WIDTH, HEIGHT);
-    SphereGlass sphere5({-1, 0, 0.5}, 0.5, Color(255, 255, 255), 1.52);
-    SphereRough sphere4({0, -1, 1}, 0.5, Color(0, 200, 200), 0.4);
-    SphereSmooth sphere3({0, 0, -1}, 0.5, Color(127, 250, 120));
-    // SphereSmooth sphere2({-0.7, 15, 1}, 0.5, Color(60, 60, 250));
-    SphereSmooth sphere1({1, 0, 1}, 0.5, Color(250, 60, 60));
-    Torus torus1(MyVector(0, 0, 0), 2, 1, Color(220, 10, 10));
-    SphereSmooth x({3.5, 0, 0}, 0.5, Color(127, 250, 120));
-    // Plane plane(MyVector(0, 0, 1), MyVector(0, 0, 0), Color(127, 30, 140));
-    Parallelogram square(MyVector(1, 1, 1), MyVector(-1, -1, 1), MyVector(0, 0, 0), Color(127, 30, 140));
-    Parallelogram square2(MyVector(1, 0, 0), MyVector(0, 2, 0), MyVector(0, 0, -1), Color(20, 230, 140));
-    // Object *s[5] = {&sphere1, &sphere3, &sphere4, &sphere5, &torus1};
-    // Object *t[3] = {&torus1, &x, &square};
-    SphereSmooth planeSphere({0, 0, 0}, 0.5, Color(127, 250, 120));
-    Object *planes[3] = {&square, &square2, &planeSphere};
-    Light light({-4, -1, 5}, 4, Color(255, 255, 255));
+    Torus t(MyVector(0, 0, 0), 1, 0.5, Color(220, 10, 10));
+    SphereSmooth s({2, 0, 0}, 0.5, Color(127, 250, 120));
+    Plane p(MyVector(0, 0, 1), MyVector(0, 0, -2), Color(100, 130, 140));
+    Parallelogram square(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(50, 127, 230));
+    SphereSmooth s2({0, 0, 0}, 0.5, Color(127, 250, 120));
+    Light l(MyVector(5, -5, 1), 8, Color(255, 255, 255));
+    const int sizeWorld = 4;
+    Object *world[sizeWorld] = {&square, &t, &s, &l};
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < image.height; i++)
     {
@@ -86,7 +84,7 @@ int main()
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {
                 Ray ray(&eye, pixel);
-                pixelColor += PaintPixel(planes, 3, &ray, maxBouncesOfRay);
+                pixelColor += PaintPixel(world, sizeWorld, &ray, maxBouncesOfRay);
             }
             pixelColor = ((double)1 / image.SamplesPerPixel) * pixelColor;
 
