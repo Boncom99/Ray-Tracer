@@ -27,9 +27,9 @@ int Image::printImage(std::string name)
     // header
     output << "P3 \n"
            << width << " " << height << "\n255 \n";
-    for (size_t i = 0; i < height; i++)
+    for (int j = width - 1; j >= 0; j--)
     {
-        for (size_t j = 0; j < width; j++)
+        for (int i = height - 1; i >= 0; i--)
         {
             output << matrix[i][j].red << " " << matrix[i][j].green << " " << matrix[i][j].blue << " ";
         }

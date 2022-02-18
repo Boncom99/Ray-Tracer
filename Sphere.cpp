@@ -24,10 +24,10 @@ double Sphere::hit(Ray *ray)
     if (discriminant >= 0)
     {
         double t = (-1 * b - sqrt(discriminant)); // ens quedem amb la primera solució ja que no volem entrar a l'esfera
-        if (t > 0.00001)
+        if (t > 0.0001)
             return t;
         double t2 = (-1 * b + sqrt(discriminant)); // estem dins l'esfera
-        if (t2 > 0.00001)
+        if (t2 > 0.0001)
             return t2;
     }
 
