@@ -1,15 +1,21 @@
-
-Que al canviar de la dimensio de la imatge reescali la matriu perque es veigi igual pero mes petit,
+Que al canviar la dimensio de la imatge reescali la matriu perque es veigi igual pero mes petit,
 en comptes de retallar la imatge.
 
-Add light source
-image is rotated
+Add light source (DONE)
+image is rotated (DONE)
+glass spheres dont use their custom rebound function in main's PaintPixel func. it's because we are using an array of Objects.
 rotate torus
-add cube arround objects, to avoid calcuate intersection if ray doesnt hit the cube
-oriented normal vectors (square and maybe in all objects)
-put all objects of the scene in a header file as a class
+Roughness:(2 options)
 
-Fractal: 
+- degree of roughness. if it's small the rebound will go aprox to the real rebound.
+  The problem is that we are not getting the 360º indirect ilumination.
+- true false. and we get all vects of the semiemisphere of the tangent plane.
+  add cube arround objects, to avoid calcuate intersection if ray doesnt hit the cube
+  SEMIDONE oriented normal vectors (square and maybe in all objects)
+  put all objects of the scene in a header file as a class
+
+Fractal:
+
 - canvi de resolució al centre.
 - estudiar quaternions.
 - set julia.

@@ -48,7 +48,7 @@ Color2 PaintPixel(Object **objects, int size, Ray *ray, int Bounces)
             return convertToColor2(object->first->color);
         }
     }
-    return Color2(0.0, 0.0, 0.0); // in case it goes to infinity BACKGROUND
+    return Color2(0.1, 0.2, 0.3); // in case it goes to infinity BACKGROUND
     // return Color2(0.2, 0.4, 0.6); // in case it goes to infinity BACKGROUND
 }
 
@@ -64,16 +64,17 @@ int main()
     int samplePerPixel = 40;
     Image image(WIDTH, HEIGHT, samplePerPixel);
     Eye eye(eyeInitialPosition, LookAt, distanceToMatrix, verticalVector, 0.003, WIDTH, HEIGHT);
-    Torus t(MyVector(0, 0, 0), 1, 0.5, Color(220, 10, 10), 0.9);
+    Torus t(MyVector(0, 0, 0), 1, 0.5, Color(220, 10, 10), 1);
     Sphere s({-2, 0, 0}, 1, Color(127, 250, 120), 0);
     Sphere s2({2, 0, 0}, 1, Color(127, 250, 120), 0.3);
     Plane p(MyVector(0, 0, 1), MyVector(0, 0, -2), Color(100, 130, 140), 0);
     Parallelogram square(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(250, 127, 230), 0.6);
-    Light l(MyVector(0, -5, -3), 0.5, Color(500, 500, 500));
+    Light l(MyVector(0, -5, -3), 2, Color(500, 500, 500));
     Light l2(MyVector(0, -5, 15), 5, Color(255, 255, 255));
     Light l3(MyVector(-15, -5, 0), 5, Color(255, 255, 255));
-    const int sizeWorld = 7;
-    Object *world[sizeWorld] = {&square, &t, &s, &s2, &l, &l2, &l3};
+    Light l4(MyVector(0, -5, 3), 2, Color(500, 500, 500));
+    const int sizeWorld = 8;
+    Object *world[sizeWorld] = {&square, &t, &s, &s2, &l, &l2, &l3, &l4};
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < image.height; i++)
     {
