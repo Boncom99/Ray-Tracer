@@ -8,8 +8,6 @@
 #include "Eye.h"
 #include "Ray.h"
 #include "Image.h"
-#include "SphereSmooth.h"
-#include "SphereRough.h"
 #include "SphereGlass.h"
 #include "Light.h"
 #include <map>
@@ -66,16 +64,16 @@ int main()
     int samplePerPixel = 40;
     Image image(WIDTH, HEIGHT, samplePerPixel);
     Eye eye(eyeInitialPosition, LookAt, distanceToMatrix, verticalVector, 0.003, WIDTH, HEIGHT);
-    Torus t(MyVector(0, 0, 0), 1, 0.5, Color(220, 10, 10));
-    SphereSmooth s({2, 0, 0}, 1, Color(127, 250, 120));
-    SphereRough s2({2, 0, 0}, 1, Color(127, 250, 120), 0.3);
-    Plane p(MyVector(0, 0, 1), MyVector(0, 0, -2), Color(100, 130, 140));
-    Parallelogram square(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(50, 127, 230));
+    Torus t(MyVector(0, 0, 0), 1, 0.5, Color(220, 10, 10), 0.9);
+    Sphere s({-2, 0, 0}, 1, Color(127, 250, 120), 0);
+    Sphere s2({2, 0, 0}, 1, Color(127, 250, 120), 0.3);
+    Plane p(MyVector(0, 0, 1), MyVector(0, 0, -2), Color(100, 130, 140), 0);
+    Parallelogram square(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(250, 127, 230), 0.6);
     Light l(MyVector(0, -5, -3), 0.5, Color(500, 500, 500));
     Light l2(MyVector(0, -5, 15), 5, Color(255, 255, 255));
     Light l3(MyVector(-15, -5, 0), 5, Color(255, 255, 255));
-    const int sizeWorld = 6;
-    Object *world[sizeWorld] = {&square, &t, &s2, &l, &l2, &l3};
+    const int sizeWorld = 7;
+    Object *world[sizeWorld] = {&square, &t, &s, &s2, &l, &l2, &l3};
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < image.height; i++)
     {

@@ -8,17 +8,17 @@ class Parallelogram : public Plane
 public:
     MyVector u;
     MyVector v;
-    Parallelogram(MyVector u, MyVector v, MyVector point, Color c);
+    Parallelogram(MyVector u, MyVector v, MyVector point, Color c, float roughness);
     double hit(Ray *ray);
 };
 
-Parallelogram::Parallelogram(MyVector u, MyVector v, MyVector point, Color c) : Plane(crossProduct(u, v), point, c), u(u), v(v)
+Parallelogram::Parallelogram(MyVector u, MyVector v, MyVector point, Color c, float roughness) : Plane(crossProduct(u, v), point, c, roughness), u(u), v(v)
 {
 }
 
 double Parallelogram::hit(Ray *ray)
 {
-    double t = Plane(normal, point, color).hit(ray);
+    double t = Plane(normal, point, color, 0).hit(ray);
     if (t == -1)
     {
         return -1;

@@ -8,13 +8,12 @@ class Plane : public Object
 public:
     MyVector normal;
     MyVector point;
-    Plane(MyVector normal, MyVector point, Color c);
+    Plane(MyVector normal, MyVector point, Color c, float roughness);
     MyVector NormalVector(MyVector position);
     double hit(Ray *ray);
-    void Rebound(Ray *ray, MyVector hitPosition);
 };
 
-Plane::Plane(MyVector normal, MyVector point, Color c) : Object(c), normal(normal), point(point)
+Plane::Plane(MyVector normal, MyVector point, Color c, float roughness) : Object(c, roughness), normal(normal), point(point)
 {
     normal.normalize();
 }
@@ -35,19 +34,6 @@ double Plane::hit(Ray *ray)
         return t;
     }
     return -1;
-}
-void Plane::Rebound(Ray *ray, MyVector hitPosition)
-{
-    MyVector NormalVec = normal;
-    // caldria reorientar el vector normal. per si el raig ve per sota el pla
-    if (dotProduct(ray->direction, normal) > 0)
-    {
-        NormalVec = -1 * normal;
-    }
-    MyVector v = -1 * (dotProduct(ray->direction, NormalVec) * NormalVec);
-    ray->direction = ray->direction - 2 * v;
-    ray->direction.normalize();
-    ray->position = hitPosition;
 }
 
 #endif

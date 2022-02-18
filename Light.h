@@ -15,7 +15,7 @@ public:
     void Rebound(Ray *ray, MyVector hitPosition) {}
 };
 
-Light::Light(MyVector center, double radius, Color color) : Sphere(center, radius, color)
+Light::Light(MyVector center, double radius, Color color) : Sphere(center, radius, color, 0)
 {
 }
 

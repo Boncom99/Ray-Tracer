@@ -13,8 +13,7 @@ public:
     double radius;
 
 public:
-    Sphere();
-    Sphere(MyVector cent, double rad, Color col);
+    Sphere(MyVector cent, double rad, Color col, float roughness);
     MyVector NormalVector(MyVector position);
     double hit(Ray *ray);
 };

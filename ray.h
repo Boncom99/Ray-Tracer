@@ -12,7 +12,6 @@ public:
     Ray(MyVector pos, MyVector dir);
     Ray(Eye *eye, MyVector currentPixel);
     MyVector getPosition(double t);
-    void Rebound(MyVector normalVector, MyVector hitPosition);
 };
 
 #endif

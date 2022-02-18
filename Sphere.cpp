@@ -1,11 +1,7 @@
 #include "Ray.h"
 #include "Sphere.h"
-Sphere::Sphere() : Object(Color(0, 0, 0)), center({0, 0, 0}), radius(0)
 
-{
-}
-
-Sphere::Sphere(MyVector cent, double rad, Color col) : Object(col), center(cent), radius(rad)
+Sphere::Sphere(MyVector cent, double rad, Color col, float roughness) : Object(col, roughness), center(cent), radius(rad)
 {
 }
 MyVector Sphere::NormalVector(MyVector position)

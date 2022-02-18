@@ -11,13 +11,11 @@ class SphereGlass : public Sphere
 {
 public:
     float refractionIndex;
-    SphereGlass();
     SphereGlass(MyVector cent, double rad, Color col, float refractionIndex);
     void Rebound(Ray *ray, MyVector hitPosition);
 };
 
-SphereGlass::SphereGlass() : Sphere(), refractionIndex(1) {}
-SphereGlass::SphereGlass(MyVector cent, double rad, Color color, float refractionIndex) : Sphere(cent, rad, color), refractionIndex(refractionIndex)
+SphereGlass::SphereGlass(MyVector cent, double rad, Color color, float refractionIndex) : Sphere(cent, rad, color, 0), refractionIndex(refractionIndex)
 {
 }
 void SphereGlass::Rebound(Ray *ray, MyVector hitPosition)
