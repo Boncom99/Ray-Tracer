@@ -17,6 +17,7 @@ public:
     double dimentionPixel;
     MyVector verticalVector;
     int samplePerPixel;
+    Color2 background;
     Scene(int i);
 };
 
@@ -34,6 +35,7 @@ Scene::Scene(int i)
         dimentionPixel = 0.003;
         verticalVector = MyVector(0, 0, 1);
         samplePerPixel = 40;
+        background = Color2(0, 0, 0);
         world.push_back(new Parallelogram(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(250, 127, 230), 0.6));
         world.push_back(new Torus(MyVector(0, 0, 0), 1, 0.5, Color(220, 10, 10), 1));
         world.push_back(new Sphere({-2, 0, 0}, 1, Color(127, 250, 120), 0));
@@ -46,6 +48,23 @@ Scene::Scene(int i)
         size = world.size();
         break;
     case 1:
+        HEIGHT = 600;
+        WIDTH = 600;
+        maxBouncesOfRay = 15;
+        eyePosition = MyVector(0, -10, 10);
+        lookAt = MyVector(0, 0, 0);
+        distanceToMatrix = 2;
+        dimentionPixel = 0.003;
+        verticalVector = MyVector(0, 1, 1);
+        samplePerPixel = 30;
+        background = Color2(0, 0, 0);
+        world.push_back(new Parallelogram(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(250, 127, 230), 0.6));
+        world.push_back(new Torus(MyVector(0, 0, 0), 1, 0.5, Color(220, 10, 10), 1));
+        world.push_back(new Sphere({-2, 0, 1}, 1, Color(10, 250, 220), 0));
+        world.push_back(new Sphere({2, 0, 1}, 1, Color(127, 250, 120), 0.3));
+        world.push_back(new Plane(MyVector(0, 0, 1), MyVector(0, 0, -2), Color(100, 130, 190), 1));
+        world.push_back(new Light(MyVector(10, 10, 3), 10, Color(255, 255, 255)));
+        size = world.size();
 
         break;
     }

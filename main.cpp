@@ -49,13 +49,14 @@ Color2 PaintPixel(Scene scene, Ray *ray, int Bounces)
             return convertToColor2(object->first->color);
         }
     }
-    return Color2(0.2, 0.4, 0.7); // in case it goes to infinity BACKGROUND
-    // return Color2(0, 0, 0); // in case it goes to infinity BACKGROUND
+    // return Color2(0.2, 0.4, 0.7); // in case it goes to infinity BACKGROUND
+    //  return Color2(0, 0, 0); // in case it goes to infinity BACKGROUND
+    return scene.background;
 }
 
 int main()
 {
-    Scene scene(0);
+    Scene scene(1);
     Image image(scene.WIDTH, scene.HEIGHT, scene.samplePerPixel);
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, scene.dimentionPixel, scene.WIDTH, scene.HEIGHT);
 
