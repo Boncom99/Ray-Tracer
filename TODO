@@ -1,14 +1,20 @@
 Coses per comentar:
 
-- estructura de classes.
-- refracció no funciona glassSpheres (rebound())
+- estructura de classes. (evitar circular dependencies)
+- refracció no funciona glassSpheres (rebound()) https://www.javatpoint.com/upcasting-and-downcasting-in-cpp
+- passar doubles i floats a enters per eficiencia (calcul numeric)
+- definir els colors dels objectes en decimals directament
 - reflexció ( de dos formes diferents )
-- tor (solució de eq 4rt grau)
+- tor (solució de eq 4rt grau) DONE (explicar al treball una mica el alogritme (professor mondelo))
 - paral·lelogram (no sempre esta ben dibuixat)
   -world class
 - muliplicar els colors fa els fotos molt fosques. (potser definir la llum per la direccio final del raig)
 - implementar objectes no parametritzables (funció distancia i rebot ).
-- multithreading.
+- multithreading.(classe Thread). vertical (preproces imatge per separar els threads),
+- justificar numero de rajos per pixel (sample).
+- implementar PaintPixel per un sol pixel. per trobar l'error. (primer identificar on esta el pixel). (posar seed als random)
+- compresio a png
+- estudi posterior, observacions, conclusions
 
   .
   .

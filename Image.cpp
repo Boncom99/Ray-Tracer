@@ -22,7 +22,7 @@ int Image::printImage(std::string name)
         std::time_t t = std::time(0);
         name = std::to_string(t);
     }
-    output.open("Output/time_" + name + ".ppm", std::ios::out);
+    output.open("Output/time_" + name + ".ppm", std::ios::out); // TODO canviar ppm (compresio) png
 
     if (!output.is_open())
     {
@@ -32,9 +32,9 @@ int Image::printImage(std::string name)
     // header
     output << "P3 \n"
            << width << " " << height << "\n255 \n";
-    for (int j = width - 1; j >= 0; j--)
+    for (int i = 0; i < height; i++)
     {
-        for (int i = height - 1; i >= 0; i--)
+        for (int j = 0; j < width; j++)
         {
             output << matrix[i][j].red << " " << matrix[i][j].green << " " << matrix[i][j].blue << " ";
         }
