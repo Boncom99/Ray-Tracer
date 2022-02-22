@@ -40,3 +40,5 @@ main
 *.synctex.gz
 *.synctex(busy)
 *.DS_Store
+.DS_Store
+main.dSYM/Contents/Resources/DWARF/main

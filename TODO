@@ -1,8 +1,27 @@
-Que al canviar la dimensio de la imatge reescali la matriu perque es veigi igual pero mes petit,
+Coses per comentar:
+
+- estructura de classes.
+- refracció no funciona glassSpheres (rebound())
+- reflexció ( de dos formes diferents )
+- tor (solució de eq 4rt grau)
+- paral·lelogram (no sempre esta ben dibuixat)
+  -world class
+- muliplicar els colors fa els fotos molt fosques. (potser definir la llum per la direccio final del raig)
+- implementar objectes no parametritzables (funció distancia i rebot ).
+- multithreading.
+
+  .
+  .
+  .
+  .
+  .
+  .
+  .
+  .
+
+Que al canviar la dimensio de la imatge reescali la matriu perque es vegi igual pero més petit,
 en comptes de retallar la imatge.
 
-Add light source (DONE)
-image is rotated (DONE)
 glass spheres dont use their custom rebound function in main's PaintPixel func. it's because we are using an array of Objects.
 rotate torus
 Roughness:(2 options)
@@ -14,8 +33,9 @@ Roughness:(2 options)
   SEMIDONE oriented normal vectors (square and maybe in all objects)
   put all objects of the scene in a header file as a class
 
+FUTURE:
 Fractal:
 
-- canvi de resolució al centre.
-- estudiar quaternions.
+- Imatge amb resolució variable.
+- quaternions.
 - set julia.

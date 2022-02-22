@@ -93,7 +93,7 @@ int main()
         }
         pixel = eye.TopLeftPlain - (1 * (i + 1) * eye.dimPixel * eye.verticalVector);
     }
-    image.printImage("prova");
+    image.printImage("");
 
     return 0;
 }

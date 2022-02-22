@@ -17,7 +17,12 @@ Image::Image(int w, int h, int samples) : width(w), height(h), SamplesPerPixel(s
 int Image::printImage(std::string name)
 {
     std::ofstream output;
-    output.open("Output/" + name + ".ppm", std::ios::out);
+    if (name == "")
+    {
+        std::time_t t = std::time(0);
+        name = std::to_string(t);
+    }
+    output.open("Output/time_" + name + ".ppm", std::ios::out);
 
     if (!output.is_open())
     {

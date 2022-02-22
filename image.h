@@ -5,6 +5,7 @@
 #include "Color.h"
 #include <fstream>
 #include <string>
+#include <ctime>
 class Image
 {
 public:
