@@ -55,27 +55,10 @@ Color2 PaintPixel(Scene scene, Ray *ray, int Bounces)
 
 int main()
 {
-    int HEIGHT = 600;
-    int WIDTH = 600;
-    int maxBouncesOfRay = 15;
-    MyVector eyeInitialPosition(0, -10, 0);
-    MyVector LookAt(0, 0, 0);
-    double distanceToMatrix = 2.5;
-    MyVector verticalVector(0, 0, 1);
-    int samplePerPixel = 40;
-    Image image(WIDTH, HEIGHT, samplePerPixel);
-    Eye eye(eyeInitialPosition, LookAt, distanceToMatrix, verticalVector, 0.003, WIDTH, HEIGHT);
-    /* Torus t(MyVector(0, 0, 0), 1, 0.5, Color(220, 10, 10), 1);
-     Sphere s({-2, 0, 0}, 1, Color(127, 250, 120), 0);
-     Sphere s2({2, 0, 0}, 1, Color(127, 250, 120), 0.3);
-     Plane p(MyVector(0, 0, 1), MyVector(0, 0, -2), Color(100, 130, 140), 0);
-     Parallelogram square(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(250, 127, 230), 0.6);
-     Light l(MyVector(0, -5, -3), 2, Color(255, 255, 255));
-     Light l2(MyVector(0, -5, 15), 5, Color(255, 255, 255));
-     Light l3(MyVector(-15, -5, 0), 5, Color(255, 255, 255));
-     Light l4(MyVector(0, -5, 3), 2, Color(255, 255, 255));
-     Object *world[sizeWorld] = {&square, &t, &s, &s2, &l, &l2, &l3, &l4};*/
     Scene scene(0);
+    Image image(scene.WIDTH, scene.HEIGHT, scene.samplePerPixel);
+    Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, scene.dimentionPixel, scene.WIDTH, scene.HEIGHT);
+
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < image.height; i++)
     {
@@ -85,7 +68,7 @@ int main()
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {
                 Ray ray(&eye, pixel);
-                pixelColor += PaintPixel(scene, &ray, maxBouncesOfRay);
+                pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
             }
             pixelColor = ((double)1 / image.SamplesPerPixel) * pixelColor;
 

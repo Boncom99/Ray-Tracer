@@ -1,12 +1,22 @@
 #ifndef SCENE_H
 #define SCENE_H
 #include "Object.h"
+#include "MyVector.h"
 #include <list>
 class Scene
 {
 public:
     std::vector<Object *> world;
     int size;
+    int HEIGHT;
+    int WIDTH;
+    int maxBouncesOfRay;
+    MyVector eyePosition;
+    MyVector lookAt;
+    double distanceToMatrix;
+    double dimentionPixel;
+    MyVector verticalVector;
+    int samplePerPixel;
     Scene(int i);
 };
 
@@ -15,6 +25,15 @@ Scene::Scene(int i)
     switch (i)
     {
     case 0:
+        HEIGHT = 600;
+        WIDTH = 600;
+        maxBouncesOfRay = 15;
+        eyePosition = MyVector(0, -10, 0);
+        lookAt = MyVector(0, 0, 0);
+        distanceToMatrix = 2.5;
+        dimentionPixel = 0.003;
+        verticalVector = MyVector(0, 0, 1);
+        samplePerPixel = 40;
         world.push_back(new Parallelogram(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(250, 127, 230), 0.6));
         world.push_back(new Torus(MyVector(0, 0, 0), 1, 0.5, Color(220, 10, 10), 1));
         world.push_back(new Sphere({-2, 0, 0}, 1, Color(127, 250, 120), 0));
@@ -25,6 +44,9 @@ Scene::Scene(int i)
         world.push_back(new Light(MyVector(-15, -5, 0), 5, Color(255, 255, 255)));
         world.push_back(new Light(MyVector(0, -5, 3), 2, Color(255, 255, 255)));
         size = world.size();
+        break;
+    case 1:
+
         break;
     }
 }

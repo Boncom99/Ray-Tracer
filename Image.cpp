@@ -4,6 +4,7 @@ Image::Image() : width(0), height(0), matrix()
 }
 
 Image::Image(int w, int h, int samples) : width(w), height(h), SamplesPerPixel(samples)
+
 {
     matrix.resize(height);
     for (size_t i = 0; i < height; ++i)
