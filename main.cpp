@@ -42,21 +42,19 @@ Color2 PaintPixel(Scene scene, Ray *ray, int Bounces)
         if (dynamic_cast<Light *>(object->first) == nullptr) // en cas que impacti amb la font d'iluminació
         {
             object->first->Rebound(ray, auxPos);
-            return (0.5 * convertToColor2(object->first->color)) * PaintPixel(scene, ray, Bounces - 1);
+            return (scene.lightAbsortion * convertToColor2(object->first->color)) * PaintPixel(scene, ray, Bounces - 1);
         }
         else
         {
             return convertToColor2(object->first->color);
         }
     }
-    // return Color2(0.2, 0.4, 0.7); // in case it goes to infinity BACKGROUND
-    //  return Color2(0, 0, 0); // in case it goes to infinity BACKGROUND
     return scene.background;
 }
 
 int main()
 {
-    Scene scene(1);
+    Scene scene(2);
     Image image(scene.WIDTH, scene.HEIGHT, scene.samplePerPixel);
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, scene.dimentionPixel, scene.WIDTH, scene.HEIGHT);
 
