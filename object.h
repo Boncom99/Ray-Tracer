@@ -22,9 +22,9 @@ public:
         MyVector normalVector = this->NormalVector(hitPosition);
         if (roughness != 0)
         {
-            double randX = (double)rand() / RAND_MAX;
-            double randY = (double)rand() / RAND_MAX;
-            double randZ = (double)rand() / RAND_MAX;
+            double randX = rand() % 100 - 50;
+            double randY = rand() % 100 - 50;
+            double randZ = rand() % 100 - 50;
             MyVector randomVector(randX, randY, randZ);
             randomVector.normalize();
             if (dotProduct(randomVector, normalVector) > 0.0) // In the same hemisphere as the normal

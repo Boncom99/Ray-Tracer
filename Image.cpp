@@ -1,4 +1,5 @@
 #include "Image.h"
+#include <math.h>
 Image::Image() : width(0), height(0), matrix()
 {
 }
@@ -37,10 +38,10 @@ int Image::printImage(std::string name)
     {
         for (int j = 0; j < width; j++)
         {
-            // output << matrix[i][j].red << " " << matrix[i][j].green << " " << matrix[i][j].blue << " ";
-            double r = matrix[i][j].red / SamplesPerPixel;
-            double g = matrix[i][j].green / SamplesPerPixel;
-            double b = matrix[i][j].blue / SamplesPerPixel;
+            // gamma correction of g=2
+            double r = sqrt(matrix[i][j].red / SamplesPerPixel);
+            double g = sqrt(matrix[i][j].green / SamplesPerPixel);
+            double b = sqrt(matrix[i][j].blue / SamplesPerPixel);
             output << static_cast<int>(256 * std::clamp(r, 0.0, 0.999)) << ' ' << static_cast<int>(256 * std::clamp(g, 0.0, 0.999)) << ' ' << static_cast<int>(256 * std::clamp(b, 0.0, 0.999)) << ' ';
         }
         output << "\n";

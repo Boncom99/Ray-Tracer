@@ -3,7 +3,7 @@ Coses per comentar:
 - estructura de classes. (evitar circular dependencies)
 - refracció no funciona glassSpheres (rebound()) https://www.javatpoint.com/upcasting-and-downcasting-in-cpp
 - passar doubles i floats a enters per eficiencia (calcul numeric)
-- definir els colors dels objectes en decimals directament
+- definir els colors dels objectes en decimals directament DONE
 - reflexció ( de dos formes diferents )
 - tor (solució de eq 4rt grau) DONE (explicar al treball una mica el alogritme (professor mondelo))
 - paral·lelogram (no sempre esta ben dibuixat)

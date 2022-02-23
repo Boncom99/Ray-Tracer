@@ -71,20 +71,22 @@ Scene::Scene(int i)
 
         break;
     case 2:
-        HEIGHT = 600;
-        WIDTH = 600;
+        HEIGHT = 800;
+        WIDTH = 800;
         maxBouncesOfRay = 15;
-        eyePosition = MyVector(0, 0, 3);
-        lookAt = MyVector(0, 10, 0);
-        distanceToMatrix = 1;
-        dimentionPixel = 0.003;
-        verticalVector = MyVector(0, 0.4, 1);
-        samplePerPixel = 30;
-        background = Color(0, 0, 0);
-        world.push_back(new Sphere({0, 10, 1}, 1, Color(220, 220, 220), 0));
-        world.push_back(new Sphere({3, 9, 1}, 1, Color(220, 220, 220), 0));
-        world.push_back(new Sphere({0, 10, -100}, 100, Color(250, 250, 250), 1));
-        world.push_back(new Light(MyVector(-20, -4, 3), 10, Color(4 * 255, 4 * 255, 4 * 255)));
+        eyePosition = MyVector(0, -10, 5);
+        lookAt = MyVector(0, 0, 0);
+        verticalVector = MyVector(0, 0.5, 1);
+        verticalVector.normalize();
+        distanceToMatrix = 0.8;
+        dimentionPixel = 0.001;
+        samplePerPixel = 100;
+        // background = Color(0.1, 0.2, 0.3);
+        background = Color();
+        world.push_back(new Sphere({0, 0, 1}, 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new Sphere({2, 2, 1}, 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new Sphere({0, 0, -100}, 100, Color(0.8, 0.8, 0.8), 1));
+        world.push_back(new Light(MyVector(-20, 4, 15), 10, Color(4, 4, 4)));
         size = world.size();
 
         break;
