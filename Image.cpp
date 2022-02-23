@@ -22,7 +22,7 @@ int Image::printImage(std::string name)
     if (name == "")
     {
         std::time_t t = std::time(0);
-        name = std::to_string(t);
+        name = std::to_string(t - 1645644194);
     }
     output.open("Output/time_" + name + ".ppm", std::ios::out); // TODO canviar ppm (compresio) png
 
