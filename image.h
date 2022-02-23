@@ -19,7 +19,6 @@ public:
     Image(int w, int h, int samples);
     int printImage(std::string name);
     void initializeImage();
-    void MitjanaColors(int i, int j, std::vector<Color> c);
 };
 
 #endif

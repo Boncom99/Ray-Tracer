@@ -37,7 +37,11 @@ int Image::printImage(std::string name)
     {
         for (int j = 0; j < width; j++)
         {
-            output << matrix[i][j].red << " " << matrix[i][j].green << " " << matrix[i][j].blue << " ";
+            // output << matrix[i][j].red << " " << matrix[i][j].green << " " << matrix[i][j].blue << " ";
+            double r = matrix[i][j].red / SamplesPerPixel;
+            double g = matrix[i][j].green / SamplesPerPixel;
+            double b = matrix[i][j].blue / SamplesPerPixel;
+            output << static_cast<int>(256 * std::clamp(r, 0.0, 0.999)) << ' ' << static_cast<int>(256 * std::clamp(g, 0.0, 0.999)) << ' ' << static_cast<int>(256 * std::clamp(b, 0.0, 0.999)) << ' ';
         }
         output << "\n";
     }
@@ -54,18 +58,4 @@ void Image::initializeImage()
             matrix[i][j] = Color(0, 0, 0);
         }
     }
-}
-void Image::MitjanaColors(int i, int j, std::vector<Color> c)
-{
-    int red = 0;
-    int green = 0;
-    int blue = 0;
-    for (int i = 0; i < SamplesPerPixel; i++)
-    {
-        red += c[i].red;
-        green += c[i].green;
-        blue += c[i].blue;
-    }
-
-    matrix[i][j] = Color(red / SamplesPerPixel, green / SamplesPerPixel, blue / SamplesPerPixel);
 }

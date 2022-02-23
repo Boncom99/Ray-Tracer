@@ -17,7 +17,7 @@ public:
     double dimentionPixel;
     MyVector verticalVector;
     int samplePerPixel;
-    Color2 background;
+    Color background;
     float lightAbsortion = 0.7;
     Scene(int i);
 };
@@ -36,7 +36,7 @@ Scene::Scene(int i)
         dimentionPixel = 0.003;
         verticalVector = MyVector(0, 0, 1);
         samplePerPixel = 40;
-        background = Color2(0, 0, 0);
+        background = Color(0, 0, 0);
         world.push_back(new Parallelogram(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(250, 127, 230), 0.6));
         world.push_back(new Torus(MyVector(0, 0, 0), 1, 0.5, Color(220, 10, 10), 1));
         world.push_back(new Sphere({-2, 0, 0}, 1, Color(127, 250, 120), 0));
@@ -58,7 +58,7 @@ Scene::Scene(int i)
         dimentionPixel = 0.003;
         verticalVector = MyVector(0, 1, 1);
         samplePerPixel = 30;
-        background = Color2(0, 0, 0);
+        background = Color(0, 0, 0);
         world.push_back(new Parallelogram(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(250, 127, 230), 0.6));
         world.push_back(new Torus(MyVector(0, 0, 0), 1, 0.5, Color(220, 10, 10), 0.5));
         world.push_back(new Sphere({-2, 0, 1}, 1, Color(10, 250, 220), 0));
@@ -80,7 +80,7 @@ Scene::Scene(int i)
         dimentionPixel = 0.003;
         verticalVector = MyVector(0, 0.4, 1);
         samplePerPixel = 30;
-        background = Color2(0, 0, 0);
+        background = Color(0, 0, 0);
         world.push_back(new Sphere({0, 10, 1}, 1, Color(220, 220, 220), 0));
         world.push_back(new Sphere({3, 9, 1}, 1, Color(220, 220, 220), 0));
         world.push_back(new Sphere({0, 10, -100}, 100, Color(250, 250, 250), 1));

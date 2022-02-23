@@ -4,7 +4,6 @@
 #include "MyVector.h"
 #include "Ray.h"
 #include "Color.h"
-#include "Complex.h"
 #include "SolveEquation.h"
 #include "Surround.h"
 class Torus : public Object

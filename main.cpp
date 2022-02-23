@@ -4,7 +4,6 @@
 #include "Square.h"
 #include "Torus.h"
 #include "Color.h"
-#include "Color2.h"
 #include "Eye.h"
 #include "Ray.h"
 #include "Image.h"
@@ -15,11 +14,11 @@
 
 using namespace std;
 
-Color2 PaintPixel(Scene scene, Ray *ray, int Bounces)
+Color PaintPixel(Scene scene, Ray *ray, int Bounces)
 {
     if (Bounces <= 0)
     {
-        return Color2(0, 0, 0);
+        return Color(0, 0, 0);
     }
     bool goesToInfinity = true;
     // Check if ray hits any object
@@ -38,15 +37,16 @@ Color2 PaintPixel(Scene scene, Ray *ray, int Bounces)
         auto object = min_element(listObjects.begin(), listObjects.end(), // escollim l'objecte amb que primer intersecciona amb el raig
                                   [](const auto &l, const auto &r)
                                   { return l.second < r.second; });
-        MyVector auxPos = ray->getPosition(object->second);
+        MyVector impactPos = ray->getPosition(object->second);
         if (dynamic_cast<Light *>(object->first) == nullptr) // en cas que impacti amb la font d'iluminació
         {
-            object->first->Rebound(ray, auxPos);
-            return (scene.lightAbsortion * convertToColor2(object->first->color)) * PaintPixel(scene, ray, Bounces - 1);
+            object->first->Rebound(ray, impactPos);
+            return (scene.lightAbsortion * object->first->color) * PaintPixel(scene, ray, Bounces - 1);
+            return Color(0, 0, 0);
         }
         else
         {
-            return convertToColor2(object->first->color);
+            return object->first->color;
         }
     }
     return scene.background;
@@ -63,15 +63,13 @@ int main()
     {
         for (int j = 0; j < image.width; j++)
         {
-            Color2 pixelColor(0, 0, 0);
+            Color pixelColor(0, 0, 0);
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {
                 Ray ray(&eye, pixel);
                 pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
             }
-            pixelColor = ((double)1 / image.SamplesPerPixel) * pixelColor;
-
-            image.matrix[i][j] = pixelColor.convertToColor();
+            image.matrix[i][j] = pixelColor;
             pixel = pixel + (eye.dimPixel * eye.horizontalVector);
         }
         pixel = eye.TopLeftPlain - (1 * (i + 1) * eye.dimPixel * eye.verticalVector);
