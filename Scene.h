@@ -19,7 +19,8 @@ public:
     MyVector verticalVector;
     int samplePerPixel;
     Color background;
-    float lightAbsortion = 0.7;
+    float lightAbsortion = 0.6;
+    float gammaCorrection = 1 / 2.5;
     Scene(int i);
 };
 
@@ -31,49 +32,48 @@ Scene::Scene(int i)
     case 0:
     {
 
-        HEIGHT = 600;
-        WIDTH = 600;
+        HEIGHT = 800;
+        WIDTH = 800;
         maxBouncesOfRay = 15;
-        eyePosition = MyVector(-1, -10, 3);
+        double r = 13;
+        double cm = 1.9;
+        eyePosition = MyVector(0, -1 * cm, cm);
         lookAt = MyVector(0, 0, 0);
-        verticalVector = MyVector(1, 10, 101 / 3);
+        verticalVector = MyVector(0, cm, cm);
         verticalVector.normalize();
-        distanceToMatrix = 2.4;
-        dimentionPixel = 0.003;
-        samplePerPixel = 70;
+        distanceToMatrix = 0.5;
+        dimentionPixel = 0.002;
+        samplePerPixel = 60;
         background = Color(0, 0, 0);
         // world.push_back(new Parallelogram(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(0.96, 0.5, 0.7), 0.6));
-        world.push_back(new Torus(MyVector(0, 0, 0), 1, 0.5, Color(0.8, 0.1, 0.1), 0));
-        double r = 13;
-        world.push_back(new Sphere({0, 0, 0}, r + 2, Color(1, 1, 1), 0));
+        world.push_back(new Torus(MyVector(0, 0, 0), 1, 0.5, Color(0.4, 1.55, 1.6), 1));
+        world.push_back(new Sphere({0, 0, r - 1.5}, r, Color(1, 1, 1), 0));
         // world.push_back(new Sphere({-2, 0, 0}, 1, Color(0.5, 0.76, 0.45), 0));
         // world.push_back(new Sphere({2, 0, 0}, 1, Color(0.5, 0.76, 0.45), 0.3));
         // world.push_back(new Plane(MyVector(0, 0, 1), MyVector(0, 0, -2), Color(0.8, 0.8, 0.8), 1));
         double a = M_PI * 5 / 4;
-        double c = M_PI * 7 / 4;
         double b = M_PI / 4;
-        double d = M_PI / 5;
-        world.push_back(new Light(MyVector(r * cos(a) * sin(b), r * sin(a) * sin(b), r * cos(b)), 2, Color(3, 3, 3)));
-        world.push_back(new Light(MyVector(r * cos(c) * sin(d), r * sin(c) * sin(d), r * cos(d)), 2, Color(3, 3, 3)));
-        // world.push_back(new Light(MyVector(0, -15, 2), 5, Color(4, 4, 4)));
+        world.push_back(new Light(MyVector(r * cos(a) * sin(b), r * sin(a) * sin(b), r * cos(b) + r - 1.5), 2, Color(2.3, 2.3, 2.3)));
+        // world.push_back(new Light(MyVector(r * cos(c) * sin(d), r * sin(c) * sin(d), r * cos(d)), 2, Color(2.3, 2.3, 2.5)));
+        //  world.push_back(new Light(MyVector(0, -15, 2), 5, Color(4, 4, 4)));
         size = world.size();
         break;
     }
     case 1:
     {
 
-        HEIGHT = 600;
-        WIDTH = 600;
-        maxBouncesOfRay = 15;
+        HEIGHT = 800;
+        WIDTH = 800;
+        maxBouncesOfRay = 20;
         eyePosition = MyVector(0, -10, 10);
         lookAt = MyVector(0, 0, 0);
         distanceToMatrix = 2;
-        dimentionPixel = 0.003;
+        dimentionPixel = 0.002;
         verticalVector = MyVector(0, 1, 1);
-        samplePerPixel = 30;
+        samplePerPixel = 50;
         background = Color(0, 0, 0);
         world.push_back(new Parallelogram(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(0.99, 0.5, 0.87), 0.6));
-        world.push_back(new Torus(MyVector(0, 0, 0), 1, 0.5, Color(0.9, 0.1, 0.1), 0));
+        world.push_back(new Torus(MyVector(0, 0, 0), 1, 0.5, Color(1.4, 0.2, 0.2), 0));
         world.push_back(new Sphere({-2, 0, 1}, 1, Color(0.1, 0.9, 0.9), 0));
         world.push_back(new Sphere({2, 0, 1}, 1, Color(0.5, 0.87, 0.45), 0));
         world.push_back(new Plane(MyVector(0, 0, 1), MyVector(0, 0, -2), Color(0.3, 0.51, .55), 0.3));
@@ -87,7 +87,7 @@ Scene::Scene(int i)
 
         HEIGHT = 800;
         WIDTH = 800;
-        maxBouncesOfRay = 15;
+        maxBouncesOfRay = 20;
         eyePosition = MyVector(0, -10, 5);
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0.5, 1);

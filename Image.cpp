@@ -1,10 +1,7 @@
 #include "Image.h"
 #include <math.h>
-Image::Image() : width(0), height(0), matrix()
-{
-}
 
-Image::Image(int w, int h, int samples) : width(w), height(h), SamplesPerPixel(samples)
+Image::Image(int w, int h, int samples, float gammaCorrection) : width(w), height(h), SamplesPerPixel(samples), gammaCorrection(gammaCorrection)
 
 {
     matrix.resize(height);
@@ -39,9 +36,9 @@ int Image::printImage(std::string name)
         for (int j = 0; j < width; j++)
         {
             // gamma correction of g=2
-            double r = sqrt(matrix[i][j].red / SamplesPerPixel);
-            double g = sqrt(matrix[i][j].green / SamplesPerPixel);
-            double b = sqrt(matrix[i][j].blue / SamplesPerPixel);
+            double r = pow(matrix[i][j].red / SamplesPerPixel, gammaCorrection);
+            double g = pow(matrix[i][j].green / SamplesPerPixel, gammaCorrection);
+            double b = pow(matrix[i][j].blue / SamplesPerPixel, gammaCorrection);
             output << static_cast<int>(256 * std::clamp(r, 0.0, 0.999)) << ' ' << static_cast<int>(256 * std::clamp(g, 0.0, 0.999)) << ' ' << static_cast<int>(256 * std::clamp(b, 0.0, 0.999)) << ' ';
         }
         output << "\n";

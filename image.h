@@ -12,11 +12,11 @@ public:
     int width;
     int height;
     int SamplesPerPixel;
+    float gammaCorrection;
     std::vector<std::vector<Color>> matrix;
 
 public:
-    Image();
-    Image(int w, int h, int samples);
+    Image(int w, int h, int samples, float gammaCorrection);
     int printImage(std::string name);
     void initializeImage();
 };
