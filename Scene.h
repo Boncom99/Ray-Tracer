@@ -98,6 +98,7 @@ Scene::Scene(int i)
         // background = Color(0.1, 0.2, 0.3);
         background = Color();
         world.push_back(new Sphere({0, 0, 1}, 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new SphereGlass({-1, -2, 1}, 1, Color(1, 1, 1), 1.52));
         world.push_back(new Sphere({2, 2, 1}, 1, Color(0.7, 0.7, 0.7), 0));
         world.push_back(new Sphere({0, 0, -100}, 100, Color(0.8, 0.8, 0.8), 1));
         world.push_back(new Light(MyVector(-20, 4, 15), 10, Color(4, 4, 4)));

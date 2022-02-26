@@ -18,6 +18,10 @@ public:
 SphereGlass::SphereGlass(MyVector cent, double rad, Color color, float refractionIndex) : Sphere(cent, rad, color, 0), refractionIndex(refractionIndex)
 {
 }
+bool randomBool()
+{
+    return (rand() % (2)) == 1;
+}
 void SphereGlass::Rebound(Ray *ray, MyVector hitPosition)
 {
     MyVector normalVector = this->NormalVector(hitPosition);
@@ -30,7 +34,7 @@ void SphereGlass::Rebound(Ray *ray, MyVector hitPosition)
     double cosTheta = dotProduct(-1 * ray->direction, normalVector);
     double sinTheta = sqrt(1.0 - cosTheta * cosTheta);
     MyVector outPut;
-    if (refractionRatio * sinTheta > 1.0) // reflection
+    if (refractionRatio * sinTheta > 1.0 && randomBool()) // reflection
     {
         MyVector v = dotProduct(-1 * (ray->direction), normalVector) * normalVector;
         outPut = ray->direction - 2 * v;

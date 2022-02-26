@@ -40,7 +40,13 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
         MyVector impactPos = ray->getPosition(object->second);
         if (dynamic_cast<Light *>(object->first) == nullptr) // en cas que impacti amb la font d'iluminació
         {
-            object->first->Rebound(ray, impactPos);
+
+            SphereGlass *child = dynamic_cast<SphereGlass *>(object->first);
+            if (child)
+                child->Rebound(ray, impactPos);
+            else
+                object->first->Rebound(ray, impactPos);
+
             return (scene.lightAbsortion * object->first->color) * PaintPixel(scene, ray, Bounces - 1);
             return Color(0, 0, 0);
         }
@@ -54,9 +60,9 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
 
 int main()
 {
-    Scene scene(0);
-    //  Scene scene(1);
-    // Scene scene(2);
+    // Scene scene(0);
+    //   Scene scene(1);
+    Scene scene(2);
     Image image(scene.WIDTH, scene.HEIGHT, scene.samplePerPixel, scene.gammaCorrection);
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, scene.dimentionPixel, scene.WIDTH, scene.HEIGHT);
 
