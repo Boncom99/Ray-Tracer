@@ -25,11 +25,11 @@ bool randomBool()
 void SphereGlass::Rebound(Ray *ray, MyVector hitPosition)
 {
     MyVector normalVector = this->NormalVector(hitPosition);
-    float refractionRatio = 1.0 / refractionIndex;
+    float refractionRatio = refractionIndex;
     if (dotProduct(ray->direction, normalVector) > 0) // ray inside the sphere
     {
         normalVector = -1 * normalVector;
-        refractionRatio = refractionIndex;
+        refractionRatio = 1.0 / refractionIndex;
     }
     double cosTheta = dotProduct(-1 * ray->direction, normalVector);
     double sinTheta = sqrt(1.0 - cosTheta * cosTheta);
@@ -40,9 +40,10 @@ void SphereGlass::Rebound(Ray *ray, MyVector hitPosition)
         outPut = ray->direction - 2 * v;
     }
     else // refraction
+
     {
         MyVector v = (-1.0 / refractionRatio) * (ray->direction + cosTheta * normalVector);
-        MyVector u = (-1 * sqrt(1 - v.moduleSq())) * normalVector;
+        MyVector u = -1 * (sqrt(1 - v.moduleSq())) * normalVector;
         outPut = (u + v);
     }
 

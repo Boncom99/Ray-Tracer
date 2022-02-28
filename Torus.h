@@ -21,9 +21,17 @@ public:
 
 Torus::Torus(MyVector center, double R, double r, MyVector direction, Color c, float roughness) : Object(c, roughness), center(center), R(R), r(r), direction(direction), surround(Surround(center, R + r))
 {
+    direction.normalize();
 }
 MyVector Torus::NormalVector(MyVector position)
-{ // TODO supose center != (0,0,0)
+{
+    /* MyVector v = position - center;
+    MyVector vParallel = dotProduct(v, direction) * direction;
+    MyVector vPerpendicular = v - vParallel;
+    MyVector p = position + vPerpendicular;
+    MyVector Q = center + R * (p - center);
+    MyVector N = position - Q;*/
+    position = position - center;
     double a = R / (sqrt(position.x * position.x + position.y * position.y));
     MyVector N = position - MyVector(a * position.x, a * position.y, 0);
     N.normalize();
