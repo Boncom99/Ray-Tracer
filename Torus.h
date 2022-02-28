@@ -52,12 +52,15 @@ double Torus::hit(Ray *ray)
     {
         return -1;
     }
+    MyVector originalPosition = ray->position;
+    ray->position = ray->position - center;
     // double a = ray->direction.moduleSq() * ray->direction.moduleSq();
     double a = 1.0;
     double b = 4 * (dotProduct(ray->position, ray->direction));
     double c = 2 * (ray->position.moduleSq() - r * r - R * R) + 4 * (dotProduct(ray->direction, ray->position) * dotProduct(ray->direction, ray->position)) + 4 * R * R * ray->direction.y * ray->direction.y;
     double d = 4 * (ray->position.moduleSq() - r * r - R * R) * (dotProduct(ray->direction, ray->position)) + 8 * R * R * ray->position.y * ray->direction.y;
     double e = pow(ray->position.moduleSq() - r * r - R * R, 2) - 4 * R * R * (r * r - pow(ray->position.y, 2));
+    ray->position = originalPosition;
     double coefs[5] = {e, d, c, b, a};
     // std::cout << coefs[0] << ", " << coefs[1] << ", " << coefs[2] << ", " << coefs[3] << ", " << coefs[4] << "\n";
     double s[4] = {0, 0, 0, 0};
