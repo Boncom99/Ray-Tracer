@@ -1,19 +1,21 @@
 Coses per comentar:
 
 - estructura de classes. (evitar circular dependencies)
-- refracció no funciona glassSpheres (rebound()) https://www.javatpoint.com/upcasting-and-downcasting-in-cpp
+  DONE - refracció no funciona glassSpheres (rebound()) https://www.javatpoint.com/upcasting-and-downcasting-in-cpp
 - passar doubles i floats a enters per eficiencia (calcul numeric)
-- definir els colors dels objectes en decimals directament DONE
-- reflexció ( de dos formes diferents )
+  DONE - definir els colors dels objectes en decimals directament DONE
+  DONE - reflexció ( de dos formes diferents )
 - tor (solució de eq 4rt grau) DONE (explicar al treball una mica el alogritme (professor mondelo))
 
-- paral·lelogram (no sempre esta ben dibuixat)
-  -world class
-- muliplicar els colors fa els fotos molt fosques. (potser definir la llum per la direccio final del raig)
+DONE - paral·lelogram (no sempre esta ben dibuixat)
+DONE -world class
+
+DONE - muliplicar els colors fa els fotos molt fosques. (potser definir la llum per la direccio final del raig)
+
 - implementar objectes no parametritzables (funció distancia i rebot ).
 - multithreading.(classe Thread). vertical (preproces imatge per separar els threads),
 - justificar numero de rajos per pixel (sample).
-- implementar PaintPixel per un sol pixel. per trobar l'error. (primer identificar on esta el pixel). (posar seed als random)
+  DONE - implementar PaintPixel per un sol pixel. per trobar l'error. (primer identificar on esta el pixel). (posar seed als random)
 - compresio a png
 - estudi posterior, observacions, conclusions
 
@@ -27,21 +29,14 @@ Coses per comentar:
   .
 
 Que al canviar la dimensio de la imatge reescali la matriu perque es vegi igual pero més petit,
-en comptes de retallar la imatge.
+en comptes de retallar la imatge. DONE
 
 glass spheres dont use their custom rebound function in main's PaintPixel func. it's because we are using an array of Objects. DONE
 
-rotate torus (change position DONE, excepte for the rebound part. where there, we dont use the center of torus, so the rebound is wrong.)
-Roughness:(2 options)
-
-- degree of roughness. if it's small the rebound will go aprox to the real rebound.
-  The problem is that we are not getting the 360º indirect ilumination.
-- true false. and we get all vects of the semiemisphere of the tangent plane.
-  add cube arround objects, to avoid calcuate intersection if ray doesnt hit the cube
-  SEMIDONE oriented normal vectors (square and maybe in all objects)
-  put all objects of the scene in a header file as a class
+rotate torus (change position DONE)
 
 FUTURE:
+
 Fractal:
 
 - Imatge amb resolució variable.

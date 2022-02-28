@@ -63,7 +63,8 @@ int main()
     auto start = std::chrono::high_resolution_clock::now();
     // Scene scene(0);
     //   Scene scene(1);
-    Scene scene(2);
+    // Scene scene(2);
+    Scene scene(3);
     Image image(scene.WIDTH, scene.HEIGHT, scene.samplePerPixel, scene.gammaCorrection);
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, scene.dimentionPixel, scene.WIDTH, scene.HEIGHT);
 

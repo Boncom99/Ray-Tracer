@@ -15,7 +15,12 @@ public:
 Parallelogram::Parallelogram(MyVector u, MyVector v, MyVector point, Color c, float roughness) : Plane(crossProduct(u, v), point, c, roughness), u(u), v(v)
 {
 }
-
+bool nearZero(double a)
+{
+    if (abs(a) < 0.0001)
+        return true;
+    return false;
+}
 double Parallelogram::hit(Ray *ray)
 {
     double t = Plane(normal, point, color, 0).hit(ray);
@@ -29,28 +34,46 @@ double Parallelogram::hit(Ray *ray)
         int j = (i + 1);
 
         double denominator = v[j] * u[i] - v[i] * u[j];
-        if (denominator != 0)
+        if (nearZero(denominator))
+        {
+            denominator = v[i] * u[j] - v[j] * u[i];
+        }
+
+        if (!nearZero(denominator))
         {
             double b = (u[i] * p[j] - u[j] * p[i]) / denominator;
-            if (b >= 0 && b <= 1)
+            if (b >= -0.0001 && b <= 1.0001)
             {
-                double a = (p[i] - b * v[i]) / u[i];
-                if (a >= 0 && a <= 1)
+                double a = -1;
+                if (!nearZero(u[i]))
+                    a = (p[i] - b * v[i]) / u[i];
+                else if (!nearZero(u[j]))
+                    a = (p[j] - b * v[j]) / u[j];
+                if (a >= -0.001 && a <= 1.0001)
                     return t;
             }
         }
     }
-    int i = 3;
-    int j = 0;
+    int i = 0;
+    int j = 2;
 
     double denominator = v[j] * u[i] - v[i] * u[j];
-    if (denominator != 0)
+
+    if (nearZero(denominator))
+    {
+        denominator = v[i] * u[j] - v[j] * u[i];
+    }
+    if (!nearZero(denominator))
     {
         double b = (u[i] * p[j] - u[j] * p[i]) / denominator;
-        if (b >= 0 && b <= 1)
+        if (b >= -0.0001 && b <= 1.0001)
         {
-            double a = (p[i] - b * v[i]) / u[i];
-            if (a >= 0 && a <= 1)
+            double a = -1;
+            if (!nearZero(u[i]))
+                a = (p[i] - b * v[i]) / u[i];
+            else if (!nearZero(u[j]))
+                a = (p[j] - b * v[j]) / u[j];
+            if (a >= -0.0001 && a <= 1.0001)
                 return t;
         }
     }

@@ -112,6 +112,53 @@ Scene::Scene(int i)
 
         break;
     }
+    case 3:
+    {
+        // Cornell Box
+        HEIGHT = 800;
+        WIDTH = 800;
+        widthOfMatrix = 2;
+        maxBouncesOfRay = 50;
+        eyePosition = MyVector(0, -5, 2);
+        lookAt = MyVector(0, 0, 2);
+        verticalVector = MyVector(0, 0, 1);
+        verticalVector.normalize();
+        distanceToMatrix = 2.4;
+        dimentionPixel = widthOfMatrix / WIDTH;
+        samplePerPixel = 100;
+        background = Color(0.01, 0.01, 0.01);
+        // background = Color();
+        lightAbsortion = 0.9;
+        gammaCorrection = 1 / 2.4;
+
+        // side walls
+        world.push_back(new Parallelogram(MyVector(0, 0, 4), MyVector(0, 4, 0), MyVector(-2, 0, 0), Color(1, 0.3, 0.3), 1));
+        world.push_back(new Parallelogram(MyVector(0, 0, 4), MyVector(0, 4, 0), MyVector(2, 0, 0), Color(0.3, 1, 0.3), 1));
+        // back wall
+        world.push_back(new Parallelogram(MyVector(0, 0, 4), MyVector(4, 0, 0), MyVector(-2, 4, 0), Color(1, 1, 1), 1));
+        // floor
+        world.push_back(new Parallelogram(MyVector(4, 0, 0), MyVector(0, 4, 0), MyVector(-2, 0, 0), Color(1, 1, 1), 1));
+        // roof
+        world.push_back(new Parallelogram(MyVector(4, 0, 0), MyVector(0, 4, 0), MyVector(-2, 0, 4), Color(1, 1, 1), 1));
+        // objects
+        world.push_back(new Sphere({1, 3, 0.8}, 0.8, Color(0.7, 0.7, 0.7), 0));
+        // world.push_back(new SphereGlass({-1, 2, 2.8}, 0.7, Color(0.7, 0.7, 0.7), 1.52));
+        //   square
+        world.push_back(new Parallelogram(MyVector(1, 1, 0), MyVector(0, 0, 2), MyVector(-1, 2.5, 0), Color(0.3, 0.3, 0.8), 1));
+        world.push_back(new Parallelogram(MyVector(-1, 1, 0), MyVector(0, 0, 2), MyVector(-1, 2.5, 0), Color(0.3, 0.3, 0.8), 1));
+        // world.push_back(new Parallelogram(MyVector(-1, 1, 0), MyVector(1, 1, 0), MyVector(-1, 2.5, 2), Color(0.3, 0.3, 0.8), 1));
+        //  world.push_back(new Parallelogram(MyVector(-1, 1, 0), MyVector(0, 0, 2), MyVector(-3, 2.5, 0), Color(0.3, 0.3, 0.3), 1));
+
+        // Light
+        // world.push_back(new Light(MyVector(0, -9, 2), 1, Color(4, 4, 4)));
+        world.push_back(new Light(MyVector(0, 2, 4.2), 0.5, Color(5, 5, 5)));
+
+        // world.push_back(new Torus(MyVector(-3, 0, 1), 1, 0.5, MyVector(0, 1, -1), Color(1.6, 0.4, 1.6), 1));
+        // world.push_back(new Torus(MyVector(3, -1, 1), 0.8, 0.35, MyVector(0, 1, 0), Color(0.7, 0.7, 0.7), 0));
+        size = world.size();
+
+        break;
+    }
     }
 }
 
