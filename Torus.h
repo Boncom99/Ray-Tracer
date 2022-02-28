@@ -14,16 +14,16 @@ public:
     double r;
     MyVector direction;
     Surround surround;
-    Torus(MyVector center, double R, double r, Color c, float roughness);
+    Torus(MyVector center, double R, double r, MyVector direction, Color c, float roughness);
     MyVector NormalVector(MyVector position);
     double hit(Ray *ray);
 };
 
-Torus::Torus(MyVector center, double R, double r, Color c, float roughness) : Object(c, roughness), center(center), R(R), r(r), direction(MyVector(0, 1, 0)), surround(Surround(center, R + r))
+Torus::Torus(MyVector center, double R, double r, MyVector direction, Color c, float roughness) : Object(c, roughness), center(center), R(R), r(r), direction(direction), surround(Surround(center, R + r))
 {
 }
 MyVector Torus::NormalVector(MyVector position)
-{
+{ // TODO supose center != (0,0,0)
     double a = R / (sqrt(position.x * position.x + position.y * position.y));
     MyVector N = position - MyVector(a * position.x, a * position.y, 0);
     N.normalize();
@@ -53,7 +53,10 @@ double Torus::hit(Ray *ray)
         return -1;
     }
     MyVector originalPosition = ray->position;
+    // MyVector originalDirection = ray->direction;
     ray->position = ray->position - center;
+    // ray->direction = ray->direction - direction;
+    // ray->direction.normalize();
     // double a = ray->direction.moduleSq() * ray->direction.moduleSq();
     double a = 1.0;
     double b = 4 * (dotProduct(ray->position, ray->direction));
@@ -61,6 +64,7 @@ double Torus::hit(Ray *ray)
     double d = 4 * (ray->position.moduleSq() - r * r - R * R) * (dotProduct(ray->direction, ray->position)) + 8 * R * R * ray->position.y * ray->direction.y;
     double e = pow(ray->position.moduleSq() - r * r - R * R, 2) - 4 * R * R * (r * r - pow(ray->position.y, 2));
     ray->position = originalPosition;
+    // ray->direction = originalDirection;
     double coefs[5] = {e, d, c, b, a};
     // std::cout << coefs[0] << ", " << coefs[1] << ", " << coefs[2] << ", " << coefs[3] << ", " << coefs[4] << "\n";
     double s[4] = {0, 0, 0, 0};
