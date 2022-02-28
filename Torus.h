@@ -32,8 +32,8 @@ MyVector Torus::NormalVector(MyVector position)
     MyVector Q = center + R * (p - center);
     MyVector N = position - Q;*/
     position = position - center;
-    double a = R / (sqrt(position.x * position.x + position.y * position.y));
-    MyVector N = position - MyVector(a * position.x, a * position.y, 0);
+    double a = R / (sqrt(position.x * position.x + position.z * position.z));
+    MyVector N = position - MyVector(a * position.x, a * position.z, 0);
     N.normalize();
     return N;
 }

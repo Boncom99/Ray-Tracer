@@ -11,6 +11,7 @@ public:
     int size;
     int HEIGHT;
     int WIDTH;
+    float widthOfMatrix = 0.8;
     int maxBouncesOfRay;
     MyVector eyePosition;
     MyVector lookAt;
@@ -85,24 +86,27 @@ Scene::Scene(int i)
     case 2:
     {
 
-        HEIGHT = 800;
-        WIDTH = 800;
-        maxBouncesOfRay = 20;
+        HEIGHT = 1600;
+        WIDTH = 1600;
+        widthOfMatrix = 0.8;
+        maxBouncesOfRay = 50;
         eyePosition = MyVector(0, -10, 5);
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0.5, 1);
         verticalVector.normalize();
         distanceToMatrix = 0.8;
-        dimentionPixel = 0.001;
-        samplePerPixel = 100;
-        background = Color(0.1, 0.2, 0.3);
+        dimentionPixel = widthOfMatrix / WIDTH;
+        samplePerPixel = 250;
+        background = Color(0.05, 0.1, 0.15);
         // background = Color();
+        lightAbsortion = 0.7;
+        gammaCorrection = 1 / 2.4;
         world.push_back(new Sphere({0, 0, 1}, 1, Color(0.7, 0.7, 0.7), 0));
         world.push_back(new SphereGlass({-1, -2, 1}, 1, Color(1, 1, 1), 1.52));
         world.push_back(new Torus(MyVector(-3, 0, 1), 1, 0.5, MyVector(0, 1, -1), Color(1.6, 0.4, 1.6), 1));
-        world.push_back(new Torus(MyVector(3, -2, 1), 0.5, 0.2, MyVector(0, 1, 0), Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new Torus(MyVector(3, -1, 1), 0.8, 0.35, MyVector(0, 1, 0), Color(0.7, 0.7, 0.7), 0));
         world.push_back(new Sphere({2, 2, 1}, 1, Color(0.7, 0.7, 0.7), 0));
-        world.push_back(new Sphere({0, 0, -100}, 100, Color(0.4, 1.55, 1.6), 1));
+        world.push_back(new Sphere({0, 0, -200}, 200, Color(0.4, 1.55, 1.6), 1));
         world.push_back(new Light(MyVector(-20, 4, 15), 10, Color(4, 4, 4)));
         size = world.size();
 

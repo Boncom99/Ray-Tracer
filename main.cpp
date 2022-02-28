@@ -60,6 +60,7 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
 
 int main()
 {
+    auto start = std::chrono::high_resolution_clock::now();
     // Scene scene(0);
     //   Scene scene(1);
     Scene scene(2);
@@ -81,8 +82,14 @@ int main()
             pixel = pixel + (eye.dimPixel * eye.horizontalVector);
         }
         pixel = eye.TopLeftPlain - (1 * (i + 1) * eye.dimPixel * eye.verticalVector);
+        std::cerr << "\rScanlines remaining: " << image.height - i << ' ' << std::flush;
     }
-    image.printImage("");
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> diff = end - start;
+    int frameTimeS = static_cast<int>(diff.count());
+    string name = "Time: " + std::to_string(frameTimeS) + ", Width: " + std::to_string(scene.WIDTH) + ", Height: " + std::to_string(scene.HEIGHT);
+    image.printImage(name);
+    // cout << "Time To process image: " << frameTimeMs << "s" << endl;
 
     return 0;
 }

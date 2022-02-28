@@ -16,12 +16,9 @@ Image::Image(int w, int h, int samples, float gammaCorrection) : width(w), heigh
 int Image::printImage(std::string name)
 {
     std::ofstream output;
-    if (name == "")
-    {
-        std::time_t t = std::time(0);
-        name = std::to_string(t - 1645644194);
-    }
-    output.open("Output/time_" + name + ".ppm", std::ios::out); // TODO canviar ppm (compresio) png
+    std::time_t t = std::time(0);
+    name = std::to_string((int)((t - 1645644194) / 100)) + name;
+    output.open("Output/" + name + ".ppm", std::ios::out); // TODO canviar ppm (compresio) png
 
     if (!output.is_open())
     {
