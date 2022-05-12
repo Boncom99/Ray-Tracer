@@ -10,7 +10,7 @@ public:
 
 public:
     Ray(MyVector pos, MyVector dir);
-    Ray(Eye *eye, MyVector currentPixel);
+    Ray(Eye *eye, MyVector currentPixel, float blur);
     MyVector getPosition(double t);
 };
 

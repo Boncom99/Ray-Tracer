@@ -3,9 +3,9 @@ Ray::Ray(MyVector pos, MyVector dir) : position(pos), direction(dir)
 {
     direction.normalize();
 }
-Ray::Ray(Eye *eye, MyVector currentPixel)
+Ray::Ray(Eye *eye, MyVector currentPixel, float blur)
 {
-    position = eye->position;
+    position = eye->blur(blur);
     double randV = (double)rand() / RAND_MAX;
     double randH = (double)rand() / RAND_MAX;
     MyVector randomPixel = currentPixel + eye->dimPixel * (randH * eye->horizontalVector + randV * eye->verticalVector);

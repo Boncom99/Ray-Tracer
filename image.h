@@ -11,12 +11,15 @@ class Image
 public:
     int width;
     int height;
+    float widthMatrix;
     int SamplesPerPixel;
     float gammaCorrection;
+    float blur;
+    float dimPixel;
     std::vector<std::vector<Color>> matrix;
 
 public:
-    Image(int w, int h, int samples, float gammaCorrection);
+    Image(int w, int h, float widthMatrix, int samples, float gammaCorrection, float blur);
     int printImage(std::string name);
     void initializeImage();
 };

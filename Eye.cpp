@@ -11,3 +11,18 @@ Eye::Eye(MyVector pos, MyVector LookAt, double distance, MyVector verticalVector
     // TopLeftPlain.printVec();
     // centerOfPlain.printVec();
 }
+MyVector Eye::blur(float radius)
+{
+    if (radius != 0)
+    {
+
+        double randX = rand() % 100 - 50;
+        double randY = rand() % 100 - 50;
+        double randZ = rand() % 100 - 50;
+        MyVector randomVector(randX, randY, randZ);
+        randomVector.normalize();
+        randomVector *= radius;
+        return position + randomVector;
+    }
+    return position;
+}

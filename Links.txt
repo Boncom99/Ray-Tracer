@@ -4,7 +4,8 @@ Julia set:
 http://2008.sub.blue/blog/2009/9/20/quaternion_julia.html
 
 http://www.codinginstinct.com/2008/11/raytracing-4d-fractals-visualizing-four.html
-
+https://www.cs.cmu.edu/~kmcrane/Projects/QuaternionJulia/paper.pdf
+https://en.wikipedia.org/wiki/Quaternion
 
 
 Torus:

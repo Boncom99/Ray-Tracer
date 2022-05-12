@@ -19,6 +19,20 @@ public:
     friend MyVector operator*(double d, const MyVector &v);
     friend MyVector operator*(const MyVector &v, double d);
     friend MyVector operator+(const MyVector &v1, const MyVector &v2);
+    MyVector &operator+=(const MyVector &v2)
+    {
+        x += v2.x;
+        y += v2.y;
+        z += v2.z;
+        return *this;
+    }
+    MyVector &operator*=(const double &d)
+    {
+        x *= d;
+        y *= d;
+        z *= d;
+        return *this;
+    }
     friend MyVector operator-(const MyVector &v1, const MyVector &v2);
     double operator[](int i) const
     {

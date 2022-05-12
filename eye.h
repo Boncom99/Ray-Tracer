@@ -18,6 +18,7 @@ public:
 
 public:
     Eye(MyVector pos, MyVector LookAt, double distance, MyVector verticalVector, double dimPixel, int width, int height);
+    MyVector blur(float radius);
 };
 
 #endif

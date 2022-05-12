@@ -3,7 +3,7 @@
 #include "Object.h"
 #include "Ray.h"
 #include "MyVector.h"
-class JuliaSet : public Object
+class JuliaSet
 {
 public:
     double threshold;
@@ -13,7 +13,7 @@ public:
     double hit(Ray *ray);                     // RayMarching
 };
 
-JuliaSet::JuliaSet() : threshold(1)
+JuliaSet::JuliaSet() : threshold(0.1)
 {
 }
 JuliaSet::JuliaSet(double threshold) : threshold(threshold)
@@ -26,11 +26,25 @@ MyVector NormalVector(MyVector position)
 
     return MyVector();
 }
+double distance(MyVector)
+{
+    double zn = 2 zn return 4;
+}
 double JuliaSet::hit(Ray *ray)
 {
 
     // fer primer una esfera que envolti a tot el conjunt, aixi els punts de fora ens els estalviem
     // raymarcher
+    MyVector p();
+    double d;
+    d = distance(p);
+    for (int count = 0; d < 100; count++)
+    {
+        if (d < 0.01)
+            return count;
+        p += d;
+        d = distance(p);
+    }
     return -1;
 }
 

@@ -3,7 +3,7 @@
 to run :
 
 ´´´
-g++ -Wall -g -O3 -std=c++17 \*.cpp -o main &&./main
+g++-11 -Wall -g -O3 -std=c++20 *.cpp -o main &&./main
 ´´´
 Transform ppm to png :
 

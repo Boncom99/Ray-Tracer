@@ -12,11 +12,12 @@ public:
     int HEIGHT;
     int WIDTH;
     float widthOfMatrix = 0.8;
+    float blur = 1;
     int maxBouncesOfRay;
     MyVector eyePosition;
     MyVector lookAt;
     double distanceToMatrix;
-    double dimentionPixel;
+    float dimentionPixel;
     MyVector verticalVector;
     int samplePerPixel;
     Color background;
@@ -29,7 +30,7 @@ Scene::Scene(int i)
 {
     switch (i)
     {
-    default:
+    // default:
     case 0:
     {
 
@@ -86,10 +87,10 @@ Scene::Scene(int i)
     case 2:
     {
 
-        HEIGHT = 1600;
-        WIDTH = 1600;
+        HEIGHT = 500;
+        WIDTH = 500;
         widthOfMatrix = 0.8;
-        maxBouncesOfRay = 50;
+        maxBouncesOfRay = 20;
         eyePosition = MyVector(0, -10, 5);
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0.5, 1);
@@ -97,7 +98,7 @@ Scene::Scene(int i)
         distanceToMatrix = 0.8;
         dimentionPixel = widthOfMatrix / WIDTH;
         samplePerPixel = 250;
-        background = Color(0.05, 0.1, 0.15);
+        background = Color(0.05, 0.1, 0.3);
         // background = Color();
         lightAbsortion = 0.7;
         gammaCorrection = 1 / 2.4;
@@ -106,7 +107,7 @@ Scene::Scene(int i)
         world.push_back(new Torus(MyVector(-3, 0, 1), 1, 0.5, MyVector(0, 1, -1), Color(1.6, 0.4, 1.6), 1));
         world.push_back(new Torus(MyVector(3, -1, 1), 0.8, 0.35, MyVector(0, 1, 0), Color(0.7, 0.7, 0.7), 0));
         world.push_back(new Sphere({2, 2, 1}, 1, Color(0.7, 0.7, 0.7), 0));
-        world.push_back(new Sphere({0, 0, -200}, 200, Color(0.4, 1.55, 1.6), 1));
+        world.push_back(new Sphere({0, 0, -200}, 200, Color(0.4, 1.6, 1.6), 1));
         world.push_back(new Light(MyVector(-20, 4, 15), 10, Color(4, 4, 4)));
         size = world.size();
 
@@ -157,6 +158,85 @@ Scene::Scene(int i)
         // world.push_back(new Torus(MyVector(3, -1, 1), 0.8, 0.35, MyVector(0, 1, 0), Color(0.7, 0.7, 0.7), 0));
         size = world.size();
 
+        break;
+    }
+    default:
+    case 4:
+    {
+        // saturn
+        HEIGHT = 1000;
+        WIDTH = 1000;
+        maxBouncesOfRay = 5;
+        eyePosition = MyVector(0, 0, 0);
+        lookAt = MyVector(0, 1, 0);
+        verticalVector = MyVector(0, 0, 1);
+        blur = 0.01;
+        // verticalVector.normalize();
+        distanceToMatrix = 10;
+        widthOfMatrix = 3.5;
+        dimentionPixel = widthOfMatrix / WIDTH;
+        // dimentionPixel = 0.002;
+        samplePerPixel = 150;
+        background = Color(0, 0, 0);
+        lightAbsortion = 0.9;
+        gammaCorrection = 1 / 2.4;
+        double R = 40;
+        world.push_back(new Sphere({0.5, 10, 0.4}, 0.15, Color(0.7, 0.7, 0.7), 1));
+        world.push_back(new Light({-R + 4, R, 0}, R, Color(0.85, 0.85, 0.7)));
+        world.push_back(new Parallelogram(MyVector(1, 1, 0.02), MyVector(20, 0, 0), MyVector(-4, 6, 0), Color(0.1, 0.1, 0.1), 1));
+        world.push_back(new Parallelogram(MyVector(1, 1, 0.2), MyVector(10, 0, 0), MyVector(4, R + 10, -1), Color(0.1, 0.1, 0.1), 1));
+        // world.push_back(new Sphere({-2, 0, 0}, 1, Color(0.5, 0.76, 0.45), 0));
+        // world.push_back(new Sphere({2, 0, 0}, 1, Color(0.5, 0.76, 0.45), 0.3));
+        // world.push_back(new Plane(MyVector(0, 0, 1), MyVector(0, 0, -2), Color(0.8, 0.8, 0.8), 1));
+        // world.push_back(new Light(MyVector(r * cos(c) * sin(d), r * sin(c) * sin(d), r * cos(d)), 2, Color(2.3, 2.3, 2.5)));
+        //  world.push_back(new Light(MyVector(0, -15, 2), 5, Color(4, 4, 4)));
+        size = world.size();
+        break;
+    }
+    case 5:
+    {
+        // moon
+        HEIGHT = 1200;
+        WIDTH = 800;
+        maxBouncesOfRay = 3;
+        eyePosition = MyVector(0, 0, 0);
+        lookAt = MyVector(0.4, 10, 0);
+        verticalVector = MyVector(0, 0, 1);
+        blur = 0;
+        // verticalVector.normalize();
+        distanceToMatrix = 6.2;
+        widthOfMatrix = 3.5;
+        // dimentionPixel = widthOfMatrix / WIDTH;
+        samplePerPixel = 300;
+        background = Color(0, 0, 0);
+        lightAbsortion = 0.99;
+        gammaCorrection = 1 / 2.6;
+        world.push_back(new Sphere({1, 8, 1.5}, 0.5, Color(0.7, 0.7, 0.7), 1));
+        world.push_back(new Light({14, 15, 1}, 7, Color(3, 3, 3)));
+        size = world.size();
+        break;
+    }
+case 6:
+    {
+        // moon
+        HEIGHT = 1200;
+        WIDTH = 800;
+        maxBouncesOfRay = 3;
+        eyePosition = MyVector(0, 0, 0);
+        lookAt = MyVector(0.4, 10, 0);
+        verticalVector = MyVector(0, 0, 1);
+        blur = 0;
+        // verticalVector.normalize();
+        distanceToMatrix = 6.2;
+        widthOfMatrix = 3.5;
+        // dimentionPixel = widthOfMatrix / WIDTH;
+        samplePerPixel = 300;
+        background = Color(0, 0, 0);
+        lightAbsortion = 0.99;
+        gammaCorrection = 1 / 2.6;
+        world.push_back(new Sphere({1, 8, 1.5}, 0.5, Color(0.7, 0.7, 0.7), 1));
+        world.push_back(new Light({14, 15, 1}, 7, Color(3, 3, 3)));
+        size = world.size();
         break;
     }
     }

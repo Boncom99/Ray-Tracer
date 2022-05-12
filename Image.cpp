@@ -1,11 +1,12 @@
 #include "Image.h"
 #include <math.h>
 
-Image::Image(int w, int h, int samples, float gammaCorrection) : width(w), height(h), SamplesPerPixel(samples), gammaCorrection(gammaCorrection)
+Image::Image(int w, int h, float widthMatrix, int samples, float gammaCorrection, float blur) : width(w), height(h), widthMatrix(widthMatrix), SamplesPerPixel(samples), gammaCorrection(gammaCorrection), blur(blur)
 
 {
+    dimPixel = widthMatrix / width;
     matrix.resize(height);
-    for (size_t i = 0; i < height; ++i)
+    for (int i = 0; i < height; ++i)
     {
         matrix[i].resize(width);
     }
@@ -46,9 +47,9 @@ int Image::printImage(std::string name)
 }
 void Image::initializeImage()
 {
-    for (size_t i = 0; i < height; i++)
+    for (int i = 0; i < height; i++)
     {
-        for (size_t j = 0; j < width; j++)
+        for (int j = 0; j < width; j++)
         {
             matrix[i][j] = Color(0, 0, 0);
         }

@@ -11,7 +11,7 @@
 #include "Light.h"
 #include "Scene.h"
 #include <map>
-
+#include <chrono>
 using namespace std;
 
 Color PaintPixel(Scene scene, Ray *ray, int Bounces)
@@ -63,10 +63,11 @@ int main()
     auto start = std::chrono::high_resolution_clock::now();
     // Scene scene(0);
     //   Scene scene(1);
-    // Scene scene(2);
-    Scene scene(3);
-    Image image(scene.WIDTH, scene.HEIGHT, scene.samplePerPixel, scene.gammaCorrection);
-    Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, scene.dimentionPixel, scene.WIDTH, scene.HEIGHT);
+    Scene scene(5);
+    // Scene scene(3);
+    //  Scene scene(4);
+    Image image(scene.WIDTH, scene.HEIGHT, scene.widthOfMatrix, scene.samplePerPixel, scene.gammaCorrection, scene.blur);
+    Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, image.dimPixel, scene.WIDTH, scene.HEIGHT);
 
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < image.height; i++)
@@ -76,13 +77,14 @@ int main()
             Color pixelColor(0, 0, 0);
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {
-                Ray ray(&eye, pixel);
+                Ray ray(&eye, pixel, image.blur);
+                // Ray ray(eye.blur(image.blur), pixel);
                 pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
             }
             image.matrix[i][j] = pixelColor;
-            pixel = pixel + (eye.dimPixel * eye.horizontalVector);
+            pixel = pixel + (image.dimPixel * eye.horizontalVector);
         }
-        pixel = eye.TopLeftPlain - (1 * (i + 1) * eye.dimPixel * eye.verticalVector);
+        pixel = eye.TopLeftPlain - (1 * (i + 1) * image.dimPixel * eye.verticalVector);
         std::cerr << "\rScanlines remaining: " << image.height - i << ' ' << std::flush;
     }
     auto end = std::chrono::high_resolution_clock::now();
