@@ -5,6 +5,7 @@ Image::Image(int w, int h, float widthMatrix, int samples, float gammaCorrection
 
 {
     dimPixel = widthMatrix / width;
+
     matrix.resize(height);
     for (int i = 0; i < height; ++i)
     {

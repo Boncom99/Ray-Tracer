@@ -218,24 +218,48 @@ Scene::Scene(int i)
     }
 case 6:
     {
-        // moon
-        HEIGHT = 1200;
-        WIDTH = 800;
-        maxBouncesOfRay = 3;
-        eyePosition = MyVector(0, 0, 0);
-        lookAt = MyVector(0.4, 10, 0);
+        //profunditat de camp 
+        HEIGHT = 600;
+        WIDTH = 900;
+        maxBouncesOfRay = 30;
+        eyePosition = MyVector(2.1,-4 , 1);
+        lookAt = MyVector(0, 20, -3);
         verticalVector = MyVector(0, 0, 1);
         blur = 0;
-        // verticalVector.normalize();
-        distanceToMatrix = 6.2;
-        widthOfMatrix = 3.5;
-        // dimentionPixel = widthOfMatrix / WIDTH;
+        distanceToMatrix = 7;
+        widthOfMatrix = 4;
         samplePerPixel = 300;
-        background = Color(0, 0, 0);
-        lightAbsortion = 0.99;
+        background = Color(0.15, 0.15, 0.25);
+        lightAbsortion = 0.9;
         gammaCorrection = 1 / 2.6;
-        world.push_back(new Sphere({1, 8, 1.5}, 0.5, Color(0.7, 0.7, 0.7), 1));
-        world.push_back(new Light({14, 15, 1}, 7, Color(3, 3, 3)));
+        world.push_back(new Light({13, 0, 6}, 5, Color(2.5, 2, 2)));
+        for (int i = 1; i < 10; i++)
+        {
+        world.push_back(new Sphere({0, (double)(3*i), 0}, 0.8, Color(0.4, 1.4, 1.4), 0));
+        }
+        world.push_back(new Plane(MyVector(0, 0, 1), MyVector(0, 0, -0.8), Color(0.7, 0.6, 0.7), 0));
+        
+        size = world.size();
+        break;
+    }
+case 7:
+    {
+        // exemple suabitat superficies
+        HEIGHT = 200;
+        WIDTH = 200;
+        maxBouncesOfRay = 3;
+        eyePosition = MyVector(0,-11,0);
+        lookAt = MyVector(1, 2, 0);
+        verticalVector = MyVector(0, 0, 1);
+        blur = 0;
+        distanceToMatrix = 12;
+        widthOfMatrix = 13;
+        samplePerPixel = 1;
+        background = Color(1, 1,1);
+        lightAbsortion = 0.9;
+        gammaCorrection = 1 / 1;
+        world.push_back(new Sphere({1, 1, 0}, 1, Color(0.1, 0.7, 0.1), 0));
+        
         size = world.size();
         break;
     }
