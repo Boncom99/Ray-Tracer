@@ -30,12 +30,12 @@ Scene::Scene(int i)
 {
     switch (i)
     {
-    // default:
+    // donut dins d'esfera :
     case 0:
     {
 
-        HEIGHT = 800;
-        WIDTH = 800;
+        HEIGHT = 400;
+        WIDTH = 400;
         maxBouncesOfRay = 15;
         double r = 13;
         double cm = 1.9;
@@ -44,8 +44,10 @@ Scene::Scene(int i)
         verticalVector = MyVector(0, cm, cm);
         verticalVector.normalize();
         distanceToMatrix = 0.5;
-        dimentionPixel = 0.002;
+        widthOfMatrix=0.8;
         samplePerPixel = 60;
+        blur=0;
+        gammaCorrection=1;
         background = Color(0, 0, 0);
         // world.push_back(new Parallelogram(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(0.96, 0.5, 0.7), 0.6));
         world.push_back(new Torus(MyVector(0, 0, 0), 1, 0.5, MyVector(0, 1, 0), Color(0.4, 1.55, 1.6), 1));
@@ -63,30 +65,31 @@ Scene::Scene(int i)
     }
     case 1:
     {
-
-        HEIGHT = 800;
-        WIDTH = 800;
-        maxBouncesOfRay = 20;
-        eyePosition = MyVector(0, -10, 10);
-        lookAt = MyVector(0, 0, 0);
+        //dos esferes 
+        HEIGHT = 400;
+        WIDTH = 400;
+        widthOfMatrix = 3;
+        maxBouncesOfRay = 15;
+        eyePosition = MyVector(2,-3,2);
+        lookAt = MyVector(0, 2, 1);
+        verticalVector = MyVector(0, 0, 1);
         distanceToMatrix = 2;
-        dimentionPixel = 0.002;
-        verticalVector = MyVector(0, 1, 1);
-        samplePerPixel = 50;
-        background = Color(0, 0, 0);
-        world.push_back(new Parallelogram(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(0.99, 0.5, 0.87), 0.6));
-        world.push_back(new Torus(MyVector(0, 0, 0), 1, 0.5, MyVector(0, 1, 0), Color(1.4, 0.2, 0.2), 0));
-        world.push_back(new Sphere({-2, 0, 1}, 1, Color(0.1, 0.9, 0.9), 0));
-        world.push_back(new Sphere({2, 0, 1}, 1, Color(0.5, 0.87, 0.45), 0));
-        world.push_back(new Plane(MyVector(0, 0, 1), MyVector(0, 0, -2), Color(0.3, 0.51, .55), 0.3));
-        world.push_back(new Light(MyVector(-10, -10, 3), 7, Color(2, 2, 2)));
+        samplePerPixel = 40;
+        background = Color(0.6, 0.6, 0.65);
+        lightAbsortion = 0.8;
+        blur=0;
+        gammaCorrection = 1/3 ;
+        world.push_back(new Sphere({0, 1, 1}, 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new Sphere({2, 3, 1}, 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new Sphere({0, 0, -200}, 200, Color(0.6, 0.6, 0.5), 1));
+        world.push_back(new Light(MyVector(-20, -2, 8), 7, Color(1, 1, 1)));
         size = world.size();
 
         break;
     }
     case 2:
     {
-
+        //muli objectes
         HEIGHT = 500;
         WIDTH = 500;
         widthOfMatrix = 0.8;
@@ -96,11 +99,11 @@ Scene::Scene(int i)
         verticalVector = MyVector(0, 0.5, 1);
         verticalVector.normalize();
         distanceToMatrix = 0.8;
-        dimentionPixel = widthOfMatrix / WIDTH;
-        samplePerPixel = 250;
+        samplePerPixel = 50;
         background = Color(0.05, 0.1, 0.3);
         // background = Color();
         lightAbsortion = 0.7;
+        blur=0;
         gammaCorrection = 1 / 2.4;
         world.push_back(new Sphere({0, 0, 1}, 1, Color(0.7, 0.7, 0.7), 0));
         world.push_back(new SphereGlass({-1, -2, 1}, 1, Color(1, 1, 1), 1.52));
@@ -113,6 +116,7 @@ Scene::Scene(int i)
 
         break;
     }
+
     case 3:
     {
         // Cornell Box

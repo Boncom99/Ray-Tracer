@@ -61,7 +61,7 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
 int main()
 {
     auto start = std::chrono::high_resolution_clock::now();
-    Scene scene(7);
+    Scene scene(1);
     Image image(scene.WIDTH, scene.HEIGHT, scene.widthOfMatrix, scene.samplePerPixel, scene.gammaCorrection, scene.blur);
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, image.dimPixel, scene.WIDTH, scene.HEIGHT);
 
