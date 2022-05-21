@@ -267,6 +267,31 @@ case 7:
         size = world.size();
         break;
     }
+  case 8:
+    {
+        //dos esferes una moventse
+        HEIGHT = 500;
+        WIDTH = 500;
+        widthOfMatrix = 3;
+        maxBouncesOfRay = 15;
+        eyePosition = MyVector(2,-3,2);
+        lookAt = MyVector(0, 2, 1);
+        verticalVector = MyVector(0, 0, 1);
+        distanceToMatrix = 2;
+        samplePerPixel = 90;
+        background = Color(0.6, 0.6, 0.65);
+        lightAbsortion = 0.8;
+        blur=0;
+        gammaCorrection = 1/1.9 ;
+        world.push_back(new Sphere({0, 1.5, 1}, 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new SphereMoving({2, 3, 1}, 1, Color(0.4, 1.4, 1.4), {2,3,1}, {2,3,3},0.001)); //0.7
+        world.push_back(new SphereMoving({-1.2, -0.2, 1}, 1, Color(0.4, 1.4, 1.4), {-1.2, -0.2, 1}, {-1,0,3},0.001)); //0.7
+        world.push_back(new Sphere({0, 0, -200}, 200, Color(0.6, 0.6, 0.5), 1));
+        world.push_back(new Light(MyVector(-20, -2, 8), 7, Color(1, 1, 1)));
+        size = world.size();
+
+        break;
+    }
     }
 }
 
