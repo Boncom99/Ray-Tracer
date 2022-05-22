@@ -26,6 +26,13 @@ public:
         z += v2.z;
         return *this;
     }
+    MyVector &operator+=(const double &d)
+    {
+        x += d;
+        y += d;
+        z += d;
+        return *this;
+    }
     MyVector &operator*=(const double &d)
     {
         x *= d;

@@ -58,11 +58,22 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
     }
     return scene.background;
 }
+Color PaintFractal(Ray *ray)
+{
+    JuliaSet julia;
+    int iterations = julia.hit(ray);
+    if (iterations < 0) // intersecció!
+    {
+        return Color(0.4, 0.2, 0.2);
+    }
+    return (double)(1.0 / (double)iterations) * julia.color;
+    // return Color(0, 0, 1);
+}
 
 int main()
 {
     auto start = std::chrono::high_resolution_clock::now();
-    Scene scene(8);
+    Scene scene(9);
     Image image(scene.WIDTH, scene.HEIGHT, scene.widthOfMatrix, scene.samplePerPixel, scene.gammaCorrection, scene.blur);
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, image.dimPixel, scene.WIDTH, scene.HEIGHT);
 
@@ -76,13 +87,13 @@ int main()
             {
                 Ray ray(&eye, pixel, image.blur);
                 // Ray ray(eye.blur(image.blur), pixel);
-                pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
+                pixelColor += PaintFractal(&ray);
+                // pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
             }
             image.matrix[i][j] = pixelColor;
             pixel = pixel + (image.dimPixel * eye.horizontalVector);
         }
         pixel = eye.TopLeftPlain - (1 * (i + 1) * image.dimPixel * eye.verticalVector);
-        std::cerr << "\rScanlines remaining: " << image.height - i << ' ' << std::flush;
     }
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end - start;

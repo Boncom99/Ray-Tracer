@@ -3,49 +3,69 @@
 #include "Object.h"
 #include "Ray.h"
 #include "MyVector.h"
-class JuliaSet
+#include "Quaternion.h"
+class JuliaSet : public Object
 {
 public:
-    double threshold;
+    double fixedK;
+
     JuliaSet();
-    JuliaSet(double threshold);
-    MyVector NormalVector(MyVector position); // null
-    double hit(Ray *ray);                     // RayMarching
+    JuliaSet(double k);
+    Quaternion f(Quaternion x);
+    double hit(Ray *ray); // RayMarching
+    MyVector NormalVector(MyVector position);
 };
+JuliaSet::JuliaSet() : Object(Color(0.6, 0.6, 0.8), 0), fixedK(0)
+{
+}
+JuliaSet::JuliaSet(double k) : Object(Color(0.6, 0.6, 0.8), 0), fixedK(k)
+{
+}
+Quaternion JuliaSet::f(Quaternion x)
+{
+    Quaternion c(1, 2, 0, 0);
+    return (product(x, x)) + c;
+}
+void iterate(Quaternion z, Quaternion dz)
+{
+    Quaternion c(-0.5, 0, 0, 0);
+    for (int i = 0; i < 1024; i++)
+    {
+        dz = 2.0 * product(z, dz);
+        z = product(z, z) + c;
+        if (z.QModule() > 2)
+            break;
+    }
+}
 
-JuliaSet::JuliaSet() : threshold(0.1)
-{
-}
-JuliaSet::JuliaSet(double threshold) : threshold(threshold)
-{
-}
-MyVector NormalVector(MyVector position)
-{
-    // aproximar la normal.
-    // una altre opció és els rajos no rebotin i calcular el color depenent del numero de passos que ha fet el raig per arribar fins el punt.
-
-    return MyVector();
-}
-double distance(MyVector)
-{
-    double zn = 2 zn return 4;
-}
 double JuliaSet::hit(Ray *ray)
 {
-
-    // fer primer una esfera que envolti a tot el conjunt, aixi els punts de fora ens els estalviem
-    // raymarcher
-    MyVector p();
-    double d;
-    d = distance(p);
-    for (int count = 0; d < 100; count++)
+    Quaternion rayDirection = from3Dto4D(ray->direction, fixedK);
+    Quaternion rayPosition = from3Dto4D(ray->position, fixedK);
+    Quaternion p0(1, 0, 0, 0);
+    for (int count = 0; count < 20; count++)
     {
-        if (d < 0.01)
+        Quaternion *z = &rayPosition;
+        Quaternion *dz = &p0;
+        iterate(*z, *dz);
+        float normZ = z->QModule();
+        float dist = 0.5 * normZ * log(normZ) / dz->QModule(); // lower bound on distance to surface
+        rayPosition += rayDirection * dist;
+        // std::cout << d << std::endl;
+        if (dist < 0.1)
+        {
+            std::cout << "in";
+            // return totalDistance;
             return count;
-        p += d;
-        d = distance(p);
+        }
+        if (dist > 1000)
+            return -1;
     }
+    // std::cout << "---------_" << std::endl;
     return -1;
 }
-
+MyVector JuliaSet::NormalVector(MyVector position)
+{
+    return MyVector(0, 0, 0);
+}
 #endif
