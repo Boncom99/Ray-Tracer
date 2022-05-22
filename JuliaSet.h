@@ -26,14 +26,14 @@ Quaternion JuliaSet::f(Quaternion x)
     Quaternion c(1, 2, 0, 0);
     return (product(x, x)) + c;
 }
-void iterate(Quaternion z, Quaternion dz)
+void iterate(Quaternion &z, Quaternion &dz)
 {
-    Quaternion c(-0.5, 0, 0, 0);
+    Quaternion c(-1.0, 0.02, -0.1, 0);
     for (int i = 0; i < 1024; i++)
     {
         dz = 2.0 * product(z, dz);
         z = product(z, z) + c;
-        if (z.QModule() > 2)
+        if (z.QModuleSq() > 2)
             break;
     }
 }
@@ -43,19 +43,19 @@ double JuliaSet::hit(Ray *ray)
     Quaternion rayDirection = from3Dto4D(ray->direction, fixedK);
     Quaternion rayPosition = from3Dto4D(ray->position, fixedK);
     Quaternion p0(1, 0, 0, 0);
-    for (int count = 0; count < 20; count++)
+    for (int count = 0; count < 200; count++)
     {
-        Quaternion *z = &rayPosition;
-        Quaternion *dz = &p0;
-        iterate(*z, *dz);
-        float normZ = z->QModule();
-        float dist = 0.5 * normZ * log(normZ) / dz->QModule(); // lower bound on distance to surface
+        Quaternion z = rayPosition;
+        Quaternion dz = p0;
+        iterate(z, dz);
+
+        float normZ = z.QModule();
+        float dist = 0.5 * normZ * log(normZ) / dz.QModule(); // lower bound on distance to surface
         rayPosition += rayDirection * dist;
         // std::cout << d << std::endl;
-        if (dist < 0.1)
+        if (dist < 0.001)
         {
-            std::cout << "in";
-            // return totalDistance;
+            //  return totalDistance;
             return count;
         }
         if (dist > 1000)

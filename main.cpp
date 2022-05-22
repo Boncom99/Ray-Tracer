@@ -86,7 +86,6 @@ int main()
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {
                 Ray ray(&eye, pixel, image.blur);
-                // Ray ray(eye.blur(image.blur), pixel);
                 pixelColor += PaintFractal(&ray);
                 // pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
             }
@@ -94,6 +93,7 @@ int main()
             pixel = pixel + (image.dimPixel * eye.horizontalVector);
         }
         pixel = eye.TopLeftPlain - (1 * (i + 1) * image.dimPixel * eye.verticalVector);
+        std::cerr << "\rScanlines remaining: " << image.height - i << ' ' << std::flush;
     }
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end - start;
