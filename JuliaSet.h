@@ -8,32 +8,32 @@ class JuliaSet : public Object
 {
 public:
     double fixedK;
+    Quaternion c;
 
     JuliaSet();
-    JuliaSet(double k);
+    JuliaSet(double k, Quaternion c);
     Quaternion f(Quaternion x);
     double hit(Ray *ray); // RayMarching
     MyVector NormalVector(MyVector position);
+    void iterate(Quaternion &z, Quaternion &dz);
 };
-JuliaSet::JuliaSet() : Object(Color(0.6, 0.6, 0.8), 0), fixedK(0)
+JuliaSet::JuliaSet() : Object(Color(0.8, 0.6, 0.5), 0), fixedK(0), c(Quaternion(-0.5, 0.2, 0.1, 0))
 {
 }
-JuliaSet::JuliaSet(double k) : Object(Color(0.6, 0.6, 0.8), 0), fixedK(k)
+JuliaSet::JuliaSet(double k, Quaternion c) : Object(Color(0.6, 0.6, 0.8), 0), fixedK(k), c(c)
 {
 }
 Quaternion JuliaSet::f(Quaternion x)
 {
-    Quaternion c(1, 2, 0, 0);
     return (product(x, x)) + c;
 }
-void iterate(Quaternion &z, Quaternion &dz)
+void JuliaSet::iterate(Quaternion &z, Quaternion &dz)
 {
-    Quaternion c(-1.0, 0.02, -0.1, 0);
-    for (int i = 0; i < 1024; i++)
+    for (int i = 0; i < 2000; i++)
     {
         dz = 2.0 * product(z, dz);
         z = product(z, z) + c;
-        if (z.QModuleSq() > 2)
+        if (z.QModuleSq() > 2.8)
             break;
     }
 }
@@ -42,18 +42,17 @@ double JuliaSet::hit(Ray *ray)
 {
     Quaternion rayDirection = from3Dto4D(ray->direction, fixedK);
     Quaternion rayPosition = from3Dto4D(ray->position, fixedK);
-    Quaternion p0(1, 0, 0, 0);
-    for (int count = 0; count < 200; count++)
+    for (int count = 0; count < 600; count++)
     {
         Quaternion z = rayPosition;
-        Quaternion dz = p0;
+        Quaternion dz(1, 0, 0, 0);
         iterate(z, dz);
 
         float normZ = z.QModule();
         float dist = 0.5 * normZ * log(normZ) / dz.QModule(); // lower bound on distance to surface
         rayPosition += rayDirection * dist;
         // std::cout << d << std::endl;
-        if (dist < 0.001)
+        if (dist < 0.000001)
         {
             //  return totalDistance;
             return count;
@@ -61,7 +60,6 @@ double JuliaSet::hit(Ray *ray)
         if (dist > 1000)
             return -1;
     }
-    // std::cout << "---------_" << std::endl;
     return -1;
 }
 MyVector JuliaSet::NormalVector(MyVector position)

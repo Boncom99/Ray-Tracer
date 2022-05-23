@@ -12,6 +12,7 @@ public:
     Color(float red, float green, float blue);
     friend Color operator*(float d, const Color &c);
     friend Color operator*(const Color &c1, const Color &c2);
+    friend Color operator+(const Color &c1, const Color &c2);
     Color &operator+=(const Color &c)
     {
         red += c.red;

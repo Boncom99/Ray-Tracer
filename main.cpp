@@ -58,16 +58,24 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
     }
     return scene.background;
 }
-Color PaintFractal(Ray *ray)
+Color PaintFractal(Ray *ray, JuliaSet julia)
 {
-    JuliaSet julia;
-    int iterations = julia.hit(ray);
-    if (iterations < 0) // intersecció!
+    Color clear(0.44, 0.33, 0.23);
+    clear = 1.7 * clear;
+    Color dark(0.44, 0.33, 0.23);
+    dark = 0.3 * dark;
+    Color DarkminusClear = dark + (-1.0 * clear); // resta dels colors
+    double m = 600;                               // max number of iterations possible of hit function
+    double count = julia.hit(ray);
+    if (count < 0) // intersecció!
     {
-        return Color(0.4, 0.2, 0.2);
+        return Color(0, 0, 0);
     }
-    return (double)(1.0 / (double)iterations) * julia.color;
-    // return Color(0, 0, 1);
+    // la funció que, per 0 iteracions ens retorna Clear, i per m interacions ens retorna Dark
+    Color c = (-1.0 / (m * m) * count * count * DarkminusClear) + (2.0 / m * count * DarkminusClear) + clear;
+    if (c.red <= dark.red)
+        return dark;
+    return c;
 }
 
 int main()
@@ -76,30 +84,43 @@ int main()
     Scene scene(9);
     Image image(scene.WIDTH, scene.HEIGHT, scene.widthOfMatrix, scene.samplePerPixel, scene.gammaCorrection, scene.blur);
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, image.dimPixel, scene.WIDTH, scene.HEIGHT);
-
-    MyVector pixel = eye.TopLeftPlain;
-    for (int i = 0; i < image.height; i++)
+    int max = 100;
+    for (double Frame = 0; Frame < max; Frame++)
     {
-        for (int j = 0; j < image.width; j++)
+        double angle0 = -1 * M_PI / 4;
+        double angle1 = -1 * 3 * M_PI / 4;
+        double angle = (double)(Frame * angle1 + (max - Frame) * angle0) / (double)max;
+
+        eye.position = MyVector(4.0 * cos(angle), 4.0 * sin(angle), (double)Frame / max - 0.5);
+        MyVector pixel = eye.TopLeftPlain;
+        JuliaSet julia(0, Quaternion((double)(-1.5 * Frame + (max - Frame)) / (double)max, 0.4 * sin((double)Frame / 10.0), 0.1, 0));
+        for (int i = 0; i < image.height; i++)
         {
-            Color pixelColor(0, 0, 0);
-            for (int sample = 0; sample < image.SamplesPerPixel; sample++)
+            for (int j = 0; j < image.width; j++)
             {
-                Ray ray(&eye, pixel, image.blur);
-                pixelColor += PaintFractal(&ray);
-                // pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
+                Color pixelColor(0, 0, 0);
+                for (int sample = 0; sample < image.SamplesPerPixel; sample++)
+                {
+                    Ray ray(&eye, pixel, image.blur);
+                    pixelColor += PaintFractal(&ray, julia);
+                    // pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
+                }
+                image.matrix[i][j] = pixelColor;
+                pixel = pixel + (image.dimPixel * eye.horizontalVector);
             }
-            image.matrix[i][j] = pixelColor;
-            pixel = pixel + (image.dimPixel * eye.horizontalVector);
+            pixel = eye.TopLeftPlain - (1 * (i + 1) * image.dimPixel * eye.verticalVector);
+            std::cerr << "\rScanlines remaining: " << image.height - i << ' ' << std::flush;
         }
-        pixel = eye.TopLeftPlain - (1 * (i + 1) * image.dimPixel * eye.verticalVector);
-        std::cerr << "\rScanlines remaining: " << image.height - i << ' ' << std::flush;
+        string name = std::to_string((int)Frame);
+        // string name =  "Time: " + std::to_string(frameTimeS) + ", Width: " + std::to_string(scene.WIDTH) + ", Height: " + std::to_string(scene.HEIGHT);
+        image.printImage(name);
+        std::cout << "\n frame: "
+                  << Frame << endl;
     }
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end - start;
     int frameTimeS = static_cast<int>(diff.count());
-    string name = "Time: " + std::to_string(frameTimeS) + ", Width: " + std::to_string(scene.WIDTH) + ", Height: " + std::to_string(scene.HEIGHT);
-    image.printImage(name);
+    std::cout << "total time: " << frameTimeS << "s" << std::endl;
     // cout << "Time To process image: " << frameTimeMs << "s" << endl;
 
     return 0;
