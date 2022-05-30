@@ -19,7 +19,7 @@ int Image::printImage(std::string name)
 {
     std::ofstream output;
     std::time_t t = std::time(0);
-    // name = std::to_string((int)((t - 1645644194) / 100)) + name;
+    name = std::to_string((int)((t - 1645644194) / 100)) + name;
     output.open("Output/" + name + ".ppm", std::ios::out);
 
     if (!output.is_open())

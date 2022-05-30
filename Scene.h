@@ -297,15 +297,15 @@ Scene::Scene(int i)
     case 9:
     {
         // Julia set
-        HEIGHT = 800;
-        WIDTH = 800;
+        HEIGHT = 400;
+        WIDTH = 400;
         widthOfMatrix = 3;
-        maxBouncesOfRay = 7;
+        maxBouncesOfRay = 4;
         eyePosition = MyVector(0, -4, 0);
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0, 1);
         distanceToMatrix = 3.1;
-        samplePerPixel = 50;
+        samplePerPixel = 8;
         background = Color(0, 0, 0);
         lightAbsortion = 0.8;
         blur = 0;
