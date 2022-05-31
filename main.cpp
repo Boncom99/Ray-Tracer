@@ -1,5 +1,6 @@
 #include "MyVector.h"
 #include "Sphere.h"
+#include "Intersection.h"
 #include "Plane.h"
 #include "Square.h"
 #include "Torus.h"
@@ -62,10 +63,10 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
 int main()
 {
     auto start = std::chrono::high_resolution_clock::now();
-    Scene scene(8);
+    Scene scene(10);
     Image image(scene.WIDTH, scene.HEIGHT, scene.widthOfMatrix, scene.samplePerPixel, scene.gammaCorrection, scene.blur);
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, image.dimPixel, scene.WIDTH, scene.HEIGHT);
-
+    cout << "a" << endl;
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < image.height; i++)
     {
@@ -75,7 +76,6 @@ int main()
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {
                 Ray ray(&eye, pixel, image.blur);
-                // Ray ray(eye.blur(image.blur), pixel);
                 pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
             }
             image.matrix[i][j] = pixelColor;
