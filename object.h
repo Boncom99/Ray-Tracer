@@ -8,7 +8,7 @@
 class Object
 {
 protected:
-    Object(Color color, float roughness) : color(color), roughness(roughness) {}
+    Object(Color col, float roughness) : color(col), roughness(roughness) {}
 
 public:
     Color color;

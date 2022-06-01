@@ -78,8 +78,8 @@ int main()
     // cout << typeid(intersectObject).name() << endl;
     // cout << typeid(scene.world).name() << endl;
     double b = scene.world[0]->hit(&r);
-    cout << b << endl;
     double a = intersectObject[0]->hit(&r);
+    cout << b << endl;
     cout << a << endl;
     /* for (int i = 0; i < image.height; i++)
      {
