@@ -67,20 +67,20 @@ int main()
     /*  auto start = std::chrono::high_resolution_clock::now();
       Image image(scene.WIDTH, scene.HEIGHT, scene.widthOfMatrix, scene.samplePerPixel, scene.gammaCorrection, scene.blur);
       Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, image.dimPixel, scene.WIDTH, scene.HEIGHT);
-      cout << "a" << endl;
       MyVector pixel = eye.TopLeftPlain;
   */
-    Sphere s1({0, 1.5, 1}, 1, Color(0.7, 0.7, 0.7), 0);
-    Sphere s2({0.5, 1.5, 1}, 1, Color(0.7, 0.7, 0.7), 0);
+    Sphere s1(MyVector(0, 1.5, 1), 1, Color(0.7, 0.7, 0.7), 0);
+    Sphere s2(MyVector(0.5, 1.5, 1), 1, Color(0.7, 0.7, 0.7), 0);
     std::vector<Object *> intersectObject;
     intersectObject.push_back(new Intersection(&s1, &s2));
     Scene scene(10);
     Ray r(MyVector(0, 0, 0), MyVector(0, 1, 0));
-    cout << typeid(intersectObject).name() << endl;
-    cout << typeid(scene.world).name() << endl;
+    // cout << typeid(intersectObject).name() << endl;
+    // cout << typeid(scene.world).name() << endl;
     double b = scene.world[0]->hit(&r);
+    cout << b << endl;
     double a = intersectObject[0]->hit(&r);
-    cout << b << ", " << a << endl;
+    cout << a << endl;
     /* for (int i = 0; i < image.height; i++)
      {
          for (int j = 0; j < image.width; j++)
