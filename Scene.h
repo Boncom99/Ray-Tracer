@@ -146,7 +146,7 @@ Scene::Scene(int i)
         // roof
         world.push_back(new Parallelogram(MyVector(4, 0, 0), MyVector(0, 4, 0), MyVector(-2, 0, 4), Color(1, 1, 1), 1));
         // objects
-        world.push_back(new Sphere({1, 3, 0.8}, 0.8, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new Sphere(MyVector(1, 3, 0.8), 0.8, Color(0.7, 0.7, 0.7), 0));
         // world.push_back(new SphereGlass({-1, 2, 2.8}, 0.7, Color(0.7, 0.7, 0.7), 1.52));
         //   square
         world.push_back(new Parallelogram(MyVector(1, 1, 0), MyVector(0, 0, 2), MyVector(-1, 2.5, 0), Color(0.3, 0.3, 0.8), 1));
@@ -294,7 +294,7 @@ Scene::Scene(int i)
     }
     case 10:
     {
-        // dos esferes una moventse
+        // Intersection
         HEIGHT = 500;
         WIDTH = 500;
         widthOfMatrix = 3;
@@ -309,9 +309,9 @@ Scene::Scene(int i)
         blur = 0;
         gammaCorrection = 1 / 1.9;
         Sphere s1({0, 1.5, 1}, 1, Color(0.7, 0.7, 0.7), 0);
-        Sphere s2({0, 1.5, 1}, 1, Color(0.7, 0.7, 0.7), 0);
+        Sphere s2({0.5, 1.5, 1}, 1, Color(0.7, 0.7, 0.7), 0);
         world.push_back(new Intersection(&s1, &s2));
-        world.push_back(new Light(MyVector(-20, -2, 8), 7, Color(1, 1, 1)));
+        // world.push_back(new Light(MyVector(-20, -2, 8), 7, Color(1, 1, 1)));
         size = world.size();
 
         break;

@@ -16,21 +16,19 @@ double max(double a, double b)
         return a;
     return b;
 }
-double call_foo(Object &obj, Ray *ray) { return obj.hit(ray); }
 double Intersection::hit(Ray *ray)
 {
-    // double a = 1; //direction.moduleSq() //sempre valdrà 1
-    std::cout << object1->color.red << std::endl;
-    double h1 = call_foo(object1, ray);
-
-    std::cout << "b" << std::endl;
-    if (h1 < 0)
+    std::cout << "principi de la crida" << std::endl;
+    object1->hit(ray);
+    std::cout << "final de la crida" << std::endl;
+    double h = 0;
+    if (h < 0)
         return -1;
     double h2 = object2->hit(ray);
     if (h2 < 0)
         return -1;
 
-    return max(h1, h2);
+    return max(h, h2);
 }
 void Intersection::Rebound(Ray *ray, MyVector hitPosition)
 {
