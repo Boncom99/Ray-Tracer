@@ -297,8 +297,8 @@ Scene::Scene(int i)
     case 9:
     {
         // Julia set
-        HEIGHT = 400;
-        WIDTH = 400;
+        HEIGHT = 300;
+        WIDTH = 300;
         widthOfMatrix = 3;
         maxBouncesOfRay = 4;
         eyePosition = MyVector(0, -4, 0);

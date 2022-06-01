@@ -59,17 +59,18 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
 }
 Color PaintFractal(Ray *ray, Scene scene, JuliaSet julia, int Bounces)
 {
+    // FALTA POSAR LA LLUM !
     if (Bounces <= 0)
-        return Color(0, 0, 0);
+        return 0.5 * julia.color;
     double dist = julia.hit(ray);
-    if (dist < 0) // intersecció!
+    if (dist < 0)
     {
         // background
         return Color(0, 0, 0);
     }
     MyVector impactPos = ray->getPosition(dist);
     julia.Rebound(ray, impactPos);
-    return (scene.lightAbsortion * julia.color) * PaintFractal(ray, scene, julia, Bounces - 1);
+    return (0.9 * julia.color) * PaintFractal(ray, scene, julia, Bounces - 1);
 }
 
 int main()
@@ -88,8 +89,7 @@ int main()
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {
                 Ray ray(&eye, pixel, image.blur);
-                pixelColor += PaintFractal(&ray, julia, scene.maxBouncesOfRay);
-                // pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
+                pixelColor += PaintFractal(&ray, scene, julia, 5);
             }
             image.matrix[i][j] = pixelColor;
             pixel = pixel + (image.dimPixel * eye.horizontalVector);

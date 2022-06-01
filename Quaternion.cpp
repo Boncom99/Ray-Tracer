@@ -2,7 +2,9 @@
 Quaternion::Quaternion() : x(0), y(0), z(0), k(0)
 {
 }
-
+Quaternion::Quaternion(MyVector a, double k) : x(a.x), y(a.y), z(a.z), k(k)
+{
+}
 Quaternion::Quaternion(double x, double y, double z, double k) : x(x), y(y), z(z), k(k)
 {
 }
@@ -69,4 +71,11 @@ void Quaternion::QAbsoluteValue()
 Quaternion from3Dto4D(MyVector v, double d)
 {
     return Quaternion(v.x, v.y, v.z, d);
+}
+Quaternion Qsq(Quaternion q)
+{
+    MyVector s(q.y, q.z, q.k);
+    double x = q.x * q.x - dotProduct(s, s);
+    s = 2 * q.x * s;
+    return Quaternion(x, s.x, s.y, s.z);
 }

@@ -42,7 +42,7 @@ double JuliaSet::hit(Ray *ray)
 {
     Quaternion rayDirection = from3Dto4D(ray->direction, fixedK);
     Quaternion rayPosition = from3Dto4D(ray->position, fixedK);
-    for (int count = 0; count < 600; count++)
+    for (int count = 0; count < 300; count++)
     {
         Quaternion z = rayPosition;
         Quaternion dz(1, 0, 0, 0);
@@ -52,18 +52,46 @@ double JuliaSet::hit(Ray *ray)
         float dist = 0.5 * normZ * log(normZ) / dz.QModule(); // lower bound on distance to surface
         rayPosition += rayDirection * dist;
         // std::cout << d << std::endl;
-        if (dist < 0.000001)
+        if (dist < 0.00001)
         {
             //  return totalDistance;
             return count;
         }
-        if (dist > 1000)
+        if (dist > 100)
             return -1;
     }
     return -1;
 }
+MyVector normEstimate(MyVector p, Quaternion c, int maxIterations)
+{
+    const double delta = 0.0001;
+    MyVector N;
+    Quaternion qP(p, 0);
+    float gradX, gradY, gradZ;
+    Quaternion gx1 = qP - Quaternion(delta, 0, 0, 0);
+    Quaternion gx2 = qP + Quaternion(delta, 0, 0, 0);
+    Quaternion gy1 = qP - Quaternion(0, delta, 0, 0);
+    Quaternion gy2 = qP + Quaternion(0, delta, 0, 0);
+    Quaternion gz1 = qP - Quaternion(0, 0, delta, 0);
+    Quaternion gz2 = qP + Quaternion(0, 0, delta, 0);
+    for (int i = 0; i < maxIterations; i++)
+    {
+        gx1 = Qsq(gx1) + c;
+        gx2 = Qsq(gx2) + c;
+        gy1 = Qsq(gy1) + c;
+        gy2 = Qsq(gy2) + c;
+        gz1 = Qsq(gz1) + c;
+        gz2 = Qsq(gz2) + c;
+    }
+    gradX = gx2.QModule() - gx1.QModule();
+    gradY = gy2.QModule() - gy1.QModule();
+    gradZ = gz2.QModule() - gz1.QModule();
+    N = MyVector(gradX, gradY, gradZ);
+    N.normalize();
+    return N;
+}
 MyVector JuliaSet::NormalVector(MyVector position)
 {
-    return MyVector(0, 0, 0);
+    return normEstimate(position, c, 30);
 }
 #endif

@@ -15,6 +15,7 @@ public:
 
 public:
     Quaternion();
+    Quaternion(MyVector a, double k);
     Quaternion(double x, double y, double z, double k);
     void printQuat();
     friend Quaternion operator*(double d, const Quaternion &v);
@@ -64,5 +65,6 @@ public:
     void QAbsoluteValue();
 };
 Quaternion product(Quaternion v1, Quaternion v2);
+Quaternion Qsq(Quaternion v1); // quadrat d' un quaternió (optimitzada)
 Quaternion from3Dto4D(MyVector v, double d);
 #endif
