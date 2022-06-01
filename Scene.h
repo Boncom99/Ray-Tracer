@@ -295,15 +295,15 @@ Scene::Scene(int i) : world(std::vector<Object *>())
     case 10:
     {
         // Intersection
-        HEIGHT = 500;
-        WIDTH = 500;
+        HEIGHT = 300;
+        WIDTH = 300;
         widthOfMatrix = 3;
         maxBouncesOfRay = 15;
         eyePosition = MyVector(2, -3, 2);
         lookAt = MyVector(0, 2, 1);
         verticalVector = MyVector(0, 0, 1);
         distanceToMatrix = 2;
-        samplePerPixel = 90;
+        samplePerPixel = 9;
         background = Color(0.6, 0.6, 0.65);
         lightAbsortion = 0.8;
         blur = 0;

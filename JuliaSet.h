@@ -11,6 +11,7 @@ public:
     JuliaSet(double threshold);
     MyVector NormalVector(MyVector position); // null
     double hit(Ray *ray);                     // RayMarching
+    double distance(MyVector position);
 };
 
 JuliaSet::JuliaSet() : threshold(0.1)
@@ -26,9 +27,9 @@ MyVector NormalVector(MyVector position)
 
     return MyVector();
 }
-double distance(MyVector)
+double JuliaSet::distance(MyVector)
 {
-    double zn = 2 zn return 4;
+    return 4;
 }
 double JuliaSet::hit(Ray *ray)
 {

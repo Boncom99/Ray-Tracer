@@ -17,6 +17,7 @@ public:
     Torus(MyVector center, double R, double r, MyVector direction, Color c, float roughness);
     MyVector NormalVector(MyVector position);
     double hit(Ray *ray);
+    double distance(MyVector p) { return 0; }
 };
 
 Torus::Torus(MyVector center, double R, double r, MyVector direction, Color c, float roughness) : Object(c, roughness), center(center), R(R), r(r), direction(direction), surround(Surround(center, R + r))

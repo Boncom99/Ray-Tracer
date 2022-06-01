@@ -17,6 +17,7 @@ public:
     MyVector NormalVector(MyVector position);
     double hit(Ray *ray);
     void Rebound(Ray *ray, MyVector hitPosition);
+    double distance(MyVector p);
 };
 
 #endif

@@ -16,6 +16,7 @@ public:
     Sphere(MyVector cent, double rad, Color col, float roughness);
     MyVector NormalVector(MyVector position);
     double hit(Ray *ray);
+    double distance(MyVector position);
 };
 
 #endif

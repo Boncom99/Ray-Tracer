@@ -16,6 +16,7 @@ public:
     // char typeRebound;
     virtual double hit(Ray *ray) = 0;
     virtual MyVector NormalVector(MyVector position) = 0;
+    virtual double distance(MyVector position) = 0;
     void Rebound(Ray *ray, MyVector hitPosition)
     {
 

@@ -11,6 +11,7 @@ public:
     Plane(MyVector normal, MyVector point, Color c, float roughness);
     MyVector NormalVector(MyVector position);
     double hit(Ray *ray);
+    double distance(MyVector p);
 };
 
 Plane::Plane(MyVector normal, MyVector point, Color c, float roughness) : Object(c, roughness), normal(normal), point(point)
@@ -35,5 +36,8 @@ double Plane::hit(Ray *ray)
     }
     return -1;
 }
-
+double Plane::distance(MyVector p)
+{
+    return 0;
+}
 #endif

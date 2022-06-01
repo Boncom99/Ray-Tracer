@@ -16,16 +16,28 @@ double max(double a, double b)
         return a;
     return b;
 }
+double Intersection::distance(MyVector p)
+{
+    double d1 = object1->distance(p);
+    double d2 = object2->distance(p);
+    return max(d1, d2);
+}
 double Intersection::hit(Ray *ray)
 {
-    double h = object1->hit(ray);
-    if (h < 0)
-        return -1;
-    double h2 = object2->hit(ray);
-    if (h2 < 0)
-        return -1;
-
-    return max(h, h2);
+    MyVector position = ray->position;
+    double d = distance(position);
+    double total = d;
+    for (int i = 0; i < 100; i++)
+    {
+        if (d < 0.05)
+        {
+            std::cout << "a";
+            return total;
+        }
+        d = distance(position);
+        total += d;
+    }
+    return -1;
 }
 void Intersection::Rebound(Ray *ray, MyVector hitPosition)
 {

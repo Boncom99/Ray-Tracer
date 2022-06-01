@@ -12,6 +12,7 @@ public:
     Cube(Parallelogram base, double height);
     MyVector NormalVector(MyVector position);
     double hit(Ray ray);
+    double distance(MyVector p) { return 0; }
 };
 
 Cube::Cube() : base(Parallelogram()), height(0)

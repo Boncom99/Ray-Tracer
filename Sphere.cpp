@@ -29,3 +29,8 @@ double Sphere::hit(Ray *ray)
 
     return -1;
 }
+double Sphere::distance(MyVector position)
+{
+    MyVector dist = center - position;
+    return (dist.module() - radius);
+}

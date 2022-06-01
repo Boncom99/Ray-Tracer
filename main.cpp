@@ -91,6 +91,5 @@ int main()
     string name = "Time: " + std::to_string(frameTimeS) + ", Width: " + std::to_string(scene.WIDTH) + ", Height: " + std::to_string(scene.HEIGHT);
     image.printImage(name);
     // cout << "Time To process image: " << frameTimeMs << "s" << endl;
-
     return 0;
 }
