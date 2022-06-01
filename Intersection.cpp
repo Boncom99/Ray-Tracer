@@ -18,9 +18,7 @@ double max(double a, double b)
 }
 double Intersection::hit(Ray *ray)
 {
-    std::cout << "principi de la crida" << std::endl;
     double h = object1->hit(ray);
-    std::cout << "final de la crida" << std::endl;
     if (h < 0)
         return -1;
     double h2 = object2->hit(ray);

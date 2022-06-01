@@ -310,7 +310,6 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         gammaCorrection = 1 / 1.9;
         Sphere *s1 = new Sphere(MyVector(0, 1.5, 1), 1, Color(0.7, 0.7, 0.7), 0);
         Sphere *s2 = new Sphere(MyVector(0.5, 1.5, 1), 1, Color(0.7, 0.7, 0.7), 0);
-        // world = std::vector<Object *>();
         world.push_back(new Intersection(s1, s2));
         std::cout << world[0]->color.red << std::endl;
         // world.push_back(new Light(MyVector(-20, -2, 8), 7, Color(1, 1, 1)));
