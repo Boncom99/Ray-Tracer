@@ -292,30 +292,6 @@ Scene::Scene(int i)
 
         break;
     }
-    case 10:
-    {
-        // dos esferes una moventse
-        HEIGHT = 500;
-        WIDTH = 500;
-        widthOfMatrix = 3;
-        maxBouncesOfRay = 15;
-        eyePosition = MyVector(2, -3, 2);
-        lookAt = MyVector(0, 2, 1);
-        verticalVector = MyVector(0, 0, 1);
-        distanceToMatrix = 2;
-        samplePerPixel = 90;
-        background = Color(0.6, 0.6, 0.65);
-        lightAbsortion = 0.8;
-        blur = 0;
-        gammaCorrection = 1 / 1.9;
-        Sphere s1({0, 1.5, 1}, 1, Color(0.7, 0.7, 0.7), 0);
-        Sphere s2({0, 1.5, 1}, 1, Color(0.7, 0.7, 0.7), 0);
-        world.push_back(new Intersection(&s1, &s2));
-        world.push_back(new Light(MyVector(-20, -2, 8), 7, Color(1, 1, 1)));
-        size = world.size();
-
-        break;
-    }
     }
 }
 
