@@ -28,7 +28,7 @@ public:
     Scene(int i);
 };
 
-Scene::Scene(int i)
+Scene::Scene(int i) : world(std::vector<Object *>())
 {
     switch (i)
     {
@@ -297,22 +297,24 @@ Scene::Scene(int i)
     case 9:
     {
         // Julia set
-        HEIGHT = 300;
-        WIDTH = 300;
+        HEIGHT = 800;
+        WIDTH = 800;
         widthOfMatrix = 3;
-        maxBouncesOfRay = 4;
-        eyePosition = MyVector(0, -4, 0);
+        maxBouncesOfRay = 10;
+        eyePosition = MyVector(0, 5, 0);
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0, 1);
         distanceToMatrix = 3.1;
-        samplePerPixel = 8;
-        background = Color(0, 0, 0);
+        samplePerPixel = 40;
+        background = Color(0.2, 0.2, 0.2);
         lightAbsortion = 0.8;
         blur = 0;
         gammaCorrection = 1 / 1.5;
-        // world.push_back(new JuliaSet(0,)));
-        /* world.push_back(new Sphere({0, 0, -200}, 200, Color(0.6, 0.6, 0.5), 1));
-        world.push_back(new Light(MyVector(-20, -2, 8), 7, Color(1, 1, 1)));*/
+        world.push_back(new JuliaSet(0, Quaternion(-0.4, 0, 0, 0), Color(0.8, 0.6, 0.5)));
+        world.push_back(new Light(MyVector(-3, -5, -2), 3, Color(1, 1, 1)));
+        world.push_back(new Light(MyVector(-3, -5, 2), 3, Color(1, 1, 1)));
+        world.push_back(new Light(MyVector(3, -5, 2), 3, Color(1, 1, 1)));
+        world.push_back(new Light(MyVector(3, -5, -2), 3, Color(1, 1, 1)));
         size = world.size();
 
         break;
