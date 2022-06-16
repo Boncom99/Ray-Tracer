@@ -39,37 +39,25 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
                                   [](const auto &l, const auto &r)
                                   { return l.second < r.second; });
         MyVector impactPos = ray->getPosition(object->second);
-        if (dynamic_cast<Light *>(object->first) == nullptr && dynamic_cast<JuliaSet *>(object->first) == nullptr) // en cas que impacti amb la font d'iluminació
+        if (dynamic_cast<Light *>(object->first) == nullptr) // en cas que impacti amb la font d'iluminació
         {
 
             SphereGlass *child = dynamic_cast<SphereGlass *>(object->first);
+            // JuliaSet *julia = dynamic_cast<JuliaSet *>(object->first);
             if (child)
                 child->Rebound(ray, impactPos);
-            else
-                object->first->Rebound(ray, impactPos);
+            // else if (julia)
+            {
+                MyVector N = object->first->NormalVector(impactPos);
+                return object->first->Phong(MyVector(-1, 5, -0.3), scene.eyePosition, impactPos, N);
+            }
+            object->first->Rebound(ray, impactPos);
             return (scene.lightAbsortion * object->first->color) * PaintPixel(scene, ray, Bounces - 1);
         }
         else
-        {
             return object->first->color;
-        }
     }
     return scene.background;
-}
-Color PaintFractal(Ray *ray, Scene scene, JuliaSet julia, int Bounces)
-{
-    // FALTA POSAR LA LLUM !
-    if (Bounces <= 0)
-        return 0.5 * julia.color;
-    double dist = julia.hit(ray);
-    if (dist < 0)
-    {
-        // background
-        return Color(0, 0, 0);
-    }
-    MyVector impactPos = ray->getPosition(dist);
-    MyVector N = julia.NormalVector(impactPos);
-    return julia.Phong(MyVector(-1, 5, -0.3), MyVector(0, 3, 0), impactPos, N);
 }
 
 int main()
@@ -80,12 +68,7 @@ int main()
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, image.dimPixel, scene.WIDTH, scene.HEIGHT);
     MyVector pixel = eye.TopLeftPlain;
     JuliaSet julia(0, Quaternion(-0.55, 0.2, 0, 0), Color(0.8, 0.6, 0.5));
-    /*  int a = image.height / 2 + 2;
-      int b = image.width / 2 + 2;
-      pixel = pixel + b * (image.dimPixel * eye.horizontalVector);
-      pixel = eye.TopLeftPlain - (1 * (a + 1) * image.dimPixel * eye.verticalVector);
-      Ray ray(&eye, pixel, image.blur);
-      PaintFractal(&ray, scene, julia, 5);*/
+
     for (int i = 0; i < image.height; i++)
     {
         for (int j = 0; j < image.width; j++)
@@ -94,8 +77,8 @@ int main()
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {
                 Ray ray(&eye, pixel, image.blur);
-                pixelColor += PaintFractal(&ray, scene, julia, 5);
-                // pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
+                // pixelColor += PaintFractal(&ray, scene, julia, 5);
+                pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
             }
             image.matrix[i][j] = pixelColor;
             pixel = pixel + (image.dimPixel * eye.horizontalVector);

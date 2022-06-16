@@ -41,5 +41,30 @@ public:
         }
         ray->position = hitPosition;
     }
+    float max(float a, float b)
+    {
+        if (a >= b)
+            return a;
+        return b;
+    }
+    Color Phong(MyVector light, MyVector eye, MyVector pt, MyVector N)
+    {
+        Color diffuse(1.00, 0.45, 0.25); // base color of shading
+        const int specularExponent = 10; // shininess of shading
+        const float specularity = 0.45;  // amplitude of specular highlight
+        MyVector E = (eye - pt);         // find the vector to the eye
+        E.normalize();
+        MyVector L = light - pt; // find the vector to the light
+        L.normalize();
+        float NdotL = dotProduct(N, L); // find the cosine of the angle between light and normal
+
+        MyVector R = L - 2 * NdotL * N;
+        N.absoluteValue(); // find the reflected vector
+        N = N * 0.3;
+        double b = (specularity * pow(max(dotProduct(E, R), 0), specularExponent));
+        diffuse += Color(N.x, N.y, N.z); // add some of the normal to the
+        Color a = (max(NdotL, 0.01) * diffuse);
+        return Color(a.red + b, a.green + b, a.blue + b);
+    }
 };
 #endif

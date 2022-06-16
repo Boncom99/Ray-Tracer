@@ -55,7 +55,7 @@ double JuliaSet::hit(Ray *ray)
         count += dist / 2.0;
         rayPosition += rayDirection * (dist / 2.0);
         // std::cout << d << std::endl;
-        if (dist < 0.001)
+        if (dist < 0.003)
         {
             //  return totalDistance;
             return count;

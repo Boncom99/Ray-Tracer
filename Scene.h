@@ -301,20 +301,18 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         WIDTH = 800;
         widthOfMatrix = 3;
         maxBouncesOfRay = 10;
-        eyePosition = MyVector(0, 5, 0);
+        eyePosition = MyVector(0, 4, 0);
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0, 1);
         distanceToMatrix = 3.1;
-        samplePerPixel = 40;
-        background = Color(0.2, 0.2, 0.2);
+        samplePerPixel = 60;
+        background = Color(0, 0, 0);
         lightAbsortion = 0.8;
         blur = 0;
         gammaCorrection = 1 / 1.5;
-        world.push_back(new JuliaSet(0, Quaternion(-0.4, 0, 0, 0), Color(0.8, 0.6, 0.5)));
-        world.push_back(new Light(MyVector(-3, -5, -2), 3, Color(1, 1, 1)));
-        world.push_back(new Light(MyVector(-3, -5, 2), 3, Color(1, 1, 1)));
-        world.push_back(new Light(MyVector(3, -5, 2), 3, Color(1, 1, 1)));
-        world.push_back(new Light(MyVector(3, -5, -2), 3, Color(1, 1, 1)));
+        world.push_back(new JuliaSet(0, Quaternion(-0.7, 0.6, 0.1, 0), Color(0.8, 0.6, 0.5)));
+        // world.push_back(new Light(MyVector(3, 7, 2), 3, Color(1, 1, 1)));
+        // world.push_back(new Sphere({0, 0, 0}, 1, Color(0.7, 0.7, 0.7), 0));
         size = world.size();
 
         break;
