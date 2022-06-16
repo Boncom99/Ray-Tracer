@@ -20,7 +20,7 @@ int Image::printImage(std::string name)
     std::ofstream output;
     std::time_t t = std::time(0);
     name = std::to_string((int)((t - 1645644194) / 100)) + name;
-    output.open("Output/" + name + ".ppm", std::ios::out); // TODO canviar ppm (compresio) png
+    output.open("Output/" + name + ".ppm", std::ios::out);
 
     if (!output.is_open())
     {
@@ -34,7 +34,6 @@ int Image::printImage(std::string name)
     {
         for (int j = 0; j < width; j++)
         {
-            // gamma correction of g=2
             double r = pow(matrix[i][j].red / SamplesPerPixel, gammaCorrection);
             double g = pow(matrix[i][j].green / SamplesPerPixel, gammaCorrection);
             double b = pow(matrix[i][j].blue / SamplesPerPixel, gammaCorrection);

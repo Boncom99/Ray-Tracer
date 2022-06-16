@@ -43,18 +43,19 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
         {
 
             SphereGlass *child = dynamic_cast<SphereGlass *>(object->first);
+            // JuliaSet *julia = dynamic_cast<JuliaSet *>(object->first);
             if (child)
                 child->Rebound(ray, impactPos);
-            else
-                object->first->Rebound(ray, impactPos);
-
+            // else if (julia)
+            {
+                MyVector N = object->first->NormalVector(impactPos);
+                return object->first->Phong(MyVector(-1, 5, -0.3), scene.eyePosition, impactPos, N);
+            }
+            object->first->Rebound(ray, impactPos);
             return (scene.lightAbsortion * object->first->color) * PaintPixel(scene, ray, Bounces - 1);
-            return Color(0, 0, 0);
         }
         else
-        {
             return object->first->color;
-        }
     }
     return scene.background;
 }
@@ -62,11 +63,12 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
 int main()
 {
     auto start = std::chrono::high_resolution_clock::now();
-    Scene scene(8);
+    Scene scene(9);
     Image image(scene.WIDTH, scene.HEIGHT, scene.widthOfMatrix, scene.samplePerPixel, scene.gammaCorrection, scene.blur);
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, image.dimPixel, scene.WIDTH, scene.HEIGHT);
-    cout << "a" << endl;
     MyVector pixel = eye.TopLeftPlain;
+    JuliaSet julia(0, Quaternion(-0.55, 0.2, 0, 0), Color(0.8, 0.6, 0.5));
+
     for (int i = 0; i < image.height; i++)
     {
         for (int j = 0; j < image.width; j++)
@@ -88,7 +90,7 @@ int main()
     int frameTimeS = static_cast<int>(diff.count());
     string name = "Time: " + std::to_string(frameTimeS) + ", Width: " + std::to_string(scene.WIDTH) + ", Height: " + std::to_string(scene.HEIGHT);
     image.printImage(name);
-    // cout << "Time To process image: " << frameTimeMs << "s" << endl;
+    std::cout << "total time: " << frameTimeS << "s" << std::endl;
 
     return 0;
 }
