@@ -2,7 +2,6 @@
 #define SCENE_H
 #include "Object.h"
 #include "MyVector.h"
-#include "Subtraction.h"
 #include <math.h>
 #include <list>
 class Scene
