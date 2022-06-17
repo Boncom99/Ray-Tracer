@@ -1,6 +1,7 @@
 #include "MyVector.h"
 #include "Sphere.h"
 #include "Intersection.h"
+#include "Subtraction.h"
 #include "Plane.h"
 #include "Square.h"
 #include "Torus.h"
@@ -12,9 +13,8 @@
 #include "SphereMoving.h"
 #include "Light.h"
 #include "Scene.h"
-#include <map>
 #include <chrono>
-#include <typeinfo>
+#include <algorithm>
 
 using namespace std;
 
@@ -26,37 +26,40 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
     }
     bool goesToInfinity = true;
     // Check if ray hits any object
-    map<Object *, double> listObjects;   // list where we keep all objects that intersects with ray
+    double listObjects[scene.size];
+    // map<Object *, double> listObjects;   // list where we keep all objects that intersects with ray
     for (int s = 0; s < scene.size; s++) // per cada spheres
     {
         double t = scene.world[s]->hit(ray);
         if (t > 0.0001) // intersecció!
         {
             goesToInfinity = false;
-            listObjects[scene.world[s]] = t;
+            // listObjects[scene.world[s]] = t;
+            listObjects[s] = t;
         }
     }
     if (!goesToInfinity)
     {
-        auto object = min_element(listObjects.begin(), listObjects.end(), // escollim l'objecte amb que primer intersecciona amb el raig
-                                  [](const auto &l, const auto &r)
-                                  { return l.second < r.second; });
-        MyVector impactPos = ray->getPosition(object->second);
-        if (dynamic_cast<Light *>(object->first) == nullptr) // en cas que impacti amb la font d'iluminació
+        double *min = std::min_element(listObjects, listObjects + scene.size);
+        Object *object;
+        object = scene.world[*min];
+
+        MyVector impactPos = ray->getPosition(*min);
+        if (dynamic_cast<Light *>(object) == nullptr) // en cas que impacti amb la font d'iluminació
         {
 
-            SphereGlass *child = dynamic_cast<SphereGlass *>(object->first);
+            SphereGlass *child = dynamic_cast<SphereGlass *>(object);
             if (child)
                 child->Rebound(ray, impactPos);
             else
-                object->first->Rebound(ray, impactPos);
+                object->Rebound(ray, impactPos);
 
-            return (scene.lightAbsortion * object->first->color) * PaintPixel(scene, ray, Bounces - 1);
+            return (scene.lightAbsortion * object->color) * PaintPixel(scene, ray, Bounces - 1);
             return Color(0, 0, 0);
         }
         else
         {
-            return object->first->color;
+            return object->color;
         }
     }
     return scene.background;

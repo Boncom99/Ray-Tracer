@@ -3,7 +3,7 @@
 #include "Color.h"
 #include "Sphere.h"
 
-Intersection::Intersection(Object *o1, Object *o2) : Object(Color(0, 0, 0), 0), object1(o1), object2(o2)
+Intersection::Intersection(Object *o1, Object *o2, double r) : Object(o1->color, r), object1(o1), object2(o2)
 {
 }
 MyVector Intersection::NormalVector(MyVector position)
@@ -25,15 +25,15 @@ double Intersection::distance(MyVector p)
 double Intersection::hit(Ray *ray)
 {
     MyVector position = ray->position;
-    double d = distance(position);
+    double d = this->distance(position);
     double total = d;
     for (int i = 0; i < 100; i++)
     {
         if (d < 0.05)
         {
-            std::cout << "a";
             return total;
         }
+        position += d * ray->direction;
         d = distance(position);
         total += d;
     }

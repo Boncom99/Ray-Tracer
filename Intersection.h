@@ -13,7 +13,7 @@ public:
     Object *object2;
 
 public:
-    Intersection(Object *o1, Object *o2);
+    Intersection(Object *o1, Object *o2, double r);
     MyVector NormalVector(MyVector position);
     double hit(Ray *ray);
     void Rebound(Ray *ray, MyVector hitPosition);

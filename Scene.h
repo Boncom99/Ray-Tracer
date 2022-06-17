@@ -2,6 +2,7 @@
 #define SCENE_H
 #include "Object.h"
 #include "MyVector.h"
+#include "Subtraction.h"
 #include <math.h>
 #include <list>
 class Scene
@@ -299,20 +300,20 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         WIDTH = 300;
         widthOfMatrix = 3;
         maxBouncesOfRay = 15;
-        eyePosition = MyVector(2, -3, 2);
-        lookAt = MyVector(0, 2, 1);
+        eyePosition = MyVector(0, -4, 0);
+        lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0, 1);
-        distanceToMatrix = 2;
+        distanceToMatrix = 3;
         samplePerPixel = 9;
-        background = Color(0.6, 0.6, 0.65);
+        background = Color(0.2, 0.2, 0.2);
         lightAbsortion = 0.8;
         blur = 0;
         gammaCorrection = 1 / 1.9;
-        Sphere *s1 = new Sphere(MyVector(0, 1.5, 1), 1, Color(0.7, 0.7, 0.7), 0);
-        Sphere *s2 = new Sphere(MyVector(0.5, 1.5, 1), 1, Color(0.7, 0.7, 0.7), 0);
-        world.push_back(new Intersection(s1, s2));
-        std::cout << world[0]->color.red << std::endl;
-        // world.push_back(new Light(MyVector(-20, -2, 8), 7, Color(1, 1, 1)));
+        Sphere *s1 = new Sphere(MyVector(1, 0, 0), 1, Color(0.4, 1.4, 1.4), 0);
+        Sphere *s2 = new Sphere(MyVector(0.5, 0, 0), 1, Color(0.4, 1.4, 1.4), 0);
+        // world.push_back(new Intersection(s1, s2, 1));
+        world.push_back(new Subtraction(s1, s2, 1));
+        world.push_back(new Light(MyVector(-3, -6, 2), 2, Color(1, 1, 1)));
         size = world.size();
 
         break;
