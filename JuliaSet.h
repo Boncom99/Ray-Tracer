@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Ray.h"
 #include "MyVector.h"
+#include "Surround.h"
 #include "Quaternion.h"
 class JuliaSet : public Object
 {
@@ -41,6 +42,9 @@ void JuliaSet::iterate(Quaternion &z, Quaternion &dz)
 
 double JuliaSet::hit(Ray *ray)
 {
+    Surround surround(MyVector(0, 0, 0), 2);
+    if (!surround.hit(ray))
+        return -1;
     double count = 0;
     Quaternion rayDirection = from3Dto4D(ray->direction, fixedK);
     Quaternion rayPosition = from3Dto4D(ray->position, fixedK);

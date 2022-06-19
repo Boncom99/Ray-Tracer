@@ -26,9 +26,9 @@ bool Surround::hit(Ray *ray)
         double t = (-1 * b - sqrt(discriminant)); // ens quedem amb la primera solució ja que no volem entrar a l'esfera
         if (t > 0.00001)
             return true;
-        double t2 = (-1 * b + sqrt(discriminant)); // estem dins l'esfera
-        if (t2 > 0.00001)
-            return true;
+        /* double t2 = (-1 * b + sqrt(discriminant)); // estem dins l'esfera
+         if (t2 > 0.00001)
+             return true;*/
     }
 
     return false;
