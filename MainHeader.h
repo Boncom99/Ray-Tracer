@@ -68,8 +68,9 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
                 child->Rebound(ray, impactPos);
             else if (julia)
             {
-                MyVector N = object->NormalVector(impactPos);
-                return object->Phong(MyVector(-1, 3, 1), scene.eyePosition, impactPos, N);
+                // MyVector N = object->NormalVector(impactPos);
+                return julia->colorize(listTimes[min]);
+                // return object->Phong(MyVector(-1, 3, 1), scene.eyePosition, impactPos, N);
             }
             else
                 object->Rebound(ray, impactPos);

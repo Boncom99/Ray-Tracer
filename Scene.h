@@ -297,15 +297,15 @@ Scene::Scene(int i) : world(std::vector<Object *>())
     case 9:
     {
         // Julia set
-        HEIGHT = 800;
-        WIDTH = 800;
+        HEIGHT = 300;
+        WIDTH = 300;
         widthOfMatrix = 3;
         maxBouncesOfRay = 10;
         eyePosition = MyVector(-2.5, -4, 0);
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0, 1);
         distanceToMatrix = 2;
-        samplePerPixel = 50;
+        samplePerPixel = 6;
         background = Color(0, 0, 0);
         lightAbsortion = 0.8;
         blur = 0;
@@ -317,15 +317,15 @@ Scene::Scene(int i) : world(std::vector<Object *>())
     case 10:
     {
 
-        // Intersection
-        HEIGHT = 300;
-        WIDTH = 300;
+        // Intersection and subtraction
+        HEIGHT = 200;
+        WIDTH = 200;
         widthOfMatrix = 3;
-        maxBouncesOfRay = 15;
-        eyePosition = MyVector(0, -4, 0);
+        maxBouncesOfRay = 10;
+        eyePosition = MyVector(-2.5, -4, 0);
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0, 1);
-        distanceToMatrix = 3;
+        distanceToMatrix = 2;
         samplePerPixel = 20;
         background = Color(0, 0, 0);
         lightAbsortion = 0.8;
@@ -344,21 +344,24 @@ Scene::Scene(int i) : world(std::vector<Object *>())
     case 11:
     {
 
-        // One ball
-        HEIGHT = 10;
-        WIDTH = 10;
+        // Julia intersection
+        HEIGHT = 100;
+        WIDTH = 100;
         widthOfMatrix = 3;
         maxBouncesOfRay = 15;
         eyePosition = MyVector(0, -4, 0);
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0, 1);
         distanceToMatrix = 4;
-        samplePerPixel = 20;
+        samplePerPixel = 10;
         background = Color(0, 0, 0);
         lightAbsortion = 0.8;
         blur = 0;
         gammaCorrection = 1 / 1.9;
-        world.push_back(new Sphere(MyVector(0, 0, 0), 3, Color(0.7, 0.7, 0.7), 0));
+        Sphere *sphere = new Sphere(MyVector(0, 0, -2.7), 3, Color(1.00, 0.45, 0.25), 0);
+        JuliaSet *julia = new JuliaSet(0, Quaternion(-0.6, 0, 0, 0), Color(1.00, 0.45, 0.25));
+        world.push_back(new Intersection(sphere, julia, 1));
+
         world.push_back(new Light(MyVector(0, -6, 1), 1.9, Color(2, 2, 2)));
         size = world.size();
 

@@ -19,6 +19,7 @@ public:
     double distance(MyVector position);
     void iterate(Quaternion &z, Quaternion &dz);
     Color Phong(MyVector light, MyVector eye, MyVector pt, MyVector N);
+    Color colorize(int i);
 };
 JuliaSet::JuliaSet() : Object(Color(0.8, 0.6, 0.5), 0), fixedK(0), c(Quaternion(-0.5, 0.2, 0.1, 0))
 {
@@ -70,13 +71,15 @@ double JuliaSet::hit(Ray *ray)
         rayPosition += rayDirection * (dist / 2.0);
         if (dist < 0.0001)
         {
-            return count;
+            // return count;
+            return i;
         }
         if (dist > 15)
             return -1;
     }
     return -1;
 }
+
 MyVector normEstimate(MyVector p, Quaternion c, int maxIterations)
 {
     const double delta = 0.00001;
@@ -108,7 +111,7 @@ MyVector normEstimate(MyVector p, Quaternion c, int maxIterations)
 }
 MyVector JuliaSet::NormalVector(MyVector position)
 {
-    return normEstimate(position, c, 6);
+    return normEstimate(position, c, 15);
 }
 float max(float a, float b)
 {
@@ -137,5 +140,16 @@ Color JuliaSet::Phong(MyVector light, MyVector eye, MyVector pt, MyVector N)
     Color a = (max(NdotL, 0.02) * diffuse);
     return Color(a.red + b, a.green + b, a.blue + b);
     // return Color(1, 0.4, 0.3);
+}
+Color JuliaSet::colorize(int i)
+{
+    Color clear(1.20, 0.53, 0.296);
+    Color dark(0.3, 0.1, 0.9);
+    Color DarkminusClear = dark + (-1.0 * clear); // resta dels colors
+    double m = 600;
+    Color c = (-1.0 / (m * m) * i * i * DarkminusClear) + (2.0 / m * i * DarkminusClear) + clear;
+    if (c.red <= dark.red)
+        return dark;
+    return c;
 }
 #endif
