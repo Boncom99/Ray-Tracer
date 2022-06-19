@@ -49,7 +49,8 @@ public:
     }
     Color Phong(MyVector light, MyVector eye, MyVector pt, MyVector N)
     {
-        Color diffuse(1.00, 0.45, 0.25); // base color of shading
+        Color diffuse = this->color;
+        //(1.00, 0.45, 0.25);              // base color of shading
         const int specularExponent = 10; // shininess of shading
         const float specularity = 0.45;  // amplitude of specular highlight
         MyVector E = (eye - pt);         // find the vector to the eye

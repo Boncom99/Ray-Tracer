@@ -59,12 +59,12 @@ double JuliaSet::hit(Ray *ray)
         count += dist / 2.0;
         rayPosition += rayDirection * (dist / 2.0);
         // std::cout << d << std::endl;
-        if (dist < 0.003)
+        if (dist < 0.0001)
         {
             //  return totalDistance;
             return count;
         }
-        if (dist > 40)
+        if (dist > 15)
             return -1;
     }
     return -1;
@@ -111,7 +111,8 @@ float max(float a, float b)
 Color JuliaSet::Phong(MyVector light, MyVector eye, MyVector pt, MyVector N)
 {
 
-    Color diffuse(1.00, 0.45, 0.25); // base color of shading
+    // Color diffuse(1.00, 0.45, 0.25); // base color of shading
+    Color diffuse = this->color;
     const int specularExponent = 10; // shininess of shading
     const float specularity = 0.45;  // amplitude of specular highlight
     MyVector E = (eye - pt);         // find the vector to the eye

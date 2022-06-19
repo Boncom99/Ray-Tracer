@@ -297,22 +297,20 @@ Scene::Scene(int i) : world(std::vector<Object *>())
     case 9:
     {
         // Julia set
-        HEIGHT = 800;
-        WIDTH = 800;
+        HEIGHT = 500;
+        WIDTH = 500;
         widthOfMatrix = 3;
         maxBouncesOfRay = 10;
-        eyePosition = MyVector(0, 4, 0);
+        eyePosition = MyVector(-2.5, -4, -0.2);
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0, 1);
         distanceToMatrix = 3.8;
-        samplePerPixel = 60;
+        samplePerPixel = 10;
         background = Color(0, 0, 0);
         lightAbsortion = 0.8;
         blur = 0;
         gammaCorrection = 1 / 1.5;
-        world.push_back(new JuliaSet(0, Quaternion(-0.4, 0.2, 0.1, 0), Color(0.8, 0.6, 0.5)));
-        // world.push_back(new Light(MyVector(3, 7, 2), 3, Color(1, 1, 1)));
-        // world.push_back(new Sphere({0, 0, 0}, 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new JuliaSet(0, Quaternion(-0.15, -0.65, 0, 0), Color(0.6, 0.6, 0.6)));
         size = world.size();
 
         break;

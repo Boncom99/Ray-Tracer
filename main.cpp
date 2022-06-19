@@ -43,13 +43,14 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
         {
 
             SphereGlass *child = dynamic_cast<SphereGlass *>(object->first);
-            // JuliaSet *julia = dynamic_cast<JuliaSet *>(object->first);
+            JuliaSet *julia = dynamic_cast<JuliaSet *>(object->first);
             if (child)
                 child->Rebound(ray, impactPos);
-            // else if (julia)
+            else if (julia)
             {
                 MyVector N = object->first->NormalVector(impactPos);
-                return object->first->Phong(MyVector(-1, 5, -0.3), scene.eyePosition, impactPos, N);
+                // return object->first->Phong(MyVector(-1, 5, -0.3), scene.eyePosition, impactPos, N);
+                return object->first->Phong(MyVector(-2, -3, 0), scene.eyePosition, impactPos, N);
             }
             object->first->Rebound(ray, impactPos);
             return (scene.lightAbsortion * object->first->color) * PaintPixel(scene, ray, Bounces - 1);
