@@ -1,11 +1,6 @@
-#ifndef SUBTRACTION_H
-#define SUBTRACTION_H
-#include <vector>
-#include "Object.h"
-#include "Ray.h"
-#include "MyVector.h"
-#include "Color.h"
-#include <iostream>
+#ifndef SUBTRACTIONN_H
+#define SUBTRACTIONN_H
+
 class Subtraction : public Object
 {
 public:

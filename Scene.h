@@ -303,16 +303,17 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0, 1);
         distanceToMatrix = 3;
-        samplePerPixel = 9;
-        background = Color(0.2, 0.2, 0.2);
+        samplePerPixel = 20;
+        background = Color(0, 0, 0);
         lightAbsortion = 0.8;
         blur = 0;
         gammaCorrection = 1 / 1.9;
-        Sphere *s1 = new Sphere(MyVector(1, 0, 0), 1, Color(0.4, 1.4, 1.4), 0);
-        Sphere *s2 = new Sphere(MyVector(0.5, 0, 0), 1, Color(0.4, 1.4, 1.4), 0);
+        Sphere *s1 = new Sphere(MyVector(0.7, 0, 0.2), 1, Color(0.4, 1.4, 1.4), 0);
+        Sphere *s2 = new Sphere(MyVector(1, 0, 0), 1, Color(0.4, 1.4, 1.4), 0);
         // world.push_back(new Intersection(s1, s2, 1));
-        world.push_back(new Subtraction(s1, s2, 1));
-        world.push_back(new Light(MyVector(-3, -6, 2), 2, Color(1, 1, 1)));
+        world.push_back(new Subtraction(s1, s2, 0));
+        world.push_back(new Sphere(MyVector(0, 0, -201.5), 200, Color(0.6, 0.6, 0.5), 1));
+        world.push_back(new Light(MyVector(-3, -6, 2), 2, Color(2, 2, 2)));
         size = world.size();
 
         break;

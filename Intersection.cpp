@@ -10,17 +10,12 @@ MyVector Intersection::NormalVector(MyVector position)
 {
     return MyVector(0, 0, 0);
 }
-double max(double a, double b)
-{
-    if (a >= b)
-        return a;
-    return b;
-}
+
 double Intersection::distance(MyVector p)
 {
     double d1 = object1->distance(p);
     double d2 = object2->distance(p);
-    return max(d1, d2);
+    return std::max(d1, d2);
 }
 double Intersection::hit(Ray *ray)
 {

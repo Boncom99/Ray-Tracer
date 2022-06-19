@@ -15,9 +15,23 @@
 #include "Scene.h"
 #include <chrono>
 #include <algorithm>
+#include <iterator>
 
 using namespace std;
-
+double minPositiveTime(double array[], int n)
+{
+    int aux = -1;
+    double val = 1000;
+    for (int i = 0; i < n; i++)
+    {
+        if (array[i] < val && array[i] > 0)
+        {
+            val = array[i];
+            aux = i;
+        }
+    }
+    return aux;
+}
 Color PaintPixel(Scene scene, Ray *ray, int Bounces)
 {
     if (Bounces <= 0)
@@ -26,36 +40,38 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
     }
     bool goesToInfinity = true;
     // Check if ray hits any object
-    double listObjects[scene.size];
-    // map<Object *, double> listObjects;   // list where we keep all objects that intersects with ray
+    double listTimes[3];
+    // vector<double> listTimes(scene.size, 0);
+    //  map<Object *, double> listObjects;   // list where we keep all objects that intersects with ray
     for (int s = 0; s < scene.size; s++) // per cada spheres
     {
         double t = scene.world[s]->hit(ray);
+        listTimes[s] = t;
         if (t > 0.0001) // intersecció!
         {
             goesToInfinity = false;
-            // listObjects[scene.world[s]] = t;
-            listObjects[s] = t;
         }
     }
     if (!goesToInfinity)
     {
-        double *min = std::min_element(listObjects, listObjects + scene.size);
+        // double min = *min_element(listTimes.begin(), listTimes.end());
+        double min = minPositiveTime(listTimes, scene.size);
+        // double min = std::min_element(std::begin(listTimes), std::end(listTimes));
         Object *object;
-        object = scene.world[*min];
+        object = scene.world[min];
 
-        MyVector impactPos = ray->getPosition(*min);
+        MyVector impactPos = ray->getPosition(min);
         if (dynamic_cast<Light *>(object) == nullptr) // en cas que impacti amb la font d'iluminació
         {
 
             SphereGlass *child = dynamic_cast<SphereGlass *>(object);
             if (child)
                 child->Rebound(ray, impactPos);
+
             else
                 object->Rebound(ray, impactPos);
 
             return (scene.lightAbsortion * object->color) * PaintPixel(scene, ray, Bounces - 1);
-            return Color(0, 0, 0);
         }
         else
         {
@@ -74,8 +90,10 @@ int main()
     MyVector pixel = eye.TopLeftPlain;
     for (int i = 0; i < image.height; i++)
     {
+        // pixel = eye.TopLeftPlain - (1 * (i + 1) * image.dimPixel * eye.verticalVector); // TODOO borrar
         for (int j = 0; j < image.width; j++)
         {
+            //    pixel = pixel + j * (image.dimPixel * eye.horizontalVector); // TODOOO borrar
             Color pixelColor(0, 0, 0);
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {
