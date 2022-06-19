@@ -10,6 +10,7 @@ public:
     MyVector v;
     Parallelogram(MyVector u, MyVector v, MyVector point, Color c, float roughness);
     double hit(Ray *ray);
+    double distance(MyVector p);
 };
 
 Parallelogram::Parallelogram(MyVector u, MyVector v, MyVector point, Color c, float roughness) : Plane(crossProduct(u, v), point, c, roughness), u(u), v(v)
@@ -79,5 +80,9 @@ double Parallelogram::hit(Ray *ray)
     }
 
     return -1;
+}
+double Parallelogram::distance(MyVector p)
+{
+    return 0;
 }
 #endif

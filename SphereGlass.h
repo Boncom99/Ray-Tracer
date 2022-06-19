@@ -13,6 +13,7 @@ public:
     float refractionIndex;
     SphereGlass(MyVector cent, double rad, Color col, float refractionIndex);
     void Rebound(Ray *ray, MyVector hitPosition);
+    double distance(MyVector position);
 };
 
 SphereGlass::SphereGlass(MyVector cent, double rad, Color color, float refractionIndex) : Sphere(cent, rad, color, 0), refractionIndex(refractionIndex)
@@ -50,6 +51,10 @@ void SphereGlass::Rebound(Ray *ray, MyVector hitPosition)
     outPut.normalize();
     ray->direction = outPut;
     ray->position = hitPosition;
+}
+double SphereGlass::distance(MyVector position)
+{
+    return 0;
 }
 
 #endif

@@ -8,7 +8,7 @@
 class Object
 {
 protected:
-    Object(Color color, float roughness) : color(color), roughness(roughness) {}
+    Object(Color col, float roughness) : color(col), roughness(roughness) {}
 
 public:
     Color color;
@@ -16,10 +16,10 @@ public:
     // char typeRebound;
     virtual double hit(Ray *ray) = 0;
     virtual MyVector NormalVector(MyVector position) = 0;
+    virtual double distance(MyVector position) = 0;
     void Rebound(Ray *ray, MyVector hitPosition)
     {
 
-        MyVector normalVector = this->NormalVector(hitPosition);
         if (roughness != 0)
         {
             double randX = rand() % 100 - 50;
@@ -27,13 +27,14 @@ public:
             double randZ = rand() % 100 - 50;
             MyVector randomVector(randX, randY, randZ);
             randomVector.normalize();
-            if (dotProduct(randomVector, normalVector) > 0.0) // In the same hemisphere as the normal
+            if (dotProduct(randomVector, ray->direction) < 0.0) // In the same hemisphere as the normal
                 ray->direction = randomVector;
             else
                 ray->direction = -1 * randomVector;
         }
         else
         {
+            MyVector normalVector = this->NormalVector(hitPosition);
             MyVector v = dotProduct(/*-1 * */ (ray->direction), normalVector) * normalVector;
             MyVector refrection = ray->direction - 2 * v;
             refrection.normalize();

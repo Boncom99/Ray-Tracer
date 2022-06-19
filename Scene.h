@@ -53,7 +53,7 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         background = Color(0, 0, 0);
         // world.push_back(new Parallelogram(MyVector(4, 1, 0), MyVector(0, 0, 1), MyVector(3, 2, 0.5), Color(0.96, 0.5, 0.7), 0.6));
         world.push_back(new Torus(MyVector(0, 0, 0), 1, 0.5, MyVector(0, 1, 0), Color(0.4, 1.55, 1.6), 1));
-        world.push_back(new Sphere({0, 0, r - 1.5}, r, Color(1, 1, 1), 0));
+        world.push_back(new Sphere(MyVector(0, 0, r - 1.5), r, Color(1, 1, 1), 0));
         // world.push_back(new Sphere({-2, 0, 0}, 1, Color(0.5, 0.76, 0.45), 0));
         // world.push_back(new Sphere({2, 0, 0}, 1, Color(0.5, 0.76, 0.45), 0.3));
         // world.push_back(new Plane(MyVector(0, 0, 1), MyVector(0, 0, -2), Color(0.8, 0.8, 0.8), 1));
@@ -81,9 +81,9 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         lightAbsortion = 0.8;
         blur = 0;
         gammaCorrection = 1 / 3;
-        world.push_back(new Sphere({0, 1, 1}, 1, Color(0.7, 0.7, 0.7), 0));
-        world.push_back(new Sphere({2, 3, 1}, 1, Color(0.7, 0.7, 0.7), 0));
-        world.push_back(new Sphere({0, 0, -200}, 200, Color(0.6, 0.6, 0.5), 1));
+        world.push_back(new Sphere(MyVector(0, 1, 1), 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new Sphere(MyVector(2, 3, 1), 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new Sphere(MyVector(0, 0, -200), 200, Color(0.6, 0.6, 0.5), 1));
         world.push_back(new Light(MyVector(-20, -2, 8), 7, Color(1, 1, 1)));
         size = world.size();
 
@@ -107,12 +107,12 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         lightAbsortion = 0.7;
         blur = 0;
         gammaCorrection = 1 / 2.4;
-        world.push_back(new Sphere({0, 0, 1}, 1, Color(0.7, 0.7, 0.7), 0));
-        world.push_back(new SphereGlass({-1, -2, 1}, 1, Color(1, 1, 1), 1.52));
+        world.push_back(new Sphere(MyVector(0, 0, 1), 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new SphereGlass(MyVector(-1, -2, 1), 1, Color(1, 1, 1), 1.52));
         world.push_back(new Torus(MyVector(-3, 0, 1), 1, 0.5, MyVector(0, 1, -1), Color(1.6, 0.4, 1.6), 1));
         world.push_back(new Torus(MyVector(3, -1, 1), 0.8, 0.35, MyVector(0, 1, 0), Color(0.7, 0.7, 0.7), 0));
-        world.push_back(new Sphere({2, 2, 1}, 1, Color(0.7, 0.7, 0.7), 0));
-        world.push_back(new Sphere({0, 0, -200}, 200, Color(0.4, 1.6, 1.6), 1));
+        world.push_back(new Sphere(MyVector(2, 2, 1), 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new Sphere(MyVector(0, 0, -200), 200, Color(0.4, 1.6, 1.6), 1));
         world.push_back(new Light(MyVector(-20, 4, 15), 10, Color(4, 4, 4)));
         size = world.size();
 
@@ -148,7 +148,7 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         // roof
         world.push_back(new Parallelogram(MyVector(4, 0, 0), MyVector(0, 4, 0), MyVector(-2, 0, 4), Color(1, 1, 1), 1));
         // objects
-        world.push_back(new Sphere({1, 3, 0.8}, 0.8, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new Sphere(MyVector(1, 3, 0.8), 0.8, Color(0.7, 0.7, 0.7), 0));
         // world.push_back(new SphereGlass({-1, 2, 2.8}, 0.7, Color(0.7, 0.7, 0.7), 1.52));
         //   square
         world.push_back(new Parallelogram(MyVector(1, 1, 0), MyVector(0, 0, 2), MyVector(-1, 2.5, 0), Color(0.3, 0.3, 0.8), 1));
@@ -187,8 +187,8 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         lightAbsortion = 0.9;
         gammaCorrection = 1 / 2.4;
         double R = 40;
-        world.push_back(new Sphere({0.5, 10, 0.4}, 0.15, Color(0.7, 0.7, 0.7), 1));
-        world.push_back(new Light({-R + 4, R, 0}, R, Color(0.85, 0.85, 0.7)));
+        world.push_back(new Sphere(MyVector(0.5, 10, 0.4), 0.15, Color(0.7, 0.7, 0.7), 1));
+        world.push_back(new Light(MyVector(-R + 4, R, 0), R, Color(0.85, 0.85, 0.7)));
         world.push_back(new Parallelogram(MyVector(1, 1, 0.02), MyVector(20, 0, 0), MyVector(-4, 6, 0), Color(0.1, 0.1, 0.1), 1));
         world.push_back(new Parallelogram(MyVector(1, 1, 0.2), MyVector(10, 0, 0), MyVector(4, R + 10, -1), Color(0.1, 0.1, 0.1), 1));
         // world.push_back(new Sphere({-2, 0, 0}, 1, Color(0.5, 0.76, 0.45), 0));
@@ -217,8 +217,8 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         background = Color(0, 0, 0);
         lightAbsortion = 0.99;
         gammaCorrection = 1 / 2.6;
-        world.push_back(new Sphere({1, 8, 1.5}, 0.5, Color(0.7, 0.7, 0.7), 1));
-        world.push_back(new Light({14, 15, 1}, 7, Color(3, 3, 3)));
+        world.push_back(new Sphere(MyVector(1, 8, 1.5), 0.5, Color(0.7, 0.7, 0.7), 1));
+        world.push_back(new Light(MyVector(14, 15, 1), 7, Color(3, 3, 3)));
         size = world.size();
         break;
     }
@@ -238,10 +238,10 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         background = Color(0.15, 0.15, 0.25);
         lightAbsortion = 0.9;
         gammaCorrection = 1 / 2.6;
-        world.push_back(new Light({13, 0, 6}, 5, Color(2.5, 2, 2)));
+        world.push_back(new Light(MyVector(13, 0, 6), 5, Color(2.5, 2, 2)));
         for (int i = 1; i < 10; i++)
         {
-            world.push_back(new Sphere({0, (double)(3 * i), 0}, 0.8, Color(0.4, 1.4, 1.4), 0));
+            world.push_back(new Sphere(MyVector(0, (double)(3 * i), 0), 0.8, Color(0.4, 1.4, 1.4), 0));
         }
         world.push_back(new Plane(MyVector(0, 0, 1), MyVector(0, 0, -0.8), Color(0.7, 0.6, 0.7), 0));
 
@@ -264,7 +264,7 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         background = Color(1, 1, 1);
         lightAbsortion = 0.9;
         gammaCorrection = 1 / 1;
-        world.push_back(new Sphere({1, 1, 0}, 1, Color(0.1, 0.7, 0.1), 0));
+        world.push_back(new Sphere(MyVector(1, 1, 0), 1, Color(0.1, 0.7, 0.1), 0));
 
         size = world.size();
         break;
@@ -285,10 +285,10 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         lightAbsortion = 0.8;
         blur = 0;
         gammaCorrection = 1 / 1.9;
-        world.push_back(new Sphere({0, 1.5, 1}, 1, Color(0.7, 0.7, 0.7), 0));
-        world.push_back(new SphereMoving({2, 3, 1}, 1, Color(0.4, 1.4, 1.4), {2, 3, 1}, {2, 3, 3}, 0.001));              // 0.7
-        world.push_back(new SphereMoving({-1.2, -0.2, 1}, 1, Color(0.4, 1.4, 1.4), {-1.2, -0.2, 1}, {-1, 0, 3}, 0.001)); // 0.7
-        world.push_back(new Sphere({0, 0, -200}, 200, Color(0.6, 0.6, 0.5), 1));
+        world.push_back(new Sphere(MyVector(0, 1.5, 1), 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new SphereMoving(MyVector(2, 3, 1), 1, Color(0.4, 1.4, 1.4), MyVector(2, 3, 1), MyVector(2, 3, 3), 0.001));              // 0.7
+        world.push_back(new SphereMoving(MyVector(-1.2, -0.2, 1), 1, Color(0.4, 1.4, 1.4), MyVector(-1.2, -0.2, 1), MyVector(-1, 0, 3), 0.001)); // 0.7
+        world.push_back(new Sphere(MyVector(0, 0, -200), 200, Color(0.6, 0.6, 0.5), 1));
         world.push_back(new Light(MyVector(-20, -2, 8), 7, Color(1, 1, 1)));
         size = world.size();
 
@@ -297,20 +297,69 @@ Scene::Scene(int i) : world(std::vector<Object *>())
     case 9:
     {
         // Julia set
-        HEIGHT = 500;
-        WIDTH = 500;
+        HEIGHT = 800;
+        WIDTH = 800;
         widthOfMatrix = 3;
         maxBouncesOfRay = 10;
-        eyePosition = MyVector(-2.5, -4, -0.2);
+        eyePosition = MyVector(-2.5, -4, 0);
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0, 1);
-        distanceToMatrix = 3.8;
-        samplePerPixel = 10;
+        distanceToMatrix = 2;
+        samplePerPixel = 50;
         background = Color(0, 0, 0);
         lightAbsortion = 0.8;
         blur = 0;
-        gammaCorrection = 1 / 1.5;
-        world.push_back(new JuliaSet(0, Quaternion(-0.15, -0.65, 0, 0), Color(0.6, 0.6, 0.6)));
+        gammaCorrection = 1 / 1.9;
+        world.push_back(new JuliaSet(0, Quaternion(-0.15, -0.7, 0.2, 0), Color(1.00, 0.45, 0.25)));
+        size = world.size();
+        break;
+    }
+    case 10:
+    {
+
+        // Intersection
+        HEIGHT = 300;
+        WIDTH = 300;
+        widthOfMatrix = 3;
+        maxBouncesOfRay = 15;
+        eyePosition = MyVector(0, -4, 0);
+        lookAt = MyVector(0, 0, 0);
+        verticalVector = MyVector(0, 0, 1);
+        distanceToMatrix = 3;
+        samplePerPixel = 20;
+        background = Color(0, 0, 0);
+        lightAbsortion = 0.8;
+        blur = 0;
+        gammaCorrection = 1 / 1.9;
+        Sphere *s1 = new Sphere(MyVector(0.7, 0, 0.2), 1, Color(0.4, 1.4, 1.4), 0);
+        Sphere *s2 = new Sphere(MyVector(1, 0, 0), 1, Color(0.4, 1.4, 1.4), 0);
+        // world.push_back(new Intersection(s1, s2, 1));
+        world.push_back(new Subtraction(s1, s2, 0));
+        world.push_back(new Sphere(MyVector(0, 0, -201.5), 200, Color(0.6, 0.6, 0.5), 1));
+        world.push_back(new Light(MyVector(-3, -6, 2), 2, Color(2, 2, 2)));
+        size = world.size();
+
+        break;
+    }
+    case 11:
+    {
+
+        // One ball
+        HEIGHT = 10;
+        WIDTH = 10;
+        widthOfMatrix = 3;
+        maxBouncesOfRay = 15;
+        eyePosition = MyVector(0, -4, 0);
+        lookAt = MyVector(0, 0, 0);
+        verticalVector = MyVector(0, 0, 1);
+        distanceToMatrix = 4;
+        samplePerPixel = 20;
+        background = Color(0, 0, 0);
+        lightAbsortion = 0.8;
+        blur = 0;
+        gammaCorrection = 1 / 1.9;
+        world.push_back(new Sphere(MyVector(0, 0, 0), 3, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new Light(MyVector(0, -6, 1), 1.9, Color(2, 2, 2)));
         size = world.size();
 
         break;

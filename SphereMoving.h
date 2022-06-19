@@ -17,20 +17,23 @@ public:
     float time;
     SphereMoving(MyVector cent, double rad, Color col, MyVector iPosition, MyVector fPosition, float time);
     void Rebound(Ray *ray, MyVector hitPosition);
+    double distance(MyVector position);
     void trajectory(double t);
     double hit(Ray *ray);
 };
 
-SphereMoving::SphereMoving(MyVector cent, double rad, Color col,MyVector iPosition,  MyVector fPosition, float time) : Sphere(cent, rad, col, 1),initialPosition(iPosition), finalPosition(fPosition),time(time) {}
+SphereMoving::SphereMoving(MyVector cent, double rad, Color col, MyVector iPosition, MyVector fPosition, float time) : Sphere(cent, rad, col, 1), initialPosition(iPosition), finalPosition(fPosition), time(time) {}
 
-void SphereMoving::trajectory(double t){
-    this->center= (1-t)*this->initialPosition+ t*finalPosition;
+void SphereMoving::trajectory(double t)
+{
+    this->center = (1 - t) * this->initialPosition + t * finalPosition;
 }
 double SphereMoving::hit(Ray *ray)
 {
-    if(time!=0){
-    float random=(float)rand()/RAND_MAX;
-    trajectory(random*time);
+    if (time != 0)
+    {
+        float random = (float)rand() / RAND_MAX;
+        trajectory(random * time);
     }
     double b = (dotProduct((ray->position - center), ray->direction));
     double c = (ray->position - center).moduleSq() - radius * radius;
@@ -47,5 +50,9 @@ double SphereMoving::hit(Ray *ray)
     }
 
     return -1;
+}
+double SphereMoving::distance(MyVector position)
+{
+    return 0;
 }
 #endif

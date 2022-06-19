@@ -1,65 +1,4 @@
-#include "MyVector.h"
-#include "Sphere.h"
-#include "Plane.h"
-#include "Square.h"
-#include "Torus.h"
-#include "Color.h"
-#include "Eye.h"
-#include "Ray.h"
-#include "Image.h"
-#include "SphereGlass.h"
-#include "SphereMoving.h"
-#include "Light.h"
-#include "Scene.h"
-#include <map>
-#include <chrono>
-using namespace std;
-
-Color PaintPixel(Scene scene, Ray *ray, int Bounces)
-{
-    if (Bounces <= 0)
-    {
-        return Color(0, 0, 0);
-    }
-    bool goesToInfinity = true;
-    // Check if ray hits any object
-    map<Object *, double> listObjects;   // list where we keep all objects that intersects with ray
-    for (int s = 0; s < scene.size; s++) // per cada spheres
-    {
-        double t = scene.world[s]->hit(ray);
-        if (t > 0.0001) // intersecció!
-        {
-            goesToInfinity = false;
-            listObjects[scene.world[s]] = t;
-        }
-    }
-    if (!goesToInfinity)
-    {
-        auto object = min_element(listObjects.begin(), listObjects.end(), // escollim l'objecte amb que primer intersecciona amb el raig
-                                  [](const auto &l, const auto &r)
-                                  { return l.second < r.second; });
-        MyVector impactPos = ray->getPosition(object->second);
-        if (dynamic_cast<Light *>(object->first) == nullptr) // en cas que impacti amb la font d'iluminació
-        {
-
-            SphereGlass *child = dynamic_cast<SphereGlass *>(object->first);
-            JuliaSet *julia = dynamic_cast<JuliaSet *>(object->first);
-            if (child)
-                child->Rebound(ray, impactPos);
-            else if (julia)
-            {
-                MyVector N = object->first->NormalVector(impactPos);
-                // return object->first->Phong(MyVector(-1, 5, -0.3), scene.eyePosition, impactPos, N);
-                return object->first->Phong(MyVector(-2, -3, 0), scene.eyePosition, impactPos, N);
-            }
-            object->first->Rebound(ray, impactPos);
-            return (scene.lightAbsortion * object->first->color) * PaintPixel(scene, ray, Bounces - 1);
-        }
-        else
-            return object->first->color;
-    }
-    return scene.background;
-}
+#include "MainHeader.h"
 
 int main()
 {
@@ -72,8 +11,10 @@ int main()
 
     for (int i = 0; i < image.height; i++)
     {
+        // pixel = eye.TopLeftPlain - (1 * (i + 1) * image.dimPixel * eye.verticalVector); // TODOO borrar
         for (int j = 0; j < image.width; j++)
         {
+            // pixel = pixel + j * (image.dimPixel * eye.horizontalVector); // TODOOO borrar
             Color pixelColor(0, 0, 0);
             for (int sample = 0; sample < image.SamplesPerPixel; sample++)
             {

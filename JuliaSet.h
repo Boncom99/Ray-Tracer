@@ -16,6 +16,7 @@ public:
     Quaternion f(Quaternion x);
     double hit(Ray *ray); // RayMarching
     MyVector NormalVector(MyVector position);
+    double distance(MyVector position);
     void iterate(Quaternion &z, Quaternion &dz);
     Color Phong(MyVector light, MyVector eye, MyVector pt, MyVector N);
 };
@@ -39,7 +40,16 @@ void JuliaSet::iterate(Quaternion &z, Quaternion &dz)
             break;
     }
 }
+double JuliaSet::distance(MyVector position)
+{
+    Quaternion rayPosition = from3Dto4D(position, fixedK);
+    Quaternion z = rayPosition;
+    Quaternion dz(1, 0, 0, 0);
+    iterate(z, dz);
 
+    float normZ = z.QModule();
+    return 0.5 * normZ * log(normZ) / dz.QModule();
+}
 double JuliaSet::hit(Ray *ray)
 {
     Surround surround(MyVector(0, 0, 0), 2);
@@ -58,10 +68,8 @@ double JuliaSet::hit(Ray *ray)
         float dist = 0.5 * normZ * log(normZ) / dz.QModule(); // lower bound on distance to surface
         count += dist / 2.0;
         rayPosition += rayDirection * (dist / 2.0);
-        // std::cout << d << std::endl;
         if (dist < 0.0001)
         {
-            //  return totalDistance;
             return count;
         }
         if (dist > 15)
@@ -126,7 +134,7 @@ Color JuliaSet::Phong(MyVector light, MyVector eye, MyVector pt, MyVector N)
     N = N * 0.3;
     double b = (specularity * pow(max(dotProduct(E, R), 0), specularExponent));
     diffuse += Color(N.x, N.y, N.z); // add some of the normal to the
-    Color a = (max(NdotL, 0.01) * diffuse);
+    Color a = (max(NdotL, 0.02) * diffuse);
     return Color(a.red + b, a.green + b, a.blue + b);
     // return Color(1, 0.4, 0.3);
 }

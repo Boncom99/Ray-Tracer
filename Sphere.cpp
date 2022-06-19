@@ -12,7 +12,7 @@ MyVector Sphere::NormalVector(MyVector position)
 }
 double Sphere::hit(Ray *ray)
 {
-    // double a = 1; //direction.moduleSq() //sempre valdrà 1
+
     double b = (dotProduct((ray->position - center), ray->direction));
     double c = (ray->position - center).moduleSq() - radius * radius;
     // Discriminant
@@ -28,4 +28,10 @@ double Sphere::hit(Ray *ray)
     }
 
     return -1;
+}
+double Sphere::distance(MyVector position)
+{
+
+    MyVector dist = center - position;
+    return (dist.module() - radius);
 }
