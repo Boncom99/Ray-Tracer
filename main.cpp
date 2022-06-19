@@ -1,36 +1,40 @@
 #include "MainHeader.h"
-
+#include <thread>
+void threadFunction(int start, int end, Scene scene, Eye eye, Image *image)
+{
+    for (int i = start; i < end; i++)
+    {
+        MyVector pixel = eye.TopLeftPlain - (i * image->dimPixel * eye.verticalVector);
+        MainLoop(i, scene, eye, pixel, image);
+    }
+}
 int main()
 {
     auto start = std::chrono::high_resolution_clock::now();
-    Scene scene(11);
+    Scene scene(9);
     Image image(scene.WIDTH, scene.HEIGHT, scene.widthOfMatrix, scene.samplePerPixel, scene.gammaCorrection, scene.blur);
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, image.dimPixel, scene.WIDTH, scene.HEIGHT);
-    MyVector pixel = eye.TopLeftPlain;
-    JuliaSet julia(0, Quaternion(-0.55, 0.2, 0, 0), Color(0.8, 0.6, 0.5));
+    const int core = std::thread::hardware_concurrency();
+    int m = scene.HEIGHT / core;
+    std::vector<std::thread> threads;
 
-    for (int i = 0; i < image.height; i++)
+    for (int i = 0; i < core; i++)
     {
-        // pixel = eye.TopLeftPlain - (1 * (i + 1) * image.dimPixel * eye.verticalVector); // TODOO borrar
-        for (int j = 0; j < image.width; j++)
-        {
-            // pixel = pixel + j * (image.dimPixel * eye.horizontalVector); // TODOOO borrar
-            Color pixelColor(0, 0, 0);
-            for (int sample = 0; sample < image.SamplesPerPixel; sample++)
-            {
-                Ray ray(&eye, pixel, image.blur);
-                pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
-            }
-            image.matrix[i][j] = pixelColor;
-            pixel = pixel + (image.dimPixel * eye.horizontalVector);
-        }
-        pixel = eye.TopLeftPlain - (1 * (i + 1) * image.dimPixel * eye.verticalVector);
-        std::cerr << "\rScanlines remaining: " << image.height - i << ' ' << std::flush;
+        int end = m * i + m;
+        if (i == core - 1)
+            end = scene.HEIGHT;
+        threads.push_back(std::thread(threadFunction, m * i, end, scene, eye, &image));
     }
-    auto end = std::chrono::high_resolution_clock::now();
+
+    for (auto &th : threads)
+    {
+        th.join();
+    }
+
+     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end - start;
     int frameTimeS = static_cast<int>(diff.count());
-    string name = "Time: " + std::to_string(frameTimeS) + ", Width: " + std::to_string(scene.WIDTH) + ", Height: " + std::to_string(scene.HEIGHT);
+    string name = "Time: " + std::to_string(frameTimeS) + ",  " + std::to_string(scene.WIDTH) + "x" + std::to_string(scene.HEIGHT);
     image.printImage(name);
     std::cout << "total time: " << frameTimeS << "s" << std::endl;
 

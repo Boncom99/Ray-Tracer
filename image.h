@@ -9,12 +9,12 @@
 class Image
 {
 public:
-    int width;
-    int height;
-    float widthMatrix;
-    int SamplesPerPixel;
-    float gammaCorrection;
-    float blur;
+    const int width;
+    const int height;
+    const float widthMatrix;
+    const int SamplesPerPixel;
+    const float gammaCorrection;
+    const float blur;
     float dimPixel;
     std::vector<std::vector<Color>> matrix;
 

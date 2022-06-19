@@ -34,6 +34,7 @@ double minPositiveTime(vector<double> vec, int n)
     }
     return aux;
 }
+
 Color PaintPixel(Scene scene, Ray *ray, int Bounces)
 {
     if (Bounces <= 0)
@@ -68,9 +69,9 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
                 child->Rebound(ray, impactPos);
             else if (julia)
             {
-                // MyVector N = object->NormalVector(impactPos);
-                return julia->colorize(listTimes[min]);
-                // return object->Phong(MyVector(-1, 3, 1), scene.eyePosition, impactPos, N);
+                MyVector N = object->NormalVector(impactPos);
+                return object->Phong(MyVector(-1, 3, 1), scene.eyePosition, impactPos, N);
+                // return julia->colorize(listTimes[min]);
             }
             else
                 object->Rebound(ray, impactPos);
@@ -83,5 +84,20 @@ Color PaintPixel(Scene scene, Ray *ray, int Bounces)
         }
     }
     return scene.background;
+}
+void MainLoop(int i, Scene scene, Eye eye, MyVector pixel, Image *image)
+{
+    for (int j = 0; j < image->width; j++)
+    {
+        Color pixelColor(0, 0, 0);
+        for (int sample = 0; sample < image->SamplesPerPixel; sample++)
+        {
+            Ray ray(&eye, pixel, image->blur);
+            pixelColor += PaintPixel(scene, &ray, scene.maxBouncesOfRay);
+        }
+        image->matrix[i][j] = pixelColor;
+        pixel = pixel + (image->dimPixel * eye.horizontalVector);
+    }
+    pixel = eye.TopLeftPlain - (1 * (i + 1) * image->dimPixel * eye.verticalVector);
 }
 #endif
