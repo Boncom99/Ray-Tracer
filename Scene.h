@@ -91,29 +91,26 @@ Scene::Scene(int i) : world(std::vector<Object *>())
     }
     case 2:
     {
-        // muli objectes
-        HEIGHT = 500;
-        WIDTH = 500;
+        // multi objectes
+        HEIGHT = 800;
+        WIDTH = 800;
         widthOfMatrix = 0.8;
-        maxBouncesOfRay = 20;
+        maxBouncesOfRay = 10;
         eyePosition = MyVector(0, -10, 5);
         lookAt = MyVector(0, 0, 0);
         verticalVector = MyVector(0, 0.5, 1);
         verticalVector.normalize();
         distanceToMatrix = 0.8;
-        samplePerPixel = 50;
-        background = Color(0.05, 0.1, 0.3);
-        // background = Color();
+        samplePerPixel = 200;
+        background = Color(0, 0, 0);
         lightAbsortion = 0.7;
         blur = 0;
         gammaCorrection = 1 / 2.4;
         world.push_back(new Sphere(MyVector(0, 0, 1), 1, Color(0.7, 0.7, 0.7), 0));
-        world.push_back(new SphereGlass(MyVector(-1, -2, 1), 1, Color(1, 1, 1), 1.52));
-        world.push_back(new Torus(MyVector(-3, 0, 1), 1, 0.5, MyVector(0, 1, -1), Color(1.6, 0.4, 1.6), 1));
-        world.push_back(new Torus(MyVector(3, -1, 1), 0.8, 0.35, MyVector(0, 1, 0), Color(0.7, 0.7, 0.7), 0));
-        world.push_back(new Sphere(MyVector(2, 2, 1), 1, Color(0.7, 0.7, 0.7), 0));
+        world.push_back(new SphereGlass(MyVector(-1.3, -2, 1), 1, Color(1, 1, 1), 1.52));
+        world.push_back(new Sphere(MyVector(2, 2, 1), 1, Color(0.7, 0.7, 0.7), 1));
         world.push_back(new Sphere(MyVector(0, 0, -200), 200, Color(0.4, 1.6, 1.6), 1));
-        world.push_back(new Light(MyVector(-20, 4, 15), 10, Color(4, 4, 4)));
+        world.push_back(new Light(MyVector(-20, 4, 15), 10, Color(2, 2, 2)));
         size = world.size();
 
         break;
@@ -345,8 +342,8 @@ Scene::Scene(int i) : world(std::vector<Object *>())
     {
 
         // Julia intersection
-        HEIGHT = 100;
-        WIDTH = 100;
+        HEIGHT = 400;
+        WIDTH = 400;
         widthOfMatrix = 3;
         maxBouncesOfRay = 15;
         eyePosition = MyVector(0, -4, 0);
@@ -358,7 +355,7 @@ Scene::Scene(int i) : world(std::vector<Object *>())
         lightAbsortion = 0.8;
         blur = 0;
         gammaCorrection = 1 / 1.9;
-        Sphere *sphere = new Sphere(MyVector(0, 0, -2.7), 3, Color(1.00, 0.45, 0.25), 0);
+        Sphere *sphere = new Sphere(MyVector(0, 6, 0), 6, Color(1.00, 0.45, 0.25), 0);
         JuliaSet *julia = new JuliaSet(0, Quaternion(-0.6, 0, 0, 0), Color(1.00, 0.45, 0.25));
         world.push_back(new Intersection(sphere, julia, 1));
 

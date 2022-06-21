@@ -6,12 +6,13 @@ void threadFunction(int start, int end, Scene scene, Eye eye, Image *image)
     {
         MyVector pixel = eye.TopLeftPlain - (i * image->dimPixel * eye.verticalVector);
         MainLoop(i, scene, eye, pixel, image);
+        // std::cerr << "\rScanlines remaining: " << image->height - i << ' ' << std::flush;
     }
 }
 int main()
 {
     auto start = std::chrono::high_resolution_clock::now();
-    Scene scene(9);
+    Scene scene(11);
     Image image(scene.WIDTH, scene.HEIGHT, scene.widthOfMatrix, scene.samplePerPixel, scene.gammaCorrection, scene.blur);
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, image.dimPixel, scene.WIDTH, scene.HEIGHT);
     const int core = std::thread::hardware_concurrency();
@@ -31,7 +32,7 @@ int main()
         th.join();
     }
 
-     auto end = std::chrono::high_resolution_clock::now();
+    auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> diff = end - start;
     int frameTimeS = static_cast<int>(diff.count());
     string name = "Time: " + std::to_string(frameTimeS) + ",  " + std::to_string(scene.WIDTH) + "x" + std::to_string(scene.HEIGHT);
