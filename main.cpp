@@ -12,7 +12,7 @@ void threadFunction(int start, int end, Scene scene, Eye eye, Image *image)
 int main()
 {
     auto start = std::chrono::high_resolution_clock::now();
-    Scene scene(11);
+    Scene scene(9);
     Image image(scene.WIDTH, scene.HEIGHT, scene.widthOfMatrix, scene.samplePerPixel, scene.gammaCorrection, scene.blur);
     Eye eye(scene.eyePosition, scene.lookAt, scene.distanceToMatrix, scene.verticalVector, image.dimPixel, scene.WIDTH, scene.HEIGHT);
     const int core = std::thread::hardware_concurrency();

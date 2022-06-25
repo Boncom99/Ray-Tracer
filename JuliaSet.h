@@ -71,8 +71,8 @@ double JuliaSet::hit(Ray *ray)
         rayPosition += rayDirection * (dist / 2.0);
         if (dist < 0.0001)
         {
-            // return count;
-            return i;
+            return count;
+            // return i;
         }
         if (dist > 15)
             return -1;
